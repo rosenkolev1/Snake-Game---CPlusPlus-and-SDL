@@ -3,18 +3,6 @@
 const char GameUI::GAME_TILESET_PATH[100] = "./Images/snake_graphics_tileset.png";
 const char GameUI::GAME_WINDOW_TITLE[100] = "Snake Game";
 
-//GameUI::~GameUI() {
-//    /*for (auto memberInfo : this->allHeapMembers) {
-//        
-//        auto pointerToMember = memberInfo.first;
-//        auto& memberType = memberInfo.second;
-//
-//        decltype(pointerToMember) validPointer = reinterpret_cast<decltype(pointerToMember)>(pointerToMember);
-//
-//        delete validPointer;
-//    }*/
-//}
-
 GameUI::GameUI() 
 {
     this->sdlSystem = std::make_unique<sdl2::sdlsystem_ptr_t>(sdl2::makeSdlSystem(SDL_INIT_EVERYTHING));
@@ -62,6 +50,8 @@ GameUI::GameUI()
         cerr << "Error creating the game tileset surface: " << SDL_GetError() << endl;
         return;
     }
+
+    this->validState = true;
 }
 
 bool GameUI::loadTexture(std::unique_ptr<sdl2::texture_ptr_t>& targetTexture, TilePos pos) {
@@ -126,4 +116,9 @@ void GameUI::startGameRender()
         SDL_RenderPresent(this->sdlRenderer->get());
         SDL_Delay(1000);
     }
+}
+
+bool GameUI::isValid()
+{
+    return this->validState;
 }

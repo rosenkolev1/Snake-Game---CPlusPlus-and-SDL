@@ -25,6 +25,12 @@
     <Filter Include="Header Files\Common">
       <UniqueIdentifier>{e94883c6-da30-41d8-814e-beecb2e23320}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\App">
+      <UniqueIdentifier>{9ca902d5-4fc0-4974-b746-c89006f4cf77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\App">
+      <UniqueIdentifier>{d2482df8-0c44-41bb-aa7d-2aff018993d8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Snake Project 2.cpp">

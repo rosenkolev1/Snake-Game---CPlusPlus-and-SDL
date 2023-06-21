@@ -109,5 +109,6 @@ public:
     GameUI();
 
     void startGameRender();
+    bool isValid();
 };
 

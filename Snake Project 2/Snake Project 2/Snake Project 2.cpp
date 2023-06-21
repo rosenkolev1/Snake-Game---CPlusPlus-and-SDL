@@ -18,6 +18,11 @@ int main(int argc, char* argv[])
 
     GameUI gameUI = GameUI();
 
+    if (!gameUI.isValid()) 
+    {
+        return 0;
+    }
+
     gameUI.startGameRender();
 
     return 0;

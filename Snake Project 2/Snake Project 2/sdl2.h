@@ -31,26 +31,26 @@ namespace sdl2 {
     }
 
     // The "internal type" of the SDL System
-    using SDL_System = int;
+    using SdlSystem = int;
 
-    // SDL_CreateSDL initiates the use of SDL.
+    // sdlCreate initiates the use of SDL.
     // The given flags are passed to SDL_Init.
     // The returned value contains the exit code.
-    inline SDL_System* SDL_CreateSDL(Uint32 flags)
+    inline SdlSystem* sdlCreate(Uint32 flags)
     {
-        auto init_status = new SDL_System;
+        auto init_status = new SdlSystem;
         *init_status = SDL_Init(flags);
         return init_status;
     }
 
-    // SDL_DestroySDL ends the use of SDL
-    inline void SDL_DestroySDL(SDL_System* init_status)
+    // sdlDestroy ends the use of SDL
+    inline void sdlDestroy(SdlSystem* init_status)
     {
         delete init_status; // Delete the int that contains the return value from SDL_Init
         SDL_Quit();
     }
 
-    using sdlsystem_ptr_t = std::unique_ptr<SDL_System, decltype(&SDL_DestroySDL)>;
+    using sdlsystem_ptr_t = std::unique_ptr<SdlSystem, decltype(&sdlDestroy)>;
     using window_ptr_t = std::unique_ptr<SDL_Window, decltype(&SDL_DestroyWindow)>;
     using renderer_ptr_t = std::unique_ptr<SDL_Renderer, decltype(&SDL_DestroyRenderer)>;
     using surf_ptr_t = std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)>;
@@ -59,7 +59,7 @@ namespace sdl2 {
     // Initialize SDL (the returned int* contains the return value from SDL_Init)
     inline sdlsystem_ptr_t makeSdlSystem(Uint32 flags)
     {
-        return makeResource(SDL_CreateSDL, SDL_DestroySDL, flags);
+        return makeResource(sdlCreate, sdlDestroy, flags);
     }
 
     // Create a window (that contains both a SDL_Window and the destructor for SDL_Windows)
