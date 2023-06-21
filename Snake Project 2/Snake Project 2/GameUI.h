@@ -19,33 +19,6 @@ class GameUI
 
 private:
 
-    //= "./Images/snake_graphics_tileset.png"
-    static const char GAME_TILESET_PATH[100];
-
-    const int GAME_TILESET_W = 320;
-    const int GAME_TILESET_H = 256;
-
-    const int GAME_TILESET_TILE_W = 64;
-    const int GAME_TILESET_TILE_H = 64;
-
-    const int GAME_TILESET_ROWS_COUNT = GAME_TILESET_H / GAME_TILESET_TILE_H;
-    const int GAME_TILESET_COLUMNS_COUNT = GAME_TILESET_W / GAME_TILESET_TILE_W;
-
-    //"Snake Game"
-    static const char GAME_WINDOW_TITLE[100];
-
-    //TODO: Move GAME_GRID constants to another class
-    static const int GAME_GRID_X = 30;
-    static const int GAME_GRID_Y = 30;
-
-    static const int GAME_WINDOW_X = 100;
-    static const int GAME_WINDOW_Y = 100;
-    static const int GAME_WINDOW_W = 1000;
-    static const int GAME_WINDOW_H = 700;
-
-    static const int GAME_TILE_W = (GAME_WINDOW_W * 7 / 8) / GAME_GRID_X;
-    static const int GAME_TILE_H = (GAME_WINDOW_H * 7 / 8) / GAME_GRID_Y;
-
     bool validState = false;
 
     std::unique_ptr<sdl2::sdlsystem_ptr_t> sdlSystem = nullptr;

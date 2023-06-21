@@ -1,7 +1,5 @@
 #include "GameUI.h"
-
-const char GameUI::GAME_TILESET_PATH[100] = "./Images/snake_graphics_tileset.png";
-const char GameUI::GAME_WINDOW_TITLE[100] = "Snake Game";
+#include "GlobalConstants.h"
 
 GameUI::GameUI() 
 {
@@ -13,7 +11,7 @@ GameUI::GameUI()
     }
 
     this->sdlWindow = std::make_unique<sdl2::window_ptr_t>(sdl2::window_ptr_t(
-        sdl2::makeWindow(GAME_WINDOW_TITLE, GAME_WINDOW_X, GAME_WINDOW_Y, GAME_WINDOW_W, GAME_WINDOW_H,
+        sdl2::makeWindow(GC::GAME_WINDOW_TITLE, GC::GAME_WINDOW_X, GC::GAME_WINDOW_Y, GC::GAME_WINDOW_W, GC::GAME_WINDOW_H,
         SDL_WINDOW_SHOWN)));
 
     if (!*this->sdlWindow) 
@@ -30,7 +28,7 @@ GameUI::GameUI()
         return;
     }
 
-    this->sdlSurface = std::make_unique<sdl2::surf_ptr_t>(sdl2::surf_ptr_t(sdl2::makePng(this->GAME_TILESET_PATH)));
+    this->sdlSurface = std::make_unique<sdl2::surf_ptr_t>(sdl2::surf_ptr_t(sdl2::makePng(GC::GAME_TILESET_PATH)));
     if (!*this->sdlSurface) 
     {
         cerr << "Error creating the game tileset surface: " << SDL_GetError() << endl;
@@ -57,16 +55,16 @@ GameUI::GameUI()
 bool GameUI::loadTexture(std::unique_ptr<sdl2::texture_ptr_t>& targetTexture, TilePos pos) {
 
     targetTexture = std::make_unique<sdl2::texture_ptr_t>(sdl2::createTexture(this->sdlRenderer->get(),
-        SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, GAME_TILE_W, GAME_TILE_H));
+        SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, GC::GAME_TILE_W, GC::GAME_TILE_H));
 
     // Set target render to the needed texture
     SDL_SetRenderTarget(this->sdlRenderer->get(), targetTexture->get());
 
     SDL_Rect srcRect;
-    srcRect.x = pos.col * GAME_TILESET_TILE_W;
-    srcRect.y = pos.row * GAME_TILESET_TILE_H;
-    srcRect.w = GAME_TILESET_TILE_W;
-    srcRect.h = GAME_TILESET_TILE_H;
+    srcRect.x = pos.col * GC::GAME_TILESET_TILE_W;
+    srcRect.y = pos.row * GC::GAME_TILESET_TILE_H;
+    srcRect.w = GC::GAME_TILESET_TILE_W;
+    srcRect.h = GC::GAME_TILESET_TILE_H;
 
     // Draw on top of the current target texture
     SDL_RenderCopy(this->sdlRenderer->get(), this->sdlTexture->get(), &srcRect, NULL);
@@ -79,9 +77,9 @@ bool GameUI::loadTexture(std::unique_ptr<sdl2::texture_ptr_t>& targetTexture, Ti
 }
 
 bool GameUI::loadGameTextures() {
-    for (int row = 0; row < GAME_TILESET_ROWS_COUNT; row++)
+    for (int row = 0; row < GC::GAME_TILESET_ROWS_COUNT; row++)
     {
-        for (int col = 0; col < GAME_TILESET_COLUMNS_COUNT; col++)
+        for (int col = 0; col < GC::GAME_TILESET_COLUMNS_COUNT; col++)
         {
             TilePos curTilePos = TilePos(row, col);
             auto targetTextureIt = this->TILESET_TILE_TO_TEXTURE_MAP.find(curTilePos);

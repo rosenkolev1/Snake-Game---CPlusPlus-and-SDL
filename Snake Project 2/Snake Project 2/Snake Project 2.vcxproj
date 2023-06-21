@@ -130,7 +130,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="GameUI.cpp" />
+    <ClCompile Include="GlobalConstants.cpp" />
     <ClCompile Include="Snake Project 2.cpp" />
     <ClCompile Include="TilePos.cpp" />
   </ItemGroup>
@@ -140,7 +142,9 @@
     <Library Include="SDL2_image.lib" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameApp.h" />
     <ClInclude Include="GameUI.h" />
+    <ClInclude Include="GlobalConstants.h" />
     <ClInclude Include="sdl2.h" />
     <ClInclude Include="TilePos.h" />
   </ItemGroup>
