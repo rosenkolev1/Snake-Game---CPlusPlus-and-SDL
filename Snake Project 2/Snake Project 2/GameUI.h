@@ -22,8 +22,14 @@ private:
     //= "./Images/snake_graphics_tileset.png"
     static const char GAME_TILESET_PATH[100];
 
+    const int GAME_TILESET_W = 320;
+    const int GAME_TILESET_H = 256;
+
     const int GAME_TILESET_TILE_W = 64;
     const int GAME_TILESET_TILE_H = 64;
+
+    const int GAME_TILESET_ROWS_COUNT = GAME_TILESET_H / GAME_TILESET_TILE_H;
+    const int GAME_TILESET_COLUMNS_COUNT = GAME_TILESET_W / GAME_TILESET_TILE_W;
 
     //"Snake Game"
     static const char GAME_WINDOW_TITLE[100];
@@ -42,38 +48,38 @@ private:
 
     bool validState = false;
 
-    sdl2::sdlsystem_ptr_t* sdlSystem = nullptr;
-    sdl2::window_ptr_t* sdlWindow = nullptr;
-    sdl2::renderer_ptr_t* sdlRenderer = nullptr;
+    std::unique_ptr<sdl2::sdlsystem_ptr_t> sdlSystem = nullptr;
+    std::unique_ptr<sdl2::window_ptr_t> sdlWindow = nullptr;
+    std::unique_ptr<sdl2::renderer_ptr_t> sdlRenderer = nullptr;
 
-    sdl2::surf_ptr_t* sdlSurface = nullptr;
-    sdl2::texture_ptr_t* sdlTexture = nullptr;
+    std::unique_ptr<sdl2::surf_ptr_t> sdlSurface = nullptr;
+    std::unique_ptr<sdl2::texture_ptr_t> sdlTexture = nullptr;
 
-    sdl2::texture_ptr_t* snakeHeadUp = nullptr;
-    sdl2::texture_ptr_t* snakeHeadLeft = nullptr;
-    sdl2::texture_ptr_t* snakeHeadRight = nullptr;
-    sdl2::texture_ptr_t* snakeHeadDown = nullptr;
+    std::unique_ptr<sdl2::texture_ptr_t> snakeHeadUp = nullptr;
+    std::unique_ptr<sdl2::texture_ptr_t> snakeHeadLeft = nullptr;
+    std::unique_ptr<sdl2::texture_ptr_t> snakeHeadRight = nullptr;
+    std::unique_ptr<sdl2::texture_ptr_t> snakeHeadDown = nullptr;
 
-    sdl2::texture_ptr_t* snakeBodyHorizontal = nullptr;
-    sdl2::texture_ptr_t* snakeBodyVertical = nullptr;
+    std::unique_ptr<sdl2::texture_ptr_t> snakeBodyHorizontal = nullptr;
+    std::unique_ptr<sdl2::texture_ptr_t> snakeBodyVertical = nullptr;
 
-    sdl2::texture_ptr_t* snakeTurn1 = nullptr;
-    sdl2::texture_ptr_t* snakeTurn2 = nullptr;
-    sdl2::texture_ptr_t* snakeTurn3 = nullptr;
-    sdl2::texture_ptr_t* snakeTurn4 = nullptr;
+    std::unique_ptr<sdl2::texture_ptr_t> snakeTurn1 = nullptr;
+    std::unique_ptr<sdl2::texture_ptr_t> snakeTurn2 = nullptr;
+    std::unique_ptr<sdl2::texture_ptr_t> snakeTurn3 = nullptr;
+    std::unique_ptr<sdl2::texture_ptr_t> snakeTurn4 = nullptr;
 
-    sdl2::texture_ptr_t* snakeTailUp = nullptr;
-    sdl2::texture_ptr_t* snakeTailLeft = nullptr;
-    sdl2::texture_ptr_t* snakeTailRight = nullptr;
-    sdl2::texture_ptr_t* snakeTailDown = nullptr;
+    std::unique_ptr<sdl2::texture_ptr_t> snakeTailUp = nullptr;
+    std::unique_ptr<sdl2::texture_ptr_t> snakeTailLeft = nullptr;
+    std::unique_ptr<sdl2::texture_ptr_t> snakeTailRight = nullptr;
+    std::unique_ptr<sdl2::texture_ptr_t> snakeTailDown = nullptr;
 
-    sdl2::texture_ptr_t* apple = nullptr;
+    std::unique_ptr<sdl2::texture_ptr_t> apple = nullptr;
 
-    sdl2::texture_ptr_t* emptyTile = nullptr;
+    std::unique_ptr<sdl2::texture_ptr_t> emptyTile = nullptr;
 
     //Mapping the tiles of the tileset (the .png file) to their coordinates, so we can iterate through the coordinates and 
     //load all the textures one by one
-    const std::map<TilePos, sdl2::texture_ptr_t*&> TILESET_TILE_TO_TEXTURE_MAP = 
+    const std::map<TilePos, std::unique_ptr<sdl2::texture_ptr_t>&> TILESET_TILE_TO_TEXTURE_MAP = 
     {
         { TilePos(0, 0), this->snakeTurn1 },
         { TilePos(0, 1), this->snakeBodyHorizontal },
@@ -96,12 +102,11 @@ private:
         { TilePos(3, 4), this->snakeTailUp },
     };
     
-    bool loadTexture(sdl2::texture_ptr_t*& targetTexture, TilePos pos);
+    bool loadTexture(std::unique_ptr<sdl2::texture_ptr_t>& targetTexture, TilePos pos);
     bool loadGameTextures();
 
 public:
     GameUI();
-    ~GameUI();
 
     void startGameRender();
 };

@@ -57,7 +57,7 @@ namespace sdl2 {
     using texture_ptr_t = std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)>;
 
     // Initialize SDL (the returned int* contains the return value from SDL_Init)
-    inline sdlsystem_ptr_t make_sdlsystem(Uint32 flags)
+    inline sdlsystem_ptr_t makeSdlSystem(Uint32 flags)
     {
         return makeResource(SDL_CreateSDL, SDL_DestroySDL, flags);
     }
@@ -97,6 +97,11 @@ namespace sdl2 {
     inline texture_ptr_t* createTextureNew(SDL_Renderer* renderer, Uint32 format, int access, int w, int h) 
     {
         return makeResourceNew(SDL_CreateTexture, SDL_DestroyTexture, renderer, format, access, w, h);
+    }
+
+    inline texture_ptr_t createTexture(SDL_Renderer* renderer, Uint32 format, int access, int w, int h)
+    {
+        return makeResource(SDL_CreateTexture, SDL_DestroyTexture, renderer, format, access, w, h);
     }
 
 } // namespace sdl2

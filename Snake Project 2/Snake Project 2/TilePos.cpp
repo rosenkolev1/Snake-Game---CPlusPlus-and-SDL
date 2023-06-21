@@ -1,4 +1,5 @@
 #include "TilePos.h"
+#include <iostream>
 
 TilePos::TilePos()
 {

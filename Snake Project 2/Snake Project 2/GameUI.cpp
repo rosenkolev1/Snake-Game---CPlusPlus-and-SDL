@@ -3,22 +3,30 @@
 const char GameUI::GAME_TILESET_PATH[100] = "./Images/snake_graphics_tileset.png";
 const char GameUI::GAME_WINDOW_TITLE[100] = "Snake Game";
 
-GameUI::~GameUI() {
-
-}
+//GameUI::~GameUI() {
+//    /*for (auto memberInfo : this->allHeapMembers) {
+//        
+//        auto pointerToMember = memberInfo.first;
+//        auto& memberType = memberInfo.second;
+//
+//        decltype(pointerToMember) validPointer = reinterpret_cast<decltype(pointerToMember)>(pointerToMember);
+//
+//        delete validPointer;
+//    }*/
+//}
 
 GameUI::GameUI() 
 {
-    this->sdlSystem = new sdl2::sdlsystem_ptr_t(sdl2::make_sdlsystem(SDL_INIT_EVERYTHING));
+    this->sdlSystem = std::make_unique<sdl2::sdlsystem_ptr_t>(sdl2::makeSdlSystem(SDL_INIT_EVERYTHING));
     if (!*this->sdlSystem) 
     {
         cerr << "Error creating SDL2 system: " << SDL_GetError() << endl;
         return;
     }
 
-    this->sdlWindow = new sdl2::window_ptr_t(
+    this->sdlWindow = std::make_unique<sdl2::window_ptr_t>(sdl2::window_ptr_t(
         sdl2::makeWindow(GAME_WINDOW_TITLE, GAME_WINDOW_X, GAME_WINDOW_Y, GAME_WINDOW_W, GAME_WINDOW_H,
-        SDL_WINDOW_SHOWN));
+        SDL_WINDOW_SHOWN)));
 
     if (!*this->sdlWindow) 
     {
@@ -26,22 +34,23 @@ GameUI::GameUI()
         return;
     }
 
-    this->sdlRenderer = new sdl2::renderer_ptr_t(
-        sdl2::makeRenderer(this->sdlWindow->get(), -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC));
+    this->sdlRenderer = std::make_unique<sdl2::renderer_ptr_t>(sdl2::renderer_ptr_t(
+        sdl2::makeRenderer(this->sdlWindow->get(), -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC)));
     if (!*this->sdlRenderer) 
     {
         cerr << "Error creating renderer: " << SDL_GetError() << endl;
         return;
     }
 
-    this->sdlSurface = new sdl2::surf_ptr_t(sdl2::makePng(this->GAME_TILESET_PATH));
+    this->sdlSurface = std::make_unique<sdl2::surf_ptr_t>(sdl2::surf_ptr_t(sdl2::makePng(this->GAME_TILESET_PATH)));
     if (!*this->sdlSurface) 
     {
         cerr << "Error creating the game tileset surface: " << SDL_GetError() << endl;
         return;
     }
 
-    this->sdlTexture = new sdl2::texture_ptr_t(sdl2::makeTexture(this->sdlRenderer->get(), this->sdlSurface->get()));
+    this->sdlTexture = std::make_unique<sdl2::texture_ptr_t>(
+        sdl2::texture_ptr_t(sdl2::makeTexture(this->sdlRenderer->get(), this->sdlSurface->get())));
     if (!*this->sdlTexture) 
     {
         cerr << "Error creating texture: " << SDL_GetError() << endl;
@@ -55,10 +64,10 @@ GameUI::GameUI()
     }
 }
 
-bool GameUI::loadTexture(sdl2::texture_ptr_t*& targetTexture, TilePos pos) {
+bool GameUI::loadTexture(std::unique_ptr<sdl2::texture_ptr_t>& targetTexture, TilePos pos) {
 
-    targetTexture = sdl2::createTextureNew(this->sdlRenderer->get(),
-        SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, GAME_TILE_W, GAME_TILE_H);
+    targetTexture = std::make_unique<sdl2::texture_ptr_t>(sdl2::createTexture(this->sdlRenderer->get(),
+        SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, GAME_TILE_W, GAME_TILE_H));
 
     // Set target render to the needed texture
     SDL_SetRenderTarget(this->sdlRenderer->get(), targetTexture->get());
@@ -80,11 +89,11 @@ bool GameUI::loadTexture(sdl2::texture_ptr_t*& targetTexture, TilePos pos) {
 }
 
 bool GameUI::loadGameTextures() {
-    for (int x = 0; x < 5; x++) 
+    for (int row = 0; row < GAME_TILESET_ROWS_COUNT; row++)
     {
-        for (int y = 0; y < 4; y++) 
+        for (int col = 0; col < GAME_TILESET_COLUMNS_COUNT; col++)
         {
-            TilePos curTilePos = TilePos(x, y);
+            TilePos curTilePos = TilePos(row, col);
             auto targetTextureIt = this->TILESET_TILE_TO_TEXTURE_MAP.find(curTilePos);
 
             if (targetTextureIt != this->TILESET_TILE_TO_TEXTURE_MAP.end()) {
@@ -113,7 +122,7 @@ void GameUI::startGameRender()
         dstRect.w = 10;
         dstRect.h = 10;
 
-        SDL_RenderCopy(this->sdlRenderer->get(), this->apple->get(), NULL, &dstRect);
+        SDL_RenderCopy(this->sdlRenderer->get(), this->snakeHeadRight->get(), NULL, &dstRect);
         SDL_RenderPresent(this->sdlRenderer->get());
         SDL_Delay(1000);
     }
