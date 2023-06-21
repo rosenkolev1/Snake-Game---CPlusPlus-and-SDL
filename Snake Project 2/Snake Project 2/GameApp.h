@@ -1,7 +1,20 @@
 #pragma once
+#include "GameUI.h"
+#include "Tile.h"
+#include "GlobalConstants.h"
+
 class GameApp
 {
-	static const int GAME_GRID_X = 30;
-	static const int GAME_GRID_Y = 30;
+private:
+
+	std::unique_ptr<GameUI> gameUI = nullptr;
+
+	std::vector<std::vector<Tile>> grid;
+
+	int tickSpeed;
+
+public:
+
+	GameApp();
 };
 

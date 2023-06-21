@@ -12,7 +12,7 @@ GameUI::GameUI()
 
     this->sdlWindow = std::make_unique<sdl2::window_ptr_t>(sdl2::window_ptr_t(
         sdl2::makeWindow(GC::GAME_WINDOW_TITLE, GC::GAME_WINDOW_X, GC::GAME_WINDOW_Y, GC::GAME_WINDOW_W, GC::GAME_WINDOW_H,
-        SDL_WINDOW_SHOWN)));
+        SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE)));
 
     if (!*this->sdlWindow) 
     {
@@ -39,21 +39,60 @@ GameUI::GameUI()
         sdl2::texture_ptr_t(sdl2::makeTexture(this->sdlRenderer->get(), this->sdlSurface->get())));
     if (!*this->sdlTexture) 
     {
-        cerr << "Error creating texture: " << SDL_GetError() << endl;
+        cerr << "Error loading the texture tileset: " << SDL_GetError() << endl;
         return;
     }
 
     if (!loadGameTextures()) 
     {
-        cerr << "Error creating the game tileset surface: " << SDL_GetError() << endl;
+        cerr << "Error loading the game textures: " << SDL_GetError() << endl;
+        return;
+    }
+
+    if (!loadEmptyTile()) 
+    {
+        cerr << "Error loading the empty tile texture: " << SDL_GetError() << endl;
         return;
     }
 
     this->validState = true;
 }
 
-bool GameUI::loadTexture(std::unique_ptr<sdl2::texture_ptr_t>& targetTexture, TilePos pos) {
+bool GameUI::loadEmptyTile()
+{
+    this->emptyTile = std::make_unique<sdl2::texture_ptr_t>(sdl2::createTexture(this->sdlRenderer->get(),
+        SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, GC::GAME_TILE_W, GC::GAME_TILE_H));
 
+    // Set target render to the needed texture
+    SDL_SetRenderTarget(this->sdlRenderer->get(), this->emptyTile->get());
+
+    //Set the draw color
+    SDL_SetRenderDrawColor(this->sdlRenderer->get(), 81, 53, 97, 100);
+
+    SDL_Rect rect;
+    rect.x = 0;
+    rect.y = 0;
+    rect.w = GC::GAME_TILE_W;
+    rect.h = GC::GAME_TILE_H;
+
+    // Draw on top of the current target texture
+    //SDL_RenderDrawRect(this->sdlRenderer->get(), &rect);
+
+    SDL_RenderFillRect(this->sdlRenderer->get(), NULL);
+
+    //Reset the renderer back to the screen
+    SDL_SetRenderTarget(this->sdlRenderer->get(), NULL);
+
+    //Set the draw color
+    SDL_SetRenderDrawColor(this->sdlRenderer->get(), 0, 0, 0, 100);
+
+    SDL_RenderClear(this->sdlRenderer->get());
+
+    return true;
+}
+
+bool GameUI::loadTexture(std::unique_ptr<sdl2::texture_ptr_t>& targetTexture, TilePos pos) 
+{
     targetTexture = std::make_unique<sdl2::texture_ptr_t>(sdl2::createTexture(this->sdlRenderer->get(),
         SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, GC::GAME_TILE_W, GC::GAME_TILE_H));
 
@@ -76,7 +115,8 @@ bool GameUI::loadTexture(std::unique_ptr<sdl2::texture_ptr_t>& targetTexture, Ti
     return true;
 }
 
-bool GameUI::loadGameTextures() {
+bool GameUI::loadGameTextures() 
+{
     for (int row = 0; row < GC::GAME_TILESET_ROWS_COUNT; row++)
     {
         for (int col = 0; col < GC::GAME_TILESET_COLUMNS_COUNT; col++)
@@ -98,25 +138,35 @@ bool GameUI::loadGameTextures() {
     return true;
 }
 
-void GameUI::startGameRender() 
+void GameUI::renderTick(const std::vector<std::vector<Tile>>& grid)
 {
-    for (int i = 0; i < 20; i++) 
+    SDL_RenderClear(this->sdlRenderer->get());
+
+    for (auto tilesRow : grid) 
     {
-        SDL_RenderClear(this->sdlRenderer->get());
+        for (auto tile : tilesRow) 
+        {
+            ScreenPos screenPos = getScreenPosForTile(tile.getPos());
 
-        SDL_Rect dstRect;
-        dstRect.x = 0 + i * 10;
-        dstRect.y = 300;
-        dstRect.w = 10;
-        dstRect.h = 10;
+            SDL_Rect dstRect;
+            dstRect.x = screenPos.x;
+            dstRect.y = screenPos.y;
+            dstRect.w = GC::GAME_TILE_W;
+            dstRect.h = GC::GAME_TILE_H;
 
-        SDL_RenderCopy(this->sdlRenderer->get(), this->snakeHeadRight->get(), NULL, &dstRect);
-        SDL_RenderPresent(this->sdlRenderer->get());
-        SDL_Delay(1000);
+            SDL_RenderCopy(this->sdlRenderer->get(), this->emptyTile->get(), NULL, &dstRect);
+        }
     }
+
+    SDL_RenderPresent(this->sdlRenderer->get());
 }
 
 bool GameUI::isValid()
 {
     return this->validState;
+}
+
+ScreenPos GameUI::getScreenPosForTile(TilePos pos)
+{
+    return ScreenPos(GC::GAME_GRID_LEFT_BORDER + GC::GAME_TILE_W * pos.col, GC::GAME_GRID_UPPER_BORDER + GC::GAME_TILE_H * pos.row);
 }

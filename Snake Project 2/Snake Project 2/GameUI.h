@@ -8,11 +8,11 @@
 #include <vector>
 #include <map>
 #include "TilePos.h"
+#include "ScreenPos.h"
+#include "Tile.h"
 
 using std::cerr;
 using std::endl;
-
-//using namespace sdl2;
 
 class GameUI
 {
@@ -70,18 +70,19 @@ private:
         { TilePos(2, 4), this->snakeTailLeft },
 
         { TilePos(3, 0), this->apple },
-        { TilePos(3, 1), this->emptyTile },
         { TilePos(3, 3), this->snakeTailRight },
         { TilePos(3, 4), this->snakeTailUp },
     };
     
+    bool loadEmptyTile();
     bool loadTexture(std::unique_ptr<sdl2::texture_ptr_t>& targetTexture, TilePos pos);
     bool loadGameTextures();
 
 public:
     GameUI();
 
-    void startGameRender();
+    void renderTick(const std::vector<std::vector<Tile>>& grid);
     bool isValid();
+    ScreenPos getScreenPosForTile(TilePos pos);
 };
 

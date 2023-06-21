@@ -48,6 +48,15 @@
     <ClCompile Include="GlobalConstants.cpp">
       <Filter>Source Files\Common</Filter>
     </ClCompile>
+    <ClCompile Include="Snake.cpp">
+      <Filter>Source Files\App</Filter>
+    </ClCompile>
+    <ClCompile Include="ScreenPos.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile.cpp">
+      <Filter>Source Files\Common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="SDL2.lib" />
@@ -61,14 +70,23 @@
     <ClInclude Include="GameUI.h">
       <Filter>Header Files\UI</Filter>
     </ClInclude>
-    <ClInclude Include="TilePos.h">
-      <Filter>Header Files\Common</Filter>
-    </ClInclude>
     <ClInclude Include="GameApp.h">
       <Filter>Header Files\App</Filter>
     </ClInclude>
     <ClInclude Include="GlobalConstants.h">
       <Filter>Header Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TilePos.h">
+      <Filter>Header Files\App</Filter>
+    </ClInclude>
+    <ClInclude Include="Snake.h">
+      <Filter>Header Files\App</Filter>
+    </ClInclude>
+    <ClInclude Include="ScreenPos.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

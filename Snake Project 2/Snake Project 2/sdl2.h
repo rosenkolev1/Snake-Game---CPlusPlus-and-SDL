@@ -4,7 +4,8 @@
 #include <memory>
 #include "SDL_image.h"
 
-namespace sdl2 {
+namespace sdl2 
+{
 
     template <typename Creator, typename Destructor, typename... Arguments>
     auto makeResourceNew(Creator c, Destructor d, Arguments&&... args)

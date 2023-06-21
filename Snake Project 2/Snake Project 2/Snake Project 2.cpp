@@ -7,6 +7,7 @@
 #include "SDL_image.h"
 #include "sdl2.h"
 #include "GameUI.h"
+#include "GameApp.h"
 
 //Initialize the window, the renderer and the game sprites
 int main(int argc, char* argv[])
@@ -16,14 +17,8 @@ int main(int argc, char* argv[])
         GameUI gameUI = GameUI();
     }*/
 
-    GameUI gameUI = GameUI();
+    GameApp app = GameApp();
 
-    if (!gameUI.isValid()) 
-    {
-        return 0;
-    }
-
-    gameUI.startGameRender();
 
     return 0;
 }
