@@ -3,6 +3,10 @@
 const char GameUI::GAME_TILESET_PATH[100] = "./Images/snake_graphics_tileset.png";
 const char GameUI::GAME_WINDOW_TITLE[100] = "Snake Game";
 
+GameUI::~GameUI() {
+
+}
+
 GameUI::GameUI() 
 {
     this->sdlSystem = new sdl2::sdlsystem_ptr_t(sdl2::make_sdlsystem(SDL_INIT_EVERYTHING));
@@ -30,13 +34,6 @@ GameUI::GameUI()
         return;
     }
 
-    /**this->sdlSurface = sdl2::make_png(GAME_TILESET_PATH);
-
-    if (!*this->sdlSurface) {
-        cerr << "Error creating surface: " << SDL_GetError() << endl;
-        return;
-    }*/
-
     this->sdlSurface = new sdl2::surf_ptr_t(sdl2::makePng(this->GAME_TILESET_PATH));
     if (!*this->sdlSurface) 
     {
@@ -56,30 +53,9 @@ GameUI::GameUI()
         cerr << "Error creating the game tileset surface: " << SDL_GetError() << endl;
         return;
     }
-
-    //this->snakeBodyHorizontal = sdl2::createTextureNew(this->sdlRenderer->get(),
-    //    SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, GAME_TILE_W, GAME_TILE_H);
-
-    //// Set target render to the needed texture
-    //SDL_SetRenderTarget(this->sdlRenderer->get(), this->snakeBodyHorizontal->get());
-
-    //SDL_Rect srcRect;
-    //srcRect.x = 64;
-    //srcRect.y = 0;
-    //srcRect.w = GAME_TILESET_TILE_W;
-    //srcRect.h = GAME_TILESET_TILE_H;
-
-    //// Draw ontop of the current target texture
-    //SDL_RenderCopy(this->sdlRenderer->get(), this->sdlTexture->get(), &srcRect, NULL);
-
-    //SDL_SetRenderTarget(this->sdlRenderer->get(), NULL);
-
-    //SDL_RenderClear(this->sdlRenderer->get());
-
-    //validState = true;
 }
 
-bool GameUI::loadTexture(sdl2::texture_ptr_t*& targetTexture, int x, int y) {
+bool GameUI::loadTexture(sdl2::texture_ptr_t*& targetTexture, TilePos pos) {
 
     targetTexture = sdl2::createTextureNew(this->sdlRenderer->get(),
         SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, GAME_TILE_W, GAME_TILE_H);
@@ -88,8 +64,8 @@ bool GameUI::loadTexture(sdl2::texture_ptr_t*& targetTexture, int x, int y) {
     SDL_SetRenderTarget(this->sdlRenderer->get(), targetTexture->get());
 
     SDL_Rect srcRect;
-    srcRect.x = x * GAME_TILESET_TILE_W;
-    srcRect.y = y * GAME_TILESET_TILE_H;
+    srcRect.x = pos.col * GAME_TILESET_TILE_W;
+    srcRect.y = pos.row * GAME_TILESET_TILE_H;
     srcRect.w = GAME_TILESET_TILE_W;
     srcRect.h = GAME_TILESET_TILE_H;
 
@@ -108,16 +84,16 @@ bool GameUI::loadGameTextures() {
     {
         for (int y = 0; y < 4; y++) 
         {
-            bool valid = false;
+            TilePos curTilePos = TilePos(x, y);
+            auto targetTextureIt = this->TILESET_TILE_TO_TEXTURE_MAP.find(curTilePos);
 
-            if (x == 0 && y == 0) 
-            {
-                valid = loadTexture(this->snakeTurn1, x, y);
-            }
+            if (targetTextureIt != this->TILESET_TILE_TO_TEXTURE_MAP.end()) {
+                bool valid = loadTexture(targetTextureIt->second, curTilePos);
 
-            if (!valid)
-            {
-                return false;
+                if (!valid)
+                {
+                    return false;
+                }
             }
         }
     }
@@ -137,7 +113,7 @@ void GameUI::startGameRender()
         dstRect.w = 10;
         dstRect.h = 10;
 
-        SDL_RenderCopy(this->sdlRenderer->get(), this->snakeTurn1->get(), NULL, &dstRect);
+        SDL_RenderCopy(this->sdlRenderer->get(), this->apple->get(), NULL, &dstRect);
         SDL_RenderPresent(this->sdlRenderer->get());
         SDL_Delay(1000);
     }

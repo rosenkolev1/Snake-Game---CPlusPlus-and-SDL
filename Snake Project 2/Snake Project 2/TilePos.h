@@ -2,11 +2,12 @@
 class TilePos
 {
 public:
-	int x;
-	int y;
+	int row;
+	int col;
 
-	/*bool operator=(const TilePos& other) {
+	TilePos();
+	TilePos(int row, int col);
 
-	}*/
+	bool operator< (const TilePos& other) const;
 };
 

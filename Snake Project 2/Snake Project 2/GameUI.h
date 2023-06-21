@@ -70,12 +70,38 @@ private:
     sdl2::texture_ptr_t* apple = nullptr;
 
     sdl2::texture_ptr_t* emptyTile = nullptr;
+
+    //Mapping the tiles of the tileset (the .png file) to their coordinates, so we can iterate through the coordinates and 
+    //load all the textures one by one
+    const std::map<TilePos, sdl2::texture_ptr_t*&> TILESET_TILE_TO_TEXTURE_MAP = 
+    {
+        { TilePos(0, 0), this->snakeTurn1 },
+        { TilePos(0, 1), this->snakeBodyHorizontal },
+        { TilePos(0, 2), this->snakeTurn2 },
+        { TilePos(0, 3), this->snakeHeadUp },
+        { TilePos(0, 4), this->snakeHeadRight },
+
+        { TilePos(1, 0), this->snakeTurn3 },
+        { TilePos(1, 2), this->snakeBodyVertical },
+        { TilePos(1, 3), this->snakeHeadLeft },
+        { TilePos(1, 4), this->snakeHeadDown },
+
+        { TilePos(2, 2), this->snakeTurn4 },
+        { TilePos(2, 3), this->snakeTailDown },
+        { TilePos(2, 4), this->snakeTailLeft },
+
+        { TilePos(3, 0), this->apple },
+        { TilePos(3, 1), this->emptyTile },
+        { TilePos(3, 3), this->snakeTailRight },
+        { TilePos(3, 4), this->snakeTailUp },
+    };
     
-    bool loadTexture(sdl2::texture_ptr_t*& targetTexture, int x, int y);
+    bool loadTexture(sdl2::texture_ptr_t*& targetTexture, TilePos pos);
     bool loadGameTextures();
 
 public:
     GameUI();
+    ~GameUI();
 
     void startGameRender();
 };
