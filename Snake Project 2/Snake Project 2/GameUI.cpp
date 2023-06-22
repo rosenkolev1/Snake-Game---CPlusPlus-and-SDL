@@ -55,6 +55,19 @@ GameUI::GameUI()
         return;
     }
 
+    //Initialize ttf library
+    if (TTF_Init())
+    {
+        cerr << "Error initalizing the library: " << SDL_GetError() << endl;
+        return;
+    }
+
+    if (!setTextFont())
+    {
+        cerr << "Error setting the text font: " << SDL_GetError() << endl;
+        return;
+    }
+
     this->validState = true;
 }
 
@@ -138,45 +151,45 @@ bool GameUI::loadTilesetTextures()
     return true;
 }
 
-bool GameUI::loadTimeElapsedTexture()
+bool GameUI::setTextFont()
 {
-    this->timeElapsedTxt = std::make_unique<sdl2::texture_ptr_t>(sdl2::createTexture(this->sdlRenderer->get(),
-        SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, GC::GAME_TILE_W, GC::GAME_TILE_H));
+    this->textFont = std::make_unique<sdl2::font_ptr_t>(sdl2::createFont(GC::FONT_PATH, GC::FONT_SIZE));
 
-    // Set target render to the needed texture
-    SDL_SetRenderTarget(this->sdlRenderer->get(), this->emptyTile->get());
-
-    //Set the draw color
-    SDL_SetRenderDrawColor(this->sdlRenderer->get(), 255, 255, 255, 100);
-
-    /*SDL_Rect rect;
-    rect.x = 0;
-    rect.y = 0;
-    rect.w = GC::GAME_TILE_W;
-    rect.h = GC::GAME_TILE_H;*/
-
-    
-
-    //SDL_RenderFillRect(this->sdlRenderer->get(), NULL);
-
-    //Reset the renderer back to the screen
-    SDL_SetRenderTarget(this->sdlRenderer->get(), NULL);
-
-    //Reset the draw color
-    SDL_SetRenderDrawColor(this->sdlRenderer->get(), 0, 0, 0, 100);
-
-    SDL_RenderClear(this->sdlRenderer->get());
+    //Check for validity
+    if (!textFont->get()) 
+    {
+        return false;
+    }
 
     return true;
 }
 
-void GameUI::renderTick(const std::vector<std::vector<Tile>>& grid)
+bool GameUI::loadTimeElapsedTexture(long curTime)
 {
-    SDL_RenderClear(this->sdlRenderer->get());
+    //TODO: Add logic for parsing the time from miliseconds to a hh:mm::ss format
+    sdl2::surf_ptr_t textSurface = sdl2::createText(this->textFont->get(), (GC::TIME_ELAPSED_TXT + "2").c_str(), GC::TEXT_COLOR);
 
-    for (auto tilesRow : grid) 
+    if (!textSurface.get())
     {
-        for (auto tile : tilesRow) 
+        return false;
+    }
+
+    this->timeElapsedTxt = std::make_unique<sdl2::texture_ptr_t>(
+        sdl2::createTextureFromSurface(this->sdlRenderer->get(), textSurface.get()));
+
+    if (!this->timeElapsedTxt->get())
+    {
+        return false;
+    }
+
+    return true;
+}
+
+void GameUI::renderGrid(const std::vector<std::vector<Tile>>& grid)
+{
+    for (auto tilesRow : grid)
+    {
+        for (auto tile : tilesRow)
         {
             ScreenPos screenPos = getScreenPosForTile(tile.getPos());
 
@@ -189,6 +202,28 @@ void GameUI::renderTick(const std::vector<std::vector<Tile>>& grid)
             SDL_RenderCopy(this->sdlRenderer->get(), this->emptyTile->get(), NULL, &dstRect);
         }
     }
+}
+
+void GameUI::renderTextUI(int collectedApples)
+{
+    if (!this->loadTimeElapsedTexture(SDL_GetTicks64()))
+    {
+        cerr << "Error loading the time elapsed texture: " << SDL_GetError() << endl;
+        return;
+    }
+
+    SDL_RenderCopy(this->sdlRenderer->get(), this->timeElapsedTxt->get(), NULL, &GC::TIME_ELAPSED_RECT);
+}
+
+void GameUI::renderTick(const std::vector<std::vector<Tile>>& grid, int collectedApples)
+{
+    SDL_RenderClear(this->sdlRenderer->get());
+
+    //Render the grid
+    this->renderGrid(grid);
+
+    //Render the text UI
+    this->renderTextUI(collectedApples);
 
     SDL_RenderPresent(this->sdlRenderer->get());
 }

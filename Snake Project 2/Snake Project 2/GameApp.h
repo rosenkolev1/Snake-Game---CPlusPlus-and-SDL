@@ -15,6 +15,8 @@ private:
 
 	long lastTickEnd;
 
+	int collectedApples;
+
 public:
 
 	GameApp();

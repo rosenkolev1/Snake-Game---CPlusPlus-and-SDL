@@ -28,6 +28,7 @@ GameApp::GameApp()
     }
 
     this->lastTickEnd = 0;
+    this->collectedApples = 0;
 
     while (true) 
     {
@@ -35,7 +36,7 @@ GameApp::GameApp()
 
         if (currentTime - this->lastTickEnd >= this->tickSpeed)
         {
-            gameUI->renderTick(this->grid);
+            gameUI->renderTick(this->grid, this->collectedApples);
             this->lastTickEnd = SDL_GetTicks64();
         }
         

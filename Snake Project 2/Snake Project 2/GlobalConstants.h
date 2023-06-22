@@ -1,8 +1,23 @@
 #pragma once
 
+#include "SDL.h"
+#include <string>
+
 class GlobalConstants
 {
 public:
+
+    static const inline char FONT_PATH[] = "./Fonts/OpenSans_VariableFont.ttf";
+    static const inline int FONT_SIZE = 20;
+    static const inline SDL_Color TEXT_COLOR = 
+    { 
+        .r = 255, 
+        .g = 255,
+        .b = 255,
+        .a = 100
+    };
+
+    static const inline std::string TIME_ELAPSED_TXT = "Time Elapsed: ";
 
     static const inline char GAME_TILESET_PATH[] = "./Images/snake_graphics_tileset.png";
 
@@ -25,7 +40,7 @@ public:
     static const int GAME_WINDOW_Y = 95;
     static const int GAME_WINDOW_W = 1200;
     static const int GAME_WINDOW_H = 700;
-    
+
     static const int GAME_GRID_OFFSET_LEFT = 350;
     static const int GAME_GRID_OFFSET_RIGHT = 350;
     static const int GAME_GRID_OFFSET_UP = 100;
@@ -41,6 +56,14 @@ public:
 
     static const int GAME_TILE_W = GAME_GRID_W / GAME_GRID_COLS_COUNT;
     static const int GAME_TILE_H = GAME_GRID_H / GAME_GRID_ROWS_COUNT;
+
+    static const inline SDL_Rect TIME_ELAPSED_RECT = 
+    {
+        .x = GAME_GRID_LEFT_BORDER - 200,
+        .y = GAME_GRID_UPPER_BORDER - 100,
+        .w = 200,
+        .h = 50,
+    };
 };
 
 using GC = GlobalConstants;
