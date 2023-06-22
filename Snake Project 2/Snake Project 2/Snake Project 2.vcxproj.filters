@@ -62,6 +62,7 @@
     <Library Include="SDL2.lib" />
     <Library Include="SDL2main.lib" />
     <Library Include="SDL2_image.lib" />
+    <Library Include="SDL2_ttf.lib" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="sdl2.h">

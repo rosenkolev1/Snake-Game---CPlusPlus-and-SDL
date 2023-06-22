@@ -13,6 +13,8 @@ private:
 
 	int tickSpeed;
 
+	long lastTickEnd;
+
 public:
 
 	GameApp();

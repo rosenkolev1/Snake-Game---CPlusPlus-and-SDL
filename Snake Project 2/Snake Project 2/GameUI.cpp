@@ -3,7 +3,7 @@
 
 GameUI::GameUI() 
 {
-    this->sdlSystem = std::make_unique<sdl2::sdlsystem_ptr_t>(sdl2::makeSdlSystem(SDL_INIT_EVERYTHING));
+    this->sdlSystem = std::make_unique<sdl2::sdlsystem_ptr_t>(sdl2::createSdlSystem(SDL_INIT_EVERYTHING));
     if (!*this->sdlSystem) 
     {
         cerr << "Error creating SDL2 system: " << SDL_GetError() << endl;
@@ -11,7 +11,7 @@ GameUI::GameUI()
     }
 
     this->sdlWindow = std::make_unique<sdl2::window_ptr_t>(sdl2::window_ptr_t(
-        sdl2::makeWindow(GC::GAME_WINDOW_TITLE, GC::GAME_WINDOW_X, GC::GAME_WINDOW_Y, GC::GAME_WINDOW_W, GC::GAME_WINDOW_H,
+        sdl2::createWindow(GC::GAME_WINDOW_TITLE, GC::GAME_WINDOW_X, GC::GAME_WINDOW_Y, GC::GAME_WINDOW_W, GC::GAME_WINDOW_H,
         SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE)));
 
     if (!*this->sdlWindow) 
@@ -21,14 +21,14 @@ GameUI::GameUI()
     }
 
     this->sdlRenderer = std::make_unique<sdl2::renderer_ptr_t>(sdl2::renderer_ptr_t(
-        sdl2::makeRenderer(this->sdlWindow->get(), -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC)));
+        sdl2::createRenderer(this->sdlWindow->get(), -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC)));
     if (!*this->sdlRenderer) 
     {
         cerr << "Error creating renderer: " << SDL_GetError() << endl;
         return;
     }
 
-    this->sdlSurface = std::make_unique<sdl2::surf_ptr_t>(sdl2::surf_ptr_t(sdl2::makePng(GC::GAME_TILESET_PATH)));
+    this->sdlSurface = std::make_unique<sdl2::surf_ptr_t>(sdl2::surf_ptr_t(sdl2::createPng(GC::GAME_TILESET_PATH)));
     if (!*this->sdlSurface) 
     {
         cerr << "Error creating the game tileset surface: " << SDL_GetError() << endl;
@@ -36,14 +36,14 @@ GameUI::GameUI()
     }
 
     this->sdlTexture = std::make_unique<sdl2::texture_ptr_t>(
-        sdl2::texture_ptr_t(sdl2::makeTexture(this->sdlRenderer->get(), this->sdlSurface->get())));
+        sdl2::texture_ptr_t(sdl2::createTextureFromSurface(this->sdlRenderer->get(), this->sdlSurface->get())));
     if (!*this->sdlTexture) 
     {
         cerr << "Error loading the texture tileset: " << SDL_GetError() << endl;
         return;
     }
 
-    if (!loadGameTextures()) 
+    if (!loadTilesetTextures()) 
     {
         cerr << "Error loading the game textures: " << SDL_GetError() << endl;
         return;
@@ -83,7 +83,7 @@ bool GameUI::loadEmptyTile()
     //Reset the renderer back to the screen
     SDL_SetRenderTarget(this->sdlRenderer->get(), NULL);
 
-    //Set the draw color
+    //Reset the draw color
     SDL_SetRenderDrawColor(this->sdlRenderer->get(), 0, 0, 0, 100);
 
     SDL_RenderClear(this->sdlRenderer->get());
@@ -91,7 +91,7 @@ bool GameUI::loadEmptyTile()
     return true;
 }
 
-bool GameUI::loadTexture(std::unique_ptr<sdl2::texture_ptr_t>& targetTexture, TilePos pos) 
+bool GameUI::loadTileTexture(std::unique_ptr<sdl2::texture_ptr_t>& targetTexture, TilePos pos) 
 {
     targetTexture = std::make_unique<sdl2::texture_ptr_t>(sdl2::createTexture(this->sdlRenderer->get(),
         SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, GC::GAME_TILE_W, GC::GAME_TILE_H));
@@ -115,7 +115,7 @@ bool GameUI::loadTexture(std::unique_ptr<sdl2::texture_ptr_t>& targetTexture, Ti
     return true;
 }
 
-bool GameUI::loadGameTextures() 
+bool GameUI::loadTilesetTextures() 
 {
     for (int row = 0; row < GC::GAME_TILESET_ROWS_COUNT; row++)
     {
@@ -125,7 +125,7 @@ bool GameUI::loadGameTextures()
             auto targetTextureIt = this->TILESET_TILE_TO_TEXTURE_MAP.find(curTilePos);
 
             if (targetTextureIt != this->TILESET_TILE_TO_TEXTURE_MAP.end()) {
-                bool valid = loadTexture(targetTextureIt->second, curTilePos);
+                bool valid = loadTileTexture(targetTextureIt->second, curTilePos);
 
                 if (!valid)
                 {
@@ -134,6 +134,38 @@ bool GameUI::loadGameTextures()
             }
         }
     }
+
+    return true;
+}
+
+bool GameUI::loadTimeElapsedTexture()
+{
+    this->timeElapsedTxt = std::make_unique<sdl2::texture_ptr_t>(sdl2::createTexture(this->sdlRenderer->get(),
+        SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, GC::GAME_TILE_W, GC::GAME_TILE_H));
+
+    // Set target render to the needed texture
+    SDL_SetRenderTarget(this->sdlRenderer->get(), this->emptyTile->get());
+
+    //Set the draw color
+    SDL_SetRenderDrawColor(this->sdlRenderer->get(), 255, 255, 255, 100);
+
+    /*SDL_Rect rect;
+    rect.x = 0;
+    rect.y = 0;
+    rect.w = GC::GAME_TILE_W;
+    rect.h = GC::GAME_TILE_H;*/
+
+    
+
+    //SDL_RenderFillRect(this->sdlRenderer->get(), NULL);
+
+    //Reset the renderer back to the screen
+    SDL_SetRenderTarget(this->sdlRenderer->get(), NULL);
+
+    //Reset the draw color
+    SDL_SetRenderDrawColor(this->sdlRenderer->get(), 0, 0, 0, 100);
+
+    SDL_RenderClear(this->sdlRenderer->get());
 
     return true;
 }

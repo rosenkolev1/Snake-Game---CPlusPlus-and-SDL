@@ -50,6 +50,8 @@ private:
 
     std::unique_ptr<sdl2::texture_ptr_t> emptyTile = nullptr;
 
+    std::unique_ptr<sdl2::texture_ptr_t> timeElapsedTxt = nullptr;
+
     //Mapping the tiles of the tileset (the .png file) to their coordinates, so we can iterate through the coordinates and 
     //load all the textures one by one
     const std::map<TilePos, std::unique_ptr<sdl2::texture_ptr_t>&> TILESET_TILE_TO_TEXTURE_MAP = 
@@ -75,8 +77,9 @@ private:
     };
     
     bool loadEmptyTile();
-    bool loadTexture(std::unique_ptr<sdl2::texture_ptr_t>& targetTexture, TilePos pos);
-    bool loadGameTextures();
+    bool loadTileTexture(std::unique_ptr<sdl2::texture_ptr_t>& targetTexture, TilePos pos);
+    bool loadTilesetTextures();
+    bool loadTimeElapsedTexture();
 
 public:
     GameUI();

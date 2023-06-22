@@ -104,7 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\Job coding things\Coherent Labs\SDL2-2.26.5\include;D:\Job coding things\Coherent Labs\SDL2_image-2.6.3 VC++\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Job coding things\Coherent Labs\SDL2-2.26.5\include;D:\Job coding things\Coherent Labs\SDL2_image-2.6.3 VC++\include;D:\Job coding things\Coherent Labs\SDL2_ttf-2.20.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -143,6 +143,7 @@
     <Library Include="SDL2.lib" />
     <Library Include="SDL2main.lib" />
     <Library Include="SDL2_image.lib" />
+    <Library Include="SDL2_ttf.lib" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameApp.h" />

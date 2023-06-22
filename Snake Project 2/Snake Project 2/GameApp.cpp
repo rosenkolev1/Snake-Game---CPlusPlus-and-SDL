@@ -10,9 +10,6 @@ GameApp::GameApp()
     this->tickSpeed = 1000;
 
     //Initialize the grid
-
-
-
     for(int row = 0; row < GC::GAME_GRID_ROWS_COUNT; row++) 
     {
         this->grid.push_back(std::vector<Tile>());
@@ -30,10 +27,19 @@ GameApp::GameApp()
         exit(2);
     }
 
-    for (int i = 0; i < 30; i++) 
+    this->lastTickEnd = 0;
+
+    while (true) 
     {
-        gameUI->renderTick(this->grid);
-        SDL_Delay(this->tickSpeed);
+        long currentTime = SDL_GetTicks64();
+
+        if (currentTime - this->lastTickEnd >= this->tickSpeed)
+        {
+            gameUI->renderTick(this->grid);
+            this->lastTickEnd = SDL_GetTicks64();
+        }
+        
+        /*SDL_Delay(this->tickSpeed);*/
     }
 }
     
