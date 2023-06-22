@@ -1,5 +1,6 @@
 #include "GameUI.h"
 #include "GlobalConstants.h"
+#include <sstream>
 
 GameUI::GameUI() 
 {
@@ -167,7 +168,18 @@ bool GameUI::setTextFont()
 bool GameUI::loadTimeElapsedTexture(long curTime)
 {
     //TODO: Add logic for parsing the time from miliseconds to a hh:mm::ss format
-    sdl2::surf_ptr_t textSurface = sdl2::createText(this->textFont->get(), (GC::TIME_ELAPSED_TXT + "2").c_str(), GC::TEXT_COLOR);
+    long totalSeconds = curTime / 1000;
+    long leftoverSeconds = totalSeconds % 60;
+    long totalMinutes = totalSeconds - leftoverSeconds;
+    long leftoverMinutes = totalMinutes % 60;
+    long leftoverHours = totalMinutes - leftoverMinutes;
+
+    std::stringstream stringStream;
+    stringStream << leftoverHours << ':' << leftoverMinutes << ':' << leftoverSeconds;
+
+    std::string timeStr = stringStream.str();
+
+    sdl2::surf_ptr_t textSurface = sdl2::createText(this->textFont->get(), (GC::TIME_ELAPSED_TXT + timeStr).c_str(), GC::TEXT_COLOR);
 
     if (!textSurface.get())
     {
