@@ -2,22 +2,21 @@
 #include "Tile.h"
 
 Tile::Tile()
+	:Tile({0, 0})
 {
-	this->tilePos = TilePos(0, 0);
-	this->isEmpty = true;
-	this->containsApple = false;
 }
 
-Tile::Tile(TilePos tilePos, bool isEmpty, bool containsApple)
+Tile::Tile(TilePos tilePos)
+	:Tile(tilePos, false, false, SnakeSprite::NONE)
+{
+}
+
+Tile::Tile(TilePos tilePos, bool isSnake, bool isApple, SnakeSprite snakeSprite)
 {
 	this->tilePos = tilePos;
-	this->isEmpty = isEmpty;
-	this->containsApple = containsApple;
-}
-
-TilePos Tile::getPos()
-{
-	return this->tilePos;
+	this->isSnake = isSnake;
+	this->isApple = isApple;
+	this->snakeSprite = snakeSprite;
 }
 
 

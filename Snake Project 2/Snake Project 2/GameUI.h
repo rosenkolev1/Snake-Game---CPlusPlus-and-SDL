@@ -80,6 +80,9 @@ private:
         { TilePos(3, 3), this->snakeTailRight },
         { TilePos(3, 4), this->snakeTailUp },
     };
+
+    //Mapping all of the possible snake sprite flags to the snake's textures
+    std::map<SnakeSprite, sdl2::texture_ptr_t*> SNAKE_SPRITE_TO_TEXTURE_MAP;
     
     bool setTextFont();
     bool loadEmptyTile();
@@ -88,6 +91,9 @@ private:
     bool loadTimeElapsedTexture(long curTime);
     bool loadCollectedApplesTexture(long collectedApples);
 
+    void renderEmptyTileOnCurrentRenderer();
+
+    void renderGridTile(const Tile& tile);
     void renderGrid(const std::vector<std::vector<Tile>>& grid);
     void renderTextUI(int collectedApples);
 
@@ -96,6 +102,6 @@ public:
 
     void renderTick(const GameState& gameState);
     bool isValid();
-    ScreenPos getScreenPosForTile(TilePos pos);
+    ScreenPos getScreenPosForTile(const TilePos& pos);
 };
 

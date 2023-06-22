@@ -1,22 +1,19 @@
 #pragma once
 #include "TilePos.h"
+#include "SnakeSprite.h"
 
 class Tile
 {
-private:
-
-	bool isEmpty;
-	bool containsApple;
-
-	TilePos tilePos;
-
-	//TODO: Add information about the snake sprite that is rendered currently
-
 public:
 
-	Tile();
-	Tile(TilePos tilePos, bool isEmpty, bool containsApple);
+	bool isSnake;
+	bool isApple;
 
-	TilePos getPos();
+	SnakeSprite snakeSprite;
+	TilePos tilePos;
+
+	Tile();
+	Tile(TilePos tilePos);
+	Tile(TilePos tilePos, bool isSnake, bool isApple, SnakeSprite snakeSprite);
 };
 

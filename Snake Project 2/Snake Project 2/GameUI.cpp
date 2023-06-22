@@ -44,15 +44,15 @@ GameUI::GameUI()
         return;
     }
 
-    if (!loadTilesetTextures()) 
+    if (!loadEmptyTile())
     {
-        cerr << "Error loading the game textures: " << SDL_GetError() << endl;
+        cerr << "Error loading the empty tile texture: " << SDL_GetError() << endl;
         return;
     }
 
-    if (!loadEmptyTile()) 
+    if (!loadTilesetTextures()) 
     {
-        cerr << "Error loading the empty tile texture: " << SDL_GetError() << endl;
+        cerr << "Error loading the game textures: " << SDL_GetError() << endl;
         return;
     }
 
@@ -63,11 +63,32 @@ GameUI::GameUI()
         return;
     }
 
+    //Set the font for the UI text
     if (!setTextFont())
     {
         cerr << "Error setting the text font: " << SDL_GetError() << endl;
         return;
     }
+
+    //Initialize the snake sprites mape here
+    this->SNAKE_SPRITE_TO_TEXTURE_MAP =
+    {
+        { SnakeSprite::NONE, this->emptyTile.get()},
+        { SnakeSprite::HEAD_UP, this->snakeHeadUp.get() },
+        { SnakeSprite::HEAD_RIGHT, this->snakeHeadRight.get() },
+        { SnakeSprite::HEAD_DOWN, this->snakeHeadDown.get() },
+        { SnakeSprite::HEAD_LEFT, this->snakeHeadLeft.get() },
+        { SnakeSprite::BODY_HOR, this->snakeBodyHorizontal.get() },
+        { SnakeSprite::BODY_VER, this->snakeBodyVertical.get() },
+        { SnakeSprite::TAIL_UP, this->snakeTailUp.get() },
+        { SnakeSprite::TAIL_RIGHT, this->snakeTailRight.get() },
+        { SnakeSprite::TAIL_DOWN, this->snakeTailDown.get() },
+        { SnakeSprite::TAIL_LEFT, this->snakeTailLeft.get() },
+        { SnakeSprite::TURN_1, this->snakeTurn1.get() },
+        { SnakeSprite::TURN_2, this->snakeTurn2.get() },
+        { SnakeSprite::TURN_3, this->snakeTurn3.get() },
+        { SnakeSprite::TURN_4, this->snakeTurn4.get() }
+    };
 
     this->validState = true;
 }
@@ -80,25 +101,16 @@ bool GameUI::loadEmptyTile()
     // Set target render to the needed texture
     SDL_SetRenderTarget(this->sdlRenderer->get(), this->emptyTile->get());
 
-    //Set the draw color
-    SDL_SetRenderDrawColor(this->sdlRenderer->get(), 81, 53, 97, 100);
-
     SDL_Rect rect;
     rect.x = 0;
     rect.y = 0;
     rect.w = GC::GAME_TILE_W;
     rect.h = GC::GAME_TILE_H;
 
-    // Draw on top of the current target texture
-    //SDL_RenderDrawRect(this->sdlRenderer->get(), &rect);
-
-    SDL_RenderFillRect(this->sdlRenderer->get(), NULL);
+    this->renderEmptyTileOnCurrentRenderer();
 
     //Reset the renderer back to the screen
     SDL_SetRenderTarget(this->sdlRenderer->get(), NULL);
-
-    //Reset the draw color
-    SDL_SetRenderDrawColor(this->sdlRenderer->get(), 0, 0, 0, 100);
 
     SDL_RenderClear(this->sdlRenderer->get());
 
@@ -113,13 +125,16 @@ bool GameUI::loadTileTexture(std::unique_ptr<sdl2::texture_ptr_t>& targetTexture
     // Set target render to the needed texture
     SDL_SetRenderTarget(this->sdlRenderer->get(), targetTexture->get());
 
+    //Add empty tile as background to the texture
+    this->renderEmptyTileOnCurrentRenderer();
+
     SDL_Rect srcRect;
     srcRect.x = pos.col * GC::GAME_TILESET_TILE_W;
     srcRect.y = pos.row * GC::GAME_TILESET_TILE_H;
     srcRect.w = GC::GAME_TILESET_TILE_W;
     srcRect.h = GC::GAME_TILESET_TILE_H;
 
-    // Draw on top of the current target texture
+    //Draw on top of the current target texture, which should be an empty file
     SDL_RenderCopy(this->sdlRenderer->get(), this->sdlTexture->get(), &srcRect, NULL);
 
     SDL_SetRenderTarget(this->sdlRenderer->get(), NULL);
@@ -217,21 +232,53 @@ bool GameUI::loadCollectedApplesTexture(long collectedApples)
     return true;
 }
 
+void GameUI::renderEmptyTileOnCurrentRenderer()
+{
+    //Add empty tile as background to the texture
+    SDL_SetRenderDrawColor(this->sdlRenderer->get(),
+        GC::EMPTY_TILE_COLOR.r,
+        GC::EMPTY_TILE_COLOR.g,
+        GC::EMPTY_TILE_COLOR.b,
+        GC::EMPTY_TILE_COLOR.a);
+    SDL_RenderFillRect(this->sdlRenderer->get(), NULL);
+    SDL_SetRenderDrawColor(this->sdlRenderer->get(), 0, 0, 0, 100);
+}
+
+void GameUI::renderGridTile(const Tile& tile)
+{
+    ScreenPos screenPos = getScreenPosForTile(tile.tilePos);
+
+    SDL_Rect dstRect;
+    dstRect.x = screenPos.x;
+    dstRect.y = screenPos.y;
+    dstRect.w = GC::GAME_TILE_W;
+    dstRect.h = GC::GAME_TILE_H;
+
+    SDL_Texture* tileTexture = nullptr;
+
+    if (tile.isApple)
+    {
+        tileTexture = this->apple->get();
+    }
+    else if (!tile.isSnake)
+    {
+        tileTexture = this->emptyTile->get();
+    }
+    else
+    {
+        tileTexture = this->SNAKE_SPRITE_TO_TEXTURE_MAP.find(tile.snakeSprite)->second->get();
+    }
+
+    SDL_RenderCopy(this->sdlRenderer->get(), tileTexture, NULL, &dstRect);
+}
+
 void GameUI::renderGrid(const std::vector<std::vector<Tile>>& grid)
 {
     for (auto tilesRow : grid)
     {
         for (auto tile : tilesRow)
         {
-            ScreenPos screenPos = getScreenPosForTile(tile.getPos());
-
-            SDL_Rect dstRect;
-            dstRect.x = screenPos.x;
-            dstRect.y = screenPos.y;
-            dstRect.w = GC::GAME_TILE_W;
-            dstRect.h = GC::GAME_TILE_H;
-
-            SDL_RenderCopy(this->sdlRenderer->get(), this->emptyTile->get(), NULL, &dstRect);
+            renderGridTile(tile);
         }
     }
 }
@@ -275,7 +322,7 @@ bool GameUI::isValid()
     return this->validState;
 }
 
-ScreenPos GameUI::getScreenPosForTile(TilePos pos)
+ScreenPos GameUI::getScreenPosForTile(const TilePos& pos)
 {
     return ScreenPos(GC::GAME_GRID_LEFT_BORDER + GC::GAME_TILE_W * pos.col, GC::GAME_GRID_UPPER_BORDER + GC::GAME_TILE_H * pos.row);
 }

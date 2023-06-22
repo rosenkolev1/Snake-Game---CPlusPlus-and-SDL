@@ -59,6 +59,14 @@ public:
     static const int GAME_TILE_W = GAME_GRID_W / GAME_GRID_COLS_COUNT;
     static const int GAME_TILE_H = GAME_GRID_H / GAME_GRID_ROWS_COUNT;
 
+    static const inline SDL_Color EMPTY_TILE_COLOR =
+    {
+        .r = 81,
+        .g = 53,
+        .b = 97,
+        .a = 100
+    };
+
     static const inline SDL_Rect TIME_ELAPSED_RECT = 
     {
         .x = GAME_GRID_LEFT_BORDER - 200,
