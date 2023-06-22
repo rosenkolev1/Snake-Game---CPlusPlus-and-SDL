@@ -11,6 +11,7 @@
 #include "ScreenPos.h"
 #include "Tile.h"
 #include "SDL_ttf.h"
+#include "GameState.h"
 
 using std::cerr;
 using std::endl;
@@ -54,6 +55,7 @@ private:
     std::unique_ptr<sdl2::font_ptr_t> textFont = nullptr;
 
     std::unique_ptr<sdl2::texture_ptr_t> timeElapsedTxt = nullptr;
+    std::unique_ptr<sdl2::texture_ptr_t> collectedApplesTxt = nullptr;
 
     //Mapping the tiles of the tileset (the .png file) to their coordinates, so we can iterate through the coordinates and 
     //load all the textures one by one
@@ -79,13 +81,12 @@ private:
         { TilePos(3, 4), this->snakeTailUp },
     };
     
-
-
     bool setTextFont();
     bool loadEmptyTile();
     bool loadTileTexture(std::unique_ptr<sdl2::texture_ptr_t>& targetTexture, TilePos pos);
     bool loadTilesetTextures();
     bool loadTimeElapsedTexture(long curTime);
+    bool loadCollectedApplesTexture(long collectedApples);
 
     void renderGrid(const std::vector<std::vector<Tile>>& grid);
     void renderTextUI(int collectedApples);
@@ -93,7 +94,7 @@ private:
 public:
     GameUI();
 
-    void renderTick(const std::vector<std::vector<Tile>>& grid, int collectedApples);
+    void renderTick(const GameState& gameState);
     bool isValid();
     ScreenPos getScreenPosForTile(TilePos pos);
 };

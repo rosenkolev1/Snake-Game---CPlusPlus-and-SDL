@@ -132,6 +132,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="GameApp.cpp" />
+    <ClCompile Include="GameState.cpp" />
     <ClCompile Include="GameUI.cpp" />
     <ClCompile Include="GlobalConstants.cpp" />
     <ClCompile Include="ScreenPos.cpp" />
@@ -148,13 +149,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameApp.h" />
+    <ClInclude Include="GameState.h" />
     <ClInclude Include="GameUI.h" />
     <ClInclude Include="GlobalConstants.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="ScreenPos.h" />
     <ClInclude Include="sdl2.h" />
     <ClInclude Include="Snake.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="TilePos.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Snake Project 2.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

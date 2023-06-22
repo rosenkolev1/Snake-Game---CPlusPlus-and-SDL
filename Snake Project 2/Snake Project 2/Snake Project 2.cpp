@@ -12,13 +12,11 @@
 //Initialize the window, the renderer and the game sprites
 int main(int argc, char* argv[])
 {
-    //Memory leak test
-    /*for (int i = 0; i < 100; i++) {
-        GameUI gameUI = GameUI();
-    }*/
-
+    //Initialize the app with the window and the UI textures
     GameApp app = GameApp();
 
+    //Start the main application/game loop
+    app.startGameLoop();
 
     return 0;
 }

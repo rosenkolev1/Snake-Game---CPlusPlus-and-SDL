@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SDL.h"
+#include "TilePos.h"
 #include <string>
 
 class GlobalConstants
@@ -18,6 +19,7 @@ public:
     };
 
     static const inline std::string TIME_ELAPSED_TXT = "Time Elapsed: ";
+    static const inline std::string COLLECTED_APPLES_TXT = "Apples Collected: ";
 
     static const inline char GAME_TILESET_PATH[] = "./Images/snake_graphics_tileset.png";
 
@@ -64,6 +66,17 @@ public:
         .w = 200,
         .h = 50,
     };
+
+    static const inline SDL_Rect COLLECTED_APPLES_RECT =
+    {
+        .x = GAME_GRID_RIGHT_BORDER,
+        .y = GAME_GRID_UPPER_BORDER - 100,
+        .w = 200,
+        .h = 50,
+    };
+
+    static const inline TilePos SNAKE_DEFAULT_SPAWN = { 0, 0 };
+    static const inline TilePos APPLE_DEFAULT_SPAWN = { GAME_GRID_ROWS_COUNT - 1, GAME_GRID_COLS_COUNT - 1 };
 };
 
 using GC = GlobalConstants;

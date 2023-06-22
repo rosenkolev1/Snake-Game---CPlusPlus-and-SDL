@@ -10,6 +10,8 @@ private:
 
 	TilePos tilePos;
 
+	//TODO: Add information about the snake sprite that is rendered currently
+
 public:
 
 	Tile();

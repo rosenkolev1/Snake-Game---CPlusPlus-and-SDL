@@ -167,7 +167,6 @@ bool GameUI::setTextFont()
 
 bool GameUI::loadTimeElapsedTexture(long curTime)
 {
-    //TODO: Add logic for parsing the time from miliseconds to a hh:mm::ss format
     long totalSeconds = curTime / 1000;
     long leftoverSeconds = totalSeconds % 60;
     long totalMinutes = totalSeconds - leftoverSeconds;
@@ -197,6 +196,27 @@ bool GameUI::loadTimeElapsedTexture(long curTime)
     return true;
 }
 
+bool GameUI::loadCollectedApplesTexture(long collectedApples)
+{
+    sdl2::surf_ptr_t textSurface = sdl2::createText(this->textFont->get(), 
+        (GC::COLLECTED_APPLES_TXT + std::to_string(collectedApples)).c_str(), GC::TEXT_COLOR);
+
+    if (!textSurface.get())
+    {
+        return false;
+    }
+
+    this->collectedApplesTxt = std::make_unique<sdl2::texture_ptr_t>(
+        sdl2::createTextureFromSurface(this->sdlRenderer->get(), textSurface.get()));
+
+    if (!this->collectedApplesTxt->get())
+    {
+        return false;
+    }
+
+    return true;
+}
+
 void GameUI::renderGrid(const std::vector<std::vector<Tile>>& grid)
 {
     for (auto tilesRow : grid)
@@ -218,6 +238,7 @@ void GameUI::renderGrid(const std::vector<std::vector<Tile>>& grid)
 
 void GameUI::renderTextUI(int collectedApples)
 {
+    //Load time elapsed texture
     if (!this->loadTimeElapsedTexture(SDL_GetTicks64()))
     {
         cerr << "Error loading the time elapsed texture: " << SDL_GetError() << endl;
@@ -225,17 +246,26 @@ void GameUI::renderTextUI(int collectedApples)
     }
 
     SDL_RenderCopy(this->sdlRenderer->get(), this->timeElapsedTxt->get(), NULL, &GC::TIME_ELAPSED_RECT);
+
+    //Load apples collected
+    if (!this->loadCollectedApplesTexture(collectedApples))
+    {
+        cerr << "Error loading the collected apples texture: " << SDL_GetError() << endl;
+        return;
+    }
+
+    SDL_RenderCopy(this->sdlRenderer->get(), this->collectedApplesTxt->get(), NULL, &GC::COLLECTED_APPLES_RECT);
 }
 
-void GameUI::renderTick(const std::vector<std::vector<Tile>>& grid, int collectedApples)
+void GameUI::renderTick(const GameState& gameState)
 {
     SDL_RenderClear(this->sdlRenderer->get());
 
     //Render the grid
-    this->renderGrid(grid);
+    this->renderGrid(gameState.grid);
 
     //Render the text UI
-    this->renderTextUI(collectedApples);
+    this->renderTextUI(gameState.collectedApples);
 
     SDL_RenderPresent(this->sdlRenderer->get());
 }

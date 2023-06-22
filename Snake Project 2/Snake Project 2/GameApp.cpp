@@ -7,39 +7,45 @@ GameApp::GameApp()
         GameUI gameUI = GameUI();
     }*/
 
-    this->tickSpeed = 1000;
-
-    //Initialize the grid
-    for(int row = 0; row < GC::GAME_GRID_ROWS_COUNT; row++) 
-    {
-        this->grid.push_back(std::vector<Tile>());
-
-        for (int col = 0; col < GC::GAME_GRID_COLS_COUNT; col++) 
-        {
-            this->grid[row].push_back(Tile(TilePos(row, col), true, false));
-        }
-    }
-
     this->gameUI = std::make_unique<GameUI>(GameUI());
 
     if (!gameUI->isValid())
     {
+        cerr << "Error initialising the game UI: " << SDL_GetError() << endl;
         exit(2);
     }
 
     this->lastTickEnd = 0;
-    this->collectedApples = 0;
 
-    while (true) 
+    this->state = GameState();
+}
+
+Tile GameApp::getTile(TilePos pos)
+{
+    return this->state.grid[pos.row][pos.col];
+}
+
+void GameApp::startGameLoop()
+{
+    while (true)
     {
         long currentTime = SDL_GetTicks64();
 
-        if (currentTime - this->lastTickEnd >= this->tickSpeed)
+        this->state.processTick = currentTime - this->lastTickEnd >= this->state.tickSpeed;
+
+        //TODO: Add functionality for moving snake
+        if (this->state.processTick) {
+
+        }
+
+        gameUI->renderTick(this->state);
+
+        if (this->state.processTick)
         {
-            gameUI->renderTick(this->grid, this->collectedApples);
+            this->state.processTick = false;
             this->lastTickEnd = SDL_GetTicks64();
         }
-        
+
         /*SDL_Delay(this->tickSpeed);*/
     }
 }
