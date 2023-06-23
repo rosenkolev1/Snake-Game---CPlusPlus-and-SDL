@@ -2,7 +2,9 @@
 
 GameState::GameState()
 {
+    this->curTimeElapsed = 0;
     this->lastGameOverTime = 0;
+    this->gameWon = false;
     this->gameOver = false;
     this->processTick = true;
     this->snake = Snake(GC::SNAKE_DEFAULT_SPAWN);
@@ -20,6 +22,8 @@ GameState::GameState()
     }
 
     this->collectedApples = 0;
+    //TODO: Remove
+    /*this->collectedApples = 899;*/
 
     this->applePosition = TilePos(GC::APPLE_DEFAULT_SPAWN);
 

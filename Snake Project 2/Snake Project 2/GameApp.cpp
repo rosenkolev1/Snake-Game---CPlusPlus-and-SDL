@@ -30,12 +30,13 @@ void GameApp::startGameLoop()
     while (true)
     {
         bool previouslyGameOver = this->state.gameOver;
+        bool previouslyGameWon = this->state.gameWon;
 
         long currentTime = SDL_GetTicks64();
 
         this->state.processTick = currentTime - this->lastTickEnd >= this->state.tickSpeed;
 
-        if (this->state.processTick && !this->state.gameOver) 
+        if (this->state.processTick && !this->state.gameOver && !this->state.gameWon) 
         {
             SDL_Event keyboardEvent;
 
@@ -61,7 +62,7 @@ void GameApp::startGameLoop()
             
             this->moveSnake();
         }
-        else if (this->state.gameOver)
+        else if (this->state.gameOver || this->state.gameWon)
         {
             SDL_Event keyboardEvent;
 
@@ -74,20 +75,24 @@ void GameApp::startGameLoop()
             }
         }
 
-        if (!previouslyGameOver && this->state.gameOver)
+        if (!previouslyGameOver && this->state.gameOver || 
+            !previouslyGameWon  && this->state.gameWon)
         {
             this->state.lastGameOverTime = SDL_GetTicks64() - this->state.lastGameOverTime;
         }
 
+        this->state.curTimeElapsed = !(state.gameOver || state.gameWon) 
+            ? SDL_GetTicks64() - state.lastGameOverTime : state.lastGameOverTime;
+
         gameUI->renderTick(this->state);
 
         //Exit the game after 5 seconds of death screen
-        if (this->state.gameOver && currentTime - this->lastTickEnd > 5000)
+        if ((this->state.gameOver || this->state.gameWon) && currentTime - this->lastTickEnd > 5000)
         {
             exit(0);
         }
 
-        if (this->state.processTick && !this->state.gameOver)
+        if (this->state.processTick && !(this->state.gameOver || this->state.gameWon))
         {
             this->state.processTick = false;
             this->lastTickEnd = SDL_GetTicks64();
@@ -182,8 +187,16 @@ bool GameApp::moveSnake()
     {
         this->state.collectedApples++;
 
-        //Spawn a new apple at random position
-        this->replaceRandomApple();
+        //In this case, the player has won the game and collected all apples
+        if (this->state.collectedApples == GC::GAME_GRID_ROWS_COUNT * GC::GAME_GRID_COLS_COUNT)
+        {
+            this->state.gameWon = true;
+        }
+        else
+        {
+            //Spawn a new apple at random position
+            this->replaceRandomApple();
+        }
 
         //Change the tick speed
         this->decreaseTickSpeed();

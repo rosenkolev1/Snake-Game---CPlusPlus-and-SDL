@@ -18,6 +18,7 @@ public:
     static const inline char FONT_PATH[] = "./Fonts/OpenSans_VariableFont.ttf";
     static const inline int FONT_SIZE = 20;
     static const inline int GAME_OVER_FONT_SIZE = 64;
+    static const inline int GAME_WON_FONT_SIZE = 72;
     static const inline SDL_Color TEXT_COLOR = 
     { 
         .r = 255, 
@@ -30,8 +31,15 @@ public:
 
     static const inline std::string TIME_ELAPSED_TXT = "Time Elapsed: ";
     static const inline std::string COLLECTED_APPLES_TXT = "Apples Collected: ";
-    static const inline std::string GAME_OVER_TXT = "           Game Over :(\nPress " + std::string(1, (char)RESTART_KEY)
-        + std::string(" to restart the game!!!");
+
+    static const inline std::string PRESS_KEY_TO_RESTART_TXT = 
+        std::string("Press " + std::string(1, (char)RESTART_KEY)) + std::string(" to restart the game!!!");
+
+    static const inline std::string GAME_OVER_TXT = std::string("           Game Over :(\n") + PRESS_KEY_TO_RESTART_TXT;
+
+    static const inline std::string GAME_WON_TXT = 
+        std::string("YOU HAVE WON THE GAME !!!\n") + 
+        std::string("                     :)\n") + PRESS_KEY_TO_RESTART_TXT;
 
     static const inline char GAME_TILESET_PATH[] = "./Images/snake_graphics_tileset.png";
 
@@ -96,6 +104,14 @@ public:
     };
 
     static const inline SDL_Rect GAME_OVER_RECT =
+    {
+        .x = (GAME_WINDOW_W - 600) / 2,
+        .y = (GAME_WINDOW_H - 200) / 2,
+        .w = 600,
+        .h = 200,
+    };
+
+    static const inline SDL_Rect GAME_WON_RECT =
     {
         .x = (GAME_WINDOW_W - 600) / 2,
         .y = (GAME_WINDOW_H - 200) / 2,

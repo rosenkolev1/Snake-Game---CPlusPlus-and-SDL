@@ -248,6 +248,13 @@ bool GameUI::loadGameOverTexture()
     return this->loadText(this->gameOverTxt, GC::GAME_OVER_TXT, fontPtr.get());
 }
 
+bool GameUI::loadGameWonTexture()
+{
+    auto fontPtr = sdl2::createFont(GC::FONT_PATH, GC::GAME_WON_FONT_SIZE);
+
+    return this->loadText(this->gameWonTxt, GC::GAME_WON_TXT, fontPtr.get());
+}
+
 void GameUI::renderEmptyTileOnCurrentRenderer()
 {
     //Add empty tile as background to the texture
@@ -302,7 +309,7 @@ void GameUI::renderGrid(const std::vector<std::vector<Tile>>& grid)
 void GameUI::renderTextUI(const GameState& state)
 {
     //Load time elapsed texture
-    if (!this->loadTimeElapsedTexture(!state.gameOver ? SDL_GetTicks64() - state.lastGameOverTime : state.lastGameOverTime))
+    if (!this->loadTimeElapsedTexture(state.curTimeElapsed))
     {
         cerr << "Error loading the time elapsed texture: " << SDL_GetError() << endl;
         return;
@@ -322,6 +329,8 @@ void GameUI::renderTextUI(const GameState& state)
     //Render game over text if game is over
     if (state.gameOver)
     {
+        //TODO: Optimise the loading of the game over and won texture to make them only load once upon the first death or win only
+
         if (!this->loadGameOverTexture())
         {
             cerr << "Error loading the game over texture: " << SDL_GetError() << endl;
@@ -329,6 +338,16 @@ void GameUI::renderTextUI(const GameState& state)
         }
 
         SDL_RenderCopy(this->sdlRenderer->get(), this->gameOverTxt->get(), NULL, &GC::GAME_OVER_RECT);
+    }
+    else if (state.gameWon)
+    {
+        if (!this->loadGameWonTexture())
+        {
+            cerr << "Error loading the game over texture: " << SDL_GetError() << endl;
+            return;
+        }
+
+        SDL_RenderCopy(this->sdlRenderer->get(), this->gameWonTxt->get(), NULL, &GC::GAME_OVER_RECT);
     }
 }
 

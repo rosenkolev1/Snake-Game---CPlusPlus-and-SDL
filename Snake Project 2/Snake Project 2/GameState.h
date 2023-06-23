@@ -21,8 +21,10 @@ public:
 	Snake snake;
 
 	bool gameOver;
+	bool gameWon;
 
 	long lastGameOverTime;
+	long curTimeElapsed;
 
 	GameState();
 };
