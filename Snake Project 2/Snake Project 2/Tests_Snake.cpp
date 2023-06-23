@@ -8,7 +8,6 @@ TEST_CASE("Test Snake constructor with all parameters")
 {
 	GlobalParams globalTestParams = getTestGlobalParams();
 	Snake snake = Snake(globalTestParams, { 4, 4 });
-	int snakeLen = snake.GP.SNAKE_DEFAULT_LENGTH;
 
 	CHECK_EQ(globalTestParams, snake.GP);
 	CHECK_EQ(snake.curDirection, MoveDir::RIGHT);
@@ -25,7 +24,6 @@ TEST_CASE("Test Snake constructor with default spawn pos")
 {
 	GlobalParams globalTestParams = getTestGlobalParams();
 	Snake snake = Snake(globalTestParams);
-	int snakeLen = snake.GP.SNAKE_DEFAULT_LENGTH;
 
 	CHECK_EQ(globalTestParams, snake.GP);
 	CHECK_EQ(snake.curDirection, MoveDir::RIGHT);
@@ -36,4 +34,13 @@ TEST_CASE("Test Snake constructor with default spawn pos")
 		{ 0, 0 },
 		{ 0, 0 }
 	});
+}
+
+TEST_CASE("Test Snake get tail and get head functions")
+{
+	GlobalParams globalTestParams = getTestGlobalParams();
+	Snake snake = Snake(globalTestParams, { 4, 4 });
+
+	CHECK_EQ(snake.getTail(), TilePos { 4, 4 });
+	CHECK_EQ(snake.getHead(), TilePos{ 4, 6 });
 }
