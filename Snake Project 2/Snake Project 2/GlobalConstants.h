@@ -8,6 +8,8 @@ class GlobalConstants
 {
 public:
 
+    static const int DEFAULT_TICK_SPEED = 1000;
+
     static const inline char FONT_PATH[] = "./Fonts/OpenSans_VariableFont.ttf";
     static const inline int FONT_SIZE = 20;
     static const inline SDL_Color TEXT_COLOR = 
@@ -84,7 +86,8 @@ public:
     };
 
     static const inline TilePos SNAKE_DEFAULT_SPAWN = { 0, 0 };
-    static const inline TilePos APPLE_DEFAULT_SPAWN = { GAME_GRID_ROWS_COUNT - 1, GAME_GRID_COLS_COUNT - 1 };
+    //static const inline TilePos APPLE_DEFAULT_SPAWN = { GAME_GRID_ROWS_COUNT - 1, GAME_GRID_COLS_COUNT - 1 };
+    static const inline TilePos APPLE_DEFAULT_SPAWN = { 0, 10 };
 };
 
 using GC = GlobalConstants;

@@ -18,8 +18,13 @@ public:
 
 	GameApp();
 
-	Tile getTile(TilePos pos);
+	Tile& getTile(TilePos pos);
 
 	void startGameLoop();
+
+	MoveDir determineDirection(TilePos from, TilePos to);
+	SnakeSprite getSnakeTailSprite(MoveDir to);
+	SnakeSprite getSnakeSprite(MoveDir from, MoveDir to);
+	bool moveSnake(MoveDir oldDirection);
 };
 

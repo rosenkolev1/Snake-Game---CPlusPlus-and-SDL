@@ -2,8 +2,14 @@
 
 Snake::Snake(TilePos initialSpawnPos)
 {
-	this->tiles = std::vector<TilePos>(1, initialSpawnPos);
-	this->tiles.push_back({ -1, -1 });
+	this->tiles = std::vector<TilePos>();
+
+	for (int i = 0; i < 3; i++)
+	{
+		this->tiles.push_back({ initialSpawnPos.row, initialSpawnPos.col + 2 - i });
+	}
+
+	this->tiles.push_back(this->tiles.back());
 
 	this->curDirection = MoveDir::Right;
 }
