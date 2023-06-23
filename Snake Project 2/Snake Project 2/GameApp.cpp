@@ -8,7 +8,7 @@ GameApp::GameApp(const GlobalParams& globalParams)
 {
     //Memory leak test
     /*for (int i = 0; i < 1000; i++) {
-        GameUI gameUI = GameUI();
+        GameUI gameUI = GameUI(globalParams);
     }*/
 
     this->gameUI = std::make_unique<GameUI>(GameUI(this->GP));

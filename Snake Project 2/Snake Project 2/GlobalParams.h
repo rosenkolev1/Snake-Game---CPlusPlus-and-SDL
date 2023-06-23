@@ -6,6 +6,8 @@
 #include "MoveDir.h"
 #include <map>
 #include <vector>
+#include "Color.h"
+#include "Rect.h"
 
 class GlobalParams
 {
@@ -18,7 +20,7 @@ public:
     int FONT_SIZE;
     int GAME_OVER_FONT_SIZE;
     int GAME_WON_FONT_SIZE;
-    SDL_Color TEXT_COLOR;
+    Color TEXT_COLOR;
 
     SDL_Keycode RESTART_KEY;
 
@@ -69,15 +71,15 @@ public:
     int GAME_TILE_W;
     int GAME_TILE_H;
 
-    SDL_Color EMPTY_TILE_COLOR;
+    Color EMPTY_TILE_COLOR;
 
-    SDL_Rect TIME_ELAPSED_RECT;
+    Rect TIME_ELAPSED_RECT;
 
-    SDL_Rect COLLECTED_APPLES_RECT;
+    Rect COLLECTED_APPLES_RECT;
 
-    SDL_Rect GAME_OVER_RECT;
+    Rect GAME_OVER_RECT;
 
-    SDL_Rect GAME_WON_RECT;
+    Rect GAME_WON_RECT;
 
     //DEFAULT SPAWN is measured from the tail and the default direction for the snake is facing towards the right
     TilePos SNAKE_DEFAULT_SPAWN;
@@ -93,6 +95,8 @@ public:
 
     GlobalParams();
 
+    bool operator==(const GlobalParams & other) const = default;
+
     GlobalParams& setDefaultTickSpeed(int val);
     GlobalParams& setTickSpeedDecrease(int val);
     GlobalParams& setTickSpeedCap(int val);
@@ -100,7 +104,7 @@ public:
     GlobalParams& setFontSize(int size);
     GlobalParams& setGameOverFontSize(int size);
     GlobalParams& setGameWonFontSize(int size);
-    GlobalParams& setTextColor(SDL_Color color);
+    GlobalParams& setTextColor(Color color);
     GlobalParams& setRestartKey(SDL_Keycode keycode);
     GlobalParams& setTimeElapsedTxt(std::string text);
     GlobalParams& setCollectedApplesTxt(std::string text);
@@ -135,11 +139,11 @@ public:
     GlobalParams& setGameTileWidth(int width);
     GlobalParams& setGameTileHeight(int height);
 
-    GlobalParams& setEmptyTileColor(SDL_Color color);
+    GlobalParams& setEmptyTileColor(Color color);
 
-    GlobalParams& setTimeElapsedRect(SDL_Rect rect);
-    GlobalParams& setCollectedApplesRect(SDL_Rect rect);
-    GlobalParams& setGameOverRect(SDL_Rect rect);
+    GlobalParams& setTimeElapsedRect(Rect rect);
+    GlobalParams& setCollectedApplesRect(Rect rect);
+    GlobalParams& setGameOverRect(Rect rect);
 
     GlobalParams& setSnakeDefaultSpawnPos(TilePos pos);
     GlobalParams& setSnakeDefaultLength(int length);

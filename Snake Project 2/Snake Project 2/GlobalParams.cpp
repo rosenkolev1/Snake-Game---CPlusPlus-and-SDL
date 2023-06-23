@@ -12,7 +12,7 @@ GlobalParams::GlobalParams()
     this->FONT_SIZE = 20;
     this->GAME_OVER_FONT_SIZE = 64;
     this->GAME_WON_FONT_SIZE = 72;
-    this->TEXT_COLOR =
+    this->TEXT_COLOR = Color
     {
         .r = 255,
         .g = 255,
@@ -132,8 +132,88 @@ GlobalParams::GlobalParams()
         { SDLK_DOWN, {  MoveDir::DOWN, MoveDir::UP } },
     };
 
-    this->AUTO_PLAY_ENABLED = true;
+    this->AUTO_PLAY_ENABLED = false;
 }
+
+//bool GlobalParams::operator==(const GlobalParams& other) const
+//{
+//    return this->DEFAULT_TICK_SPEED == other.DEFAULT_TICK_SPEED &&
+//        this->TICK_SPEED_DECREASE == other.TICK_SPEED_DECREASE &&
+//        this->TICK_SPEED_CAP == other.TICK_SPEED_CAP &&
+//
+//        this->FONT_PATH == other.FONT_PATH &&
+//        this->FONT_SIZE == other.FONT_SIZE &&
+//        this->GAME_OVER_FONT_SIZE == other.GAME_OVER_FONT_SIZE &&
+//        this->GAME_WON_FONT_SIZE == other.GAME_WON_FONT_SIZE &&
+//        this->TEXT_COLOR == other.TEXT_COLOR &&
+//
+//        this->RESTART_KEY == other.RESTART_KEY &&
+//
+//        this->TIME_ELAPSED_TXT == other.TIME_ELAPSED_TXT &&
+//        this->COLLECTED_APPLES_TXT == other.COLLECTED_APPLES_TXT &&
+//
+//        this->PRESS_KEY_TO_RESTART_TXT == other.PRESS_KEY_TO_RESTART_TXT &&
+//
+//        this->GAME_OVER_TXT == other.GAME_OVER_TXT &&
+//
+//        this->GAME_WON_TXT == other.GAME_WON_TXT &&
+//
+//        this->GAME_TILESET_PATH == other.GAME_TILESET_PATH &&
+//
+//        this->GAME_TILESET_W == other.GAME_TILESET_W &&
+//        this->GAME_TILESET_H == other.GAME_TILESET_H &&
+//
+//        this->GAME_TILESET_TILE_W == other.GAME_TILESET_TILE_W &&
+//        this->GAME_TILESET_TILE_H == other.GAME_TILESET_TILE_H &&
+//
+//        this->GAME_TILESET_ROWS_COUNT == other.GAME_TILESET_ROWS_COUNT &&
+//        this->GAME_TILESET_COLUMNS_COUNT == other.GAME_TILESET_COLUMNS_COUNT &&
+//
+//        this->GAME_WINDOW_TITLE == other.GAME_WINDOW_TITLE &&
+//
+//        this->GAME_GRID_ROWS_COUNT == other.GAME_GRID_ROWS_COUNT &&
+//        this->GAME_GRID_COLS_COUNT == other.GAME_GRID_COLS_COUNT &&
+//
+//        this->GAME_WINDOW_X == other.GAME_WINDOW_X &&
+//        this->GAME_WINDOW_Y == other.GAME_WINDOW_Y &&
+//        this->GAME_WINDOW_W == other.GAME_WINDOW_W &&
+//        this->GAME_WINDOW_H == other.GAME_WINDOW_H &&
+//
+//        this->GAME_GRID_OFFSET_LEFT == other.GAME_GRID_OFFSET_LEFT &&
+//        this->GAME_GRID_OFFSET_RIGHT == other.GAME_GRID_OFFSET_RIGHT &&
+//        this->GAME_GRID_OFFSET_UP == other.GAME_GRID_OFFSET_UP &&
+//        this->GAME_GRID_OFFSET_DOWN == other.GAME_GRID_OFFSET_DOWN &&
+//
+//        this->GAME_GRID_LEFT_BORDER == other.GAME_GRID_LEFT_BORDER &&
+//        this->GAME_GRID_RIGHT_BORDER == other.GAME_GRID_RIGHT_BORDER &&
+//        this->GAME_GRID_UPPER_BORDER == other.GAME_GRID_UPPER_BORDER &&
+//        this->GAME_GRID_BOTTOM_BORDER == other.GAME_GRID_BOTTOM_BORDER &&
+//
+//        this->GAME_GRID_W == other.GAME_GRID_W &&
+//        this->GAME_GRID_H == other.GAME_GRID_H &&
+//
+//        this->GAME_TILE_W == other.GAME_TILE_W &&
+//        this->GAME_TILE_H == other.GAME_TILE_H &&
+//
+//        this->EMPTY_TILE_COLOR == other.EMPTY_TILE_COLOR &&
+//
+//        this->TIME_ELAPSED_RECT == other.TIME_ELAPSED_RECT &&
+//
+//        this->COLLECTED_APPLES_RECT == other.COLLECTED_APPLES_RECT &&
+//
+//        this->GAME_OVER_RECT == other.GAME_OVER_RECT &&
+//
+//        this->GAME_WON_RECT == other.GAME_WON_RECT &&
+//
+//        this->SNAKE_DEFAULT_SPAWN == other.SNAKE_DEFAULT_SPAWN &&
+//        this->SNAKE_DEFAULT_LENGTH == other.SNAKE_DEFAULT_LENGTH &&
+//
+//        this->APPLE_DEFAULT_SPAWN == other.APPLE_DEFAULT_SPAWN &&
+//
+//        this->KEY_TO_MOVE_MAP == other.KEY_TO_MOVE_MAP &&
+//
+//        this->AUTO_PLAY_ENABLED == other.AUTO_PLAY_ENABLED;
+//}
 
 #pragma region OptionSetters
 
@@ -178,7 +258,7 @@ GlobalParams& GlobalParams::setGameWonFontSize(int size)
     return *this;
 }
 
-GlobalParams& GlobalParams::setTextColor(SDL_Color color)
+GlobalParams& GlobalParams::setTextColor(Color color)
 {
     this->TEXT_COLOR = color;
     return *this;
@@ -376,25 +456,25 @@ GlobalParams& GlobalParams::setGameTileHeight(int height)
     return *this;
 }
 
-GlobalParams& GlobalParams::setEmptyTileColor(SDL_Color color)
+GlobalParams& GlobalParams::setEmptyTileColor(Color color)
 {
     this->EMPTY_TILE_COLOR = color;
     return *this;
 }
 
-GlobalParams& GlobalParams::setTimeElapsedRect(SDL_Rect rect)
+GlobalParams& GlobalParams::setTimeElapsedRect(Rect rect)
 {
     this->TIME_ELAPSED_RECT = rect;
     return *this;
 }
 
-GlobalParams& GlobalParams::setCollectedApplesRect(SDL_Rect rect)
+GlobalParams& GlobalParams::setCollectedApplesRect(Rect rect)
 {
     this->COLLECTED_APPLES_RECT = rect;
     return *this;
 }
 
-GlobalParams& GlobalParams::setGameOverRect(SDL_Rect rect)
+GlobalParams& GlobalParams::setGameOverRect(Rect rect)
 {
     this->GAME_OVER_RECT = rect;
     return *this;

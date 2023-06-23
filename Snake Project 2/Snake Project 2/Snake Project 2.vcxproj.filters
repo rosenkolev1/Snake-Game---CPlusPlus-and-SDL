@@ -69,6 +69,18 @@
     <ClCompile Include="Tests_TilePos.cpp">
       <Filter>Source Files\test</Filter>
     </ClCompile>
+    <ClCompile Include="Tests_Snake.cpp">
+      <Filter>Source Files\test</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests_StubUtil.cpp">
+      <Filter>Source Files\test</Filter>
+    </ClCompile>
+    <ClCompile Include="Color.cpp">
+      <Filter>Source Files\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Rect.cpp">
+      <Filter>Source Files\Common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="SDL2.lib" />
@@ -115,6 +127,15 @@
     </ClInclude>
     <ClInclude Include="doctest.h">
       <Filter>Header Files\test</Filter>
+    </ClInclude>
+    <ClInclude Include="Test_StubUtil.h">
+      <Filter>Header Files\test</Filter>
+    </ClInclude>
+    <ClInclude Include="Color.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Rect.h">
+      <Filter>Header Files\Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

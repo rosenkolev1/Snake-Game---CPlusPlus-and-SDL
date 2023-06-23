@@ -131,13 +131,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Color.cpp" />
     <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="GameUI.cpp" />
     <ClCompile Include="GlobalParams.cpp" />
+    <ClCompile Include="Rect.cpp" />
     <ClCompile Include="ScreenPos.cpp" />
     <ClCompile Include="Snake Project 2.cpp" />
     <ClCompile Include="Snake.cpp" />
+    <ClCompile Include="Tests_Snake.cpp" />
+    <ClCompile Include="Tests_StubUtil.cpp" />
     <ClCompile Include="Tests_TilePos.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="TilePos.cpp" />
@@ -149,17 +153,20 @@
     <Library Include="SDL2_ttf.lib" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Color.h" />
     <ClInclude Include="doctest.h" />
     <ClInclude Include="GameApp.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="GameUI.h" />
     <ClInclude Include="GlobalParams.h" />
     <ClInclude Include="MoveDir.h" />
+    <ClInclude Include="Rect.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="ScreenPos.h" />
     <ClInclude Include="sdl2.h" />
     <ClInclude Include="Snake.h" />
     <ClInclude Include="SnakeSprite.h" />
+    <ClInclude Include="Test_StubUtil.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="TilePos.h" />
   </ItemGroup>

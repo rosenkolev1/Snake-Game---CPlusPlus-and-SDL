@@ -17,6 +17,9 @@ void startMainApp()
     //Initialize the global parameters for the app
     GlobalParams params = GlobalParams();
 
+    //params.disableAutoPlay();
+    params.enableAutoPlay();
+
     //Initialize the app with the window and the UI textures
     GameApp app = GameApp(params);
 
