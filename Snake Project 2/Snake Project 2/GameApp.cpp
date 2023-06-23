@@ -47,7 +47,6 @@ void GameApp::startGameLoop()
 
             MoveDir snakeNewDir = this->state.snake.curDirection;
 
-            //TODO: Move snake based on keys pressed by the user
             while (SDL_PollEvent(&keyboardEvent))
             {
                 if (keyboardEvent.type == SDL_KEYDOWN)
@@ -66,7 +65,7 @@ void GameApp::startGameLoop()
 
             this->state.snake.curDirection = snakeNewDir;
             
-            this->moveSnake(MoveDir::Left);
+            this->moveSnake();
 
             if (this->state.gameOver)
             {
@@ -134,17 +133,9 @@ void GameApp::replaceRandomApple()
     this->getTile(this->state.applePosition).isApple = true;
 }
 
-int globalDebugShit = 0;
-
-bool GameApp::moveSnake(MoveDir oldDirection)
+bool GameApp::moveSnake()
 {
     Snake& snake = this->state.snake;
-    
-    //TODO: REMOVE
-    if (snake.curDirection == MoveDir::Right && globalDebugShit == 1)
-    {
-        int debug = 10;
-    }
 
     TilePos newHeadPos = snake.tiles.front() + Snake::MOVE_OFFSET_MAP.at(snake.curDirection);
 
@@ -223,12 +214,6 @@ bool GameApp::moveSnake(MoveDir oldDirection)
     else 
     {
         this->getTile(snake.getTail()).snakeSprite = this->getSnakeTailSprite(toDir);
-    }
-
-    //TODO:REMOVE
-    if (devouredApple)
-    {
-        globalDebugShit++;
     }
 
     return true;

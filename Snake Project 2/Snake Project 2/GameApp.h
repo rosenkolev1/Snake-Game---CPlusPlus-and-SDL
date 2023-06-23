@@ -29,8 +29,7 @@ public:
 	SnakeSprite getSnakeTailSprite(MoveDir to);
 	SnakeSprite getSnakeSprite(MoveDir from, MoveDir to);
 
-	//TODO: remove old dir
-	bool moveSnake(MoveDir oldDirection);
+	bool moveSnake();
 	bool isOutOfBounds(TilePos pos);
 
 	void replaceRandomApple();

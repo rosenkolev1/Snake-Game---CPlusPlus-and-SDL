@@ -20,7 +20,6 @@ GameState::GameState()
 
     this->collectedApples = 0;
 
-    //TODO: Set the apple position randomly, as long as it is not on top of the snake tiles
     this->applePosition = TilePos(GC::APPLE_DEFAULT_SPAWN);
 
     //Set the tile flags for the snake and for the apple

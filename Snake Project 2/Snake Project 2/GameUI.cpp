@@ -184,9 +184,9 @@ bool GameUI::loadTimeElapsedTexture(long curTime)
 {
     long totalSeconds = curTime / 1000;
     long leftoverSeconds = totalSeconds % 60;
-    long totalMinutes = totalSeconds - leftoverSeconds;
+    long totalMinutes = (totalSeconds - leftoverSeconds) / 60;
     long leftoverMinutes = totalMinutes % 60;
-    long leftoverHours = totalMinutes - leftoverMinutes;
+    long leftoverHours = (totalMinutes - leftoverMinutes) / 60;
 
     std::stringstream stringStream;
     stringStream << leftoverHours << ':' << leftoverMinutes << ':' << leftoverSeconds;
