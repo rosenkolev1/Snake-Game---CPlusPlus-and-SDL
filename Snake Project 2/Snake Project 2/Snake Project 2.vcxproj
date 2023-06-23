@@ -143,6 +143,7 @@
     <ClCompile Include="Tests_Snake.cpp" />
     <ClCompile Include="Tests_StubUtil.cpp" />
     <ClCompile Include="Tests_TilePos.cpp" />
+    <ClCompile Include="Test_GameState.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="TilePos.cpp" />
   </ItemGroup>

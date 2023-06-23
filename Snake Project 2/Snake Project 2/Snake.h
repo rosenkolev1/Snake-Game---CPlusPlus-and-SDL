@@ -28,5 +28,7 @@ public:
 
 	TilePos getHead();
 	TilePos getTail();
+
+	bool operator== (const Snake& other) const = default;
 };
 

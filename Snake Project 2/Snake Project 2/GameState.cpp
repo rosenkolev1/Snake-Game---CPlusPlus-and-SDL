@@ -9,7 +9,6 @@ GameState::GameState(const GlobalParams& globalParams)
     this->gameWon = false;
     this->gameOver = false;
     this->processTick = true;
-    //this->snake = Snake(this->GP, this->GP.SNAKE_DEFAULT_SPAWN);
     this->tickSpeed = this->GP.DEFAULT_TICK_SPEED;
 
     //Initialize the grid
