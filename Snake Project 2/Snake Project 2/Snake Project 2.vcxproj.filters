@@ -31,6 +31,12 @@
     <Filter Include="Header Files\App">
       <UniqueIdentifier>{d2482df8-0c44-41bb-aa7d-2aff018993d8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\test">
+      <UniqueIdentifier>{535bd4cf-03da-4fd2-b986-e21e124eec2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\test">
+      <UniqueIdentifier>{a42b9578-8311-412f-a64d-7f868e44cf0e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Snake Project 2.cpp">
@@ -60,12 +66,18 @@
     <ClCompile Include="GlobalParams.cpp">
       <Filter>Source Files\Common</Filter>
     </ClCompile>
+    <ClCompile Include="Tests_Main.cpp">
+      <Filter>Source Files\test</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests_TilePos.cpp">
+      <Filter>Source Files\test</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="SDL2.lib" />
-    <Library Include="SDL2main.lib" />
     <Library Include="SDL2_image.lib" />
     <Library Include="SDL2_ttf.lib" />
+    <Library Include="SDL2main.lib" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameUI.h">
@@ -103,6 +115,9 @@
     </ClInclude>
     <ClInclude Include="sdl2.h">
       <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="doctest.h">
+      <Filter>Header Files\test</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
