@@ -66,9 +66,6 @@
     <ClCompile Include="GlobalParams.cpp">
       <Filter>Source Files\Common</Filter>
     </ClCompile>
-    <ClCompile Include="Tests_Main.cpp">
-      <Filter>Source Files\test</Filter>
-    </ClCompile>
     <ClCompile Include="Tests_TilePos.cpp">
       <Filter>Source Files\test</Filter>
     </ClCompile>

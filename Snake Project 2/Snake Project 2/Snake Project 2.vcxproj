@@ -138,7 +138,6 @@
     <ClCompile Include="ScreenPos.cpp" />
     <ClCompile Include="Snake Project 2.cpp" />
     <ClCompile Include="Snake.cpp" />
-    <ClCompile Include="Tests_Main.cpp" />
     <ClCompile Include="Tests_TilePos.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="TilePos.cpp" />
