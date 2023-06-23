@@ -11,7 +11,7 @@ Snake::Snake(TilePos initialSpawnPos)
 
 	this->tiles.push_back(this->tiles.back());
 
-	this->curDirection = MoveDir::Right;
+	this->curDirection = MoveDir::RIGHT;
 }
 
 Snake::Snake()

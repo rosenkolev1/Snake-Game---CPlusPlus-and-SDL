@@ -386,10 +386,10 @@ bool GameApp::moveSnake()
 
 MoveDir GameApp::determineDirection(TilePos from, TilePos to)
 {
-    if (to.col < from.col) return MoveDir::Left;
-    else if (to.col > from.col) return MoveDir::Right;
-    else if (to.row < from.row) return MoveDir::Up;
-    else return MoveDir::Down;
+    if (to.col < from.col) return MoveDir::LEFT;
+    else if (to.col > from.col) return MoveDir::RIGHT;
+    else if (to.row < from.row) return MoveDir::UP;
+    else return MoveDir::DOWN;
 }
 
 SnakeSprite GameApp::getSnakeHeadSprite(MoveDir to)
@@ -399,37 +399,37 @@ SnakeSprite GameApp::getSnakeHeadSprite(MoveDir to)
 
 SnakeSprite GameApp::getSnakeTailSprite(MoveDir to)
 {
-    if (to == MoveDir::Up)  return SnakeSprite::TAIL_DOWN;
-    else if (to == MoveDir::Down) return SnakeSprite::TAIL_UP;
-    else if (to == MoveDir::Right) return SnakeSprite::TAIL_LEFT;
+    if (to == MoveDir::UP)  return SnakeSprite::TAIL_DOWN;
+    else if (to == MoveDir::DOWN) return SnakeSprite::TAIL_UP;
+    else if (to == MoveDir::RIGHT) return SnakeSprite::TAIL_LEFT;
     else return SnakeSprite::TAIL_RIGHT;
 }
 
 SnakeSprite GameApp::getSnakeSprite(MoveDir from, MoveDir to)
 {
     //Determine neck sprite
-    if (to == MoveDir::Right && from == MoveDir::Up ||
-        to == MoveDir::Down && from == MoveDir::Left)
+    if (to == MoveDir::RIGHT && from == MoveDir::UP ||
+        to == MoveDir::DOWN && from == MoveDir::LEFT)
     {
         return SnakeSprite::TURN_1;
     }
-    else if (to == MoveDir::Down && from == MoveDir::Right ||
-        to == MoveDir::Left && from == MoveDir::Up)
+    else if (to == MoveDir::DOWN && from == MoveDir::RIGHT ||
+        to == MoveDir::LEFT && from == MoveDir::UP)
     {
         return SnakeSprite::TURN_2;
     }
-    else if (to == MoveDir::Right && from == MoveDir::Down ||
-        to == MoveDir::Up && from == MoveDir::Left)
+    else if (to == MoveDir::RIGHT && from == MoveDir::DOWN ||
+        to == MoveDir::UP && from == MoveDir::LEFT)
     {
         return SnakeSprite::TURN_3;
     }
-    else if (to == MoveDir::Up && from == MoveDir::Right ||
-        to == MoveDir::Left && from == MoveDir::Down)
+    else if (to == MoveDir::UP && from == MoveDir::RIGHT ||
+        to == MoveDir::LEFT && from == MoveDir::DOWN)
     {
         return SnakeSprite::TURN_4;
     }
-    else if (to == MoveDir::Left && from == MoveDir::Left ||
-        to == MoveDir::Right && from == MoveDir::Right)
+    else if (to == MoveDir::LEFT && from == MoveDir::LEFT ||
+        to == MoveDir::RIGHT && from == MoveDir::RIGHT)
     {
         return SnakeSprite::BODY_HOR;
     }

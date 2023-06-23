@@ -11,7 +11,7 @@ class GlobalConstants
 {
 public:
 
-    static const int DEFAULT_TICK_SPEED = 0;
+    static const int DEFAULT_TICK_SPEED = 200;
     static const int TICK_SPEED_DECREASE = 15;
     static const int TICK_SPEED_CAP = 50;
 
@@ -121,7 +121,7 @@ public:
 
     //DEFAULT SPAWN is measured from the tail and the default direction for the snake is facing towards the right
     static const inline TilePos SNAKE_DEFAULT_SPAWN = { 0, 0 };
-    static const inline int SNAKE_DEFAULT_LENGTH = 6;
+    static const inline int SNAKE_DEFAULT_LENGTH = 3;
 
     static const inline TilePos APPLE_DEFAULT_SPAWN = { GAME_GRID_ROWS_COUNT - 1, GAME_GRID_COLS_COUNT - 1 };
 
@@ -129,14 +129,14 @@ public:
     // The second move dir tells us what is the opposite direction of that (i.e. we cannot do a 180 degree turn)
     static const inline std::map<SDL_Keycode, std::vector<MoveDir>> KEY_TO_MOVE_MAP =
     {
-        { SDLK_a, { MoveDir::Left, MoveDir::Right } },
-        { SDLK_LEFT, { MoveDir::Left, MoveDir::Right } },
-        { SDLK_d, { MoveDir::Right, MoveDir::Left } },
-        { SDLK_RIGHT, { MoveDir::Right, MoveDir::Left } },
-        { SDLK_w, { MoveDir::Up, MoveDir::Down } },
-        { SDLK_UP, { MoveDir::Up, MoveDir::Down } },
-        { SDLK_s, { MoveDir::Down, MoveDir::Up } },
-        { SDLK_DOWN, {  MoveDir::Down, MoveDir::Up } },
+        { SDLK_a, { MoveDir::LEFT, MoveDir::RIGHT } },
+        { SDLK_LEFT, { MoveDir::LEFT, MoveDir::RIGHT } },
+        { SDLK_d, { MoveDir::RIGHT, MoveDir::LEFT } },
+        { SDLK_RIGHT, { MoveDir::RIGHT, MoveDir::LEFT } },
+        { SDLK_w, { MoveDir::UP, MoveDir::DOWN } },
+        { SDLK_UP, { MoveDir::UP, MoveDir::DOWN } },
+        { SDLK_s, { MoveDir::DOWN, MoveDir::UP } },
+        { SDLK_DOWN, {  MoveDir::DOWN, MoveDir::UP } },
     };
 };
 

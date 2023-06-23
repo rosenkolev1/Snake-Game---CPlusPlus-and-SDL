@@ -11,10 +11,10 @@ class Snake
 public:
 	static const inline std::map<MoveDir, TilePos> MOVE_OFFSET_MAP =
 	{
-		{ MoveDir::Up, { -1, 0 } },
-		{ MoveDir::Right, { 0, 1 } },
-		{ MoveDir::Down, { 1, 0 } },
-		{ MoveDir::Left, { 0, -1 } },
+		{ MoveDir::UP, { -1, 0 } },
+		{ MoveDir::RIGHT, { 0, 1 } },
+		{ MoveDir::DOWN, { 1, 0 } },
+		{ MoveDir::LEFT, { 0, -1 } },
 	};
 
 	MoveDir curDirection;

@@ -13,7 +13,7 @@
 int main(int argc, char* argv[])
 {
     //Initialize the app with the window and the UI textures
-    GameApp app = GameApp(true);
+    GameApp app = GameApp();
 
     //Start the main application/game loop
     app.startGameLoop();

@@ -1,8 +1,8 @@
 #pragma once
 enum MoveDir
 {
-	Up = 0,
-	Right = 1,
-	Down = 2,
-	Left = 3
+	UP = 0,
+	RIGHT = 1,
+	DOWN = 2,
+	LEFT = 3
 };
