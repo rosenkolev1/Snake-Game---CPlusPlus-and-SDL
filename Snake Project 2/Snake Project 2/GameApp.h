@@ -17,7 +17,7 @@ private:
 	long lastTickEnd;
 
 	bool autoPlay;
-	std::vector<TilePos> hamiltonianCycleEven;
+	std::vector<TilePos> hamiltonianCycle;
 	int hamiltonianCounter = 0;
 
 public:
@@ -37,6 +37,7 @@ public:
 	bool isOutOfBounds(TilePos pos);
 
 	std::vector<TilePos> getHamiltonianCycleForEvenRows();
+	std::vector<TilePos> getHamiltonianCycleForEvenCols();
 	void resetGameState();
 	void replaceRandomApple();
 	void decreaseTickSpeed();

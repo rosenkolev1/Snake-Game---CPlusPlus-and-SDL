@@ -22,9 +22,22 @@ GameApp::GameApp(bool autoPlay)
     this->hamiltonianCounter = 0;
     this->autoPlay = autoPlay;
 
-    if (autoPlay && this->hamiltonianCycleEven.empty())
+    if (autoPlay && this->hamiltonianCycle.empty())
     {
-        this->hamiltonianCycleEven = this->getHamiltonianCycleForEvenRows();
+        if (GC::GAME_GRID_ROWS_COUNT % 2 == 0)
+        {
+            this->hamiltonianCycle = this->getHamiltonianCycleForEvenRows();
+        }
+        else if (GC::GAME_GRID_ROWS_COUNT % 2 == 1 && GC::GAME_GRID_COLS_COUNT % 2 == 0)
+        {
+            this->hamiltonianCycle = this->getHamiltonianCycleForEvenCols();
+        }
+        else
+        {
+            cerr << "Error! The graphs rows and columns are both uneven, there is no Hamilton Cycle!\n" << 
+                "Disable autoplay or change grid dimensions!: " << endl;
+            exit(2);
+        }
     }
 }
 
@@ -70,8 +83,8 @@ void GameApp::startGameLoop()
 
             if (this->autoPlay)
             {
-                auto nextTile = this->hamiltonianCycleEven[this->hamiltonianCounter++];
-                this->hamiltonianCounter %= this->hamiltonianCycleEven.size();
+                auto nextTile = this->hamiltonianCycle[this->hamiltonianCounter++];
+                this->hamiltonianCounter %= this->hamiltonianCycle.size();
                 this->state.snake.curDirection = this->determineDirection(this->state.snake.getHead(), nextTile);
             }
 
@@ -135,11 +148,55 @@ void GameApp::resetGameState()
     this->hamiltonianCounter = 0;
 }
 
+std::vector<TilePos> GameApp::getHamiltonianCycleForEvenCols()
+{
+    std::vector<TilePos> optimalMoves = std::vector<TilePos>();
+
+    //First row except the first couple of tiles
+    for (int col = GC::SNAKE_DEFAULT_LENGTH; col < GC::GAME_GRID_COLS_COUNT; col++)
+    {
+        optimalMoves.push_back({ 0, col });
+    }
+
+    //Last col
+    /*for (int row = 1; row < GC::GAME_GRID_ROWS_COUNT; row++)
+    {
+        optimalMoves.push_back({ row, GC::GAME_GRID_COLS_COUNT - 1 });
+    }*/
+
+    //Almost everything else
+    for (int col = GC::GAME_GRID_COLS_COUNT - 1; col >= 0; col--)
+    {
+        if (col % 2 == 0)
+        {
+            for (int row = GC::GAME_GRID_ROWS_COUNT - 1; row >= 1; row--)
+            {
+                optimalMoves.push_back({ row, col });
+            }
+        }
+        else
+        {
+            for (int row = 1; row < GC::GAME_GRID_ROWS_COUNT; row++)
+            {
+                optimalMoves.push_back({ row, col });
+            }
+        }
+    }
+
+    //First couple of tiles on the first row
+    for (int col = 0; col < GC::SNAKE_DEFAULT_LENGTH; col++)
+    {
+        optimalMoves.push_back({ 0, col });
+    }
+
+    return optimalMoves;
+}
+
 std::vector<TilePos> GameApp::getHamiltonianCycleForEvenRows()
 {
     std::vector<TilePos> optimalMoves = std::vector<TilePos>();
 
-    //First row except the first 3 tiles
+    //First row except the first couple of tiles
     for (int col = GC::SNAKE_DEFAULT_LENGTH; col < GC::GAME_GRID_COLS_COUNT; col++)
     {
         optimalMoves.push_back({ 0, col });
@@ -152,7 +209,7 @@ std::vector<TilePos> GameApp::getHamiltonianCycleForEvenRows()
     }
 
     //Almost everything else
-    for (int row = this->state.grid.size() - 1; row >= 1; row--)
+    for (int row = GC::GAME_GRID_ROWS_COUNT - 1; row >= 1; row--)
     {
         if (row % 2 == 0)
         {
@@ -170,7 +227,7 @@ std::vector<TilePos> GameApp::getHamiltonianCycleForEvenRows()
         }
     }
 
-    //First 3 tiles on the first role
+    //First couple tiles on the first row
     for (int col = 0; col < GC::SNAKE_DEFAULT_LENGTH; col++)
     {
         optimalMoves.push_back({ 0, col });
