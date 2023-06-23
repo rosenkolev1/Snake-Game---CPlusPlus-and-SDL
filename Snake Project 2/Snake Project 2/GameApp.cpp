@@ -2,7 +2,7 @@
 #include <stack>
 #include <random>
 
-GameApp::GameApp()
+GameApp::GameApp(bool autoPlay)
 {
     //Memory leak test
     /*for (int i = 0; i < 100; i++) {
@@ -18,6 +18,14 @@ GameApp::GameApp()
     }
 
     this->resetGameState();
+
+    this->hamiltonianCounter = 0;
+    this->autoPlay = autoPlay;
+
+    if (autoPlay)
+    {
+        this->hamiltonianCycleEven = this->getHamiltonianCycleForEvenRows();
+    }
 }
 
 Tile& GameApp::getTile(TilePos pos)
@@ -59,7 +67,14 @@ void GameApp::startGameLoop()
             }
 
             this->state.snake.curDirection = snakeNewDir;
-            
+
+            if (this->autoPlay)
+            {
+                auto nextTile = this->hamiltonianCycleEven[this->hamiltonianCounter++];
+                this->hamiltonianCounter %= this->hamiltonianCycleEven.size();
+                this->state.snake.curDirection = this->determineDirection(this->state.snake.getHead(), nextTile);
+            }
+
             this->moveSnake();
         }
         else if (this->state.gameOver || this->state.gameWon)
@@ -118,6 +133,50 @@ void GameApp::resetGameState()
     this->state.lastGameOverTime = SDL_GetTicks64();
 }
 
+std::vector<TilePos> GameApp::getHamiltonianCycleForEvenRows()
+{
+    std::vector<TilePos> optimalMoves = std::vector<TilePos>();
+
+    //First row except the first 3 tiles
+    for (int col = GC::SNAKE_DEFAULT_LENGTH; col < GC::GAME_GRID_COLS_COUNT; col++)
+    {
+        optimalMoves.push_back({ 0, col });
+    }
+
+    //Last col
+    for (int row = 1; row < GC::GAME_GRID_ROWS_COUNT; row++)
+    {
+        optimalMoves.push_back({ row, GC::GAME_GRID_COLS_COUNT - 1 });
+    }
+
+    //Almost everything else
+    for (int row = this->state.grid.size() - 1; row >= 1; row--)
+    {
+        if (row % 2 == 0)
+        {
+            for (int col = 0; col < GC::GAME_GRID_COLS_COUNT - 1; col++)
+            {
+                optimalMoves.push_back({ row, col });
+            }
+        }
+        else
+        {
+            for (int col = GC::GAME_GRID_COLS_COUNT - 2; col >= 0; col--)
+            {
+                optimalMoves.push_back({ row, col });
+            }
+        }
+    }
+
+    //First 3 tiles on the first role
+    for (int col = 0; col < GC::SNAKE_DEFAULT_LENGTH; col++)
+    {
+        optimalMoves.push_back({ 0, col });
+    }
+
+    return optimalMoves;
+}
+
 void GameApp::replaceRandomApple()
 {
     this->getTile(this->state.applePosition).isApple = false;
@@ -161,9 +220,12 @@ void GameApp::replaceRandomApple()
 
 void GameApp::decreaseTickSpeed()
 {
-    this->state.tickSpeed -= GC::TICK_SPEED_DECREASE;
+    if (!this->autoPlay)
+    {
+        this->state.tickSpeed -= GC::TICK_SPEED_DECREASE;
 
-    if (this->state.tickSpeed < GC::TICK_SPEED_CAP) this->state.tickSpeed = GC::TICK_SPEED_CAP;
+        if (this->state.tickSpeed < GC::TICK_SPEED_CAP) this->state.tickSpeed = GC::TICK_SPEED_CAP;
+    }
 }
 
 bool GameApp::moveSnake()
@@ -172,7 +234,7 @@ bool GameApp::moveSnake()
 
     TilePos newHeadPos = snake.tiles.front() + Snake::MOVE_OFFSET_MAP.at(snake.curDirection);
 
-    //If the snake tries to go out of bound, kill it
+    //If the snake tries to go out of bounds, kill it
     if (this->isOutOfBounds(newHeadPos))
     {
         this->state.gameOver = true;
@@ -188,7 +250,7 @@ bool GameApp::moveSnake()
         this->state.collectedApples++;
 
         //In this case, the player has won the game and collected all apples
-        if (this->state.collectedApples == GC::GAME_GRID_ROWS_COUNT * GC::GAME_GRID_COLS_COUNT)
+        if (this->state.collectedApples + GC::SNAKE_DEFAULT_LENGTH == GC::GAME_GRID_ROWS_COUNT * GC::GAME_GRID_COLS_COUNT)
         {
             this->state.gameWon = true;
         }

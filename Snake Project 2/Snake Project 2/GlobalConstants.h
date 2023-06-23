@@ -11,9 +11,9 @@ class GlobalConstants
 {
 public:
 
-    static const int DEFAULT_TICK_SPEED = 300;
+    static const int DEFAULT_TICK_SPEED = 0;
     static const int TICK_SPEED_DECREASE = 15;
-    static const int TICK_SPEED_CAP = 75;
+    static const int TICK_SPEED_CAP = 50;
 
     static const inline char FONT_PATH[] = "./Fonts/OpenSans_VariableFont.ttf";
     static const inline int FONT_SIZE = 20;
@@ -119,9 +119,11 @@ public:
         .h = 200,
     };
 
+    //DEFAULT SPAWN is measured from the tail and the default direction for the snake is facing towards the right
     static const inline TilePos SNAKE_DEFAULT_SPAWN = { 0, 0 };
-    //static const inline TilePos APPLE_DEFAULT_SPAWN = { GAME_GRID_ROWS_COUNT - 1, GAME_GRID_COLS_COUNT - 1 };
-    static const inline TilePos APPLE_DEFAULT_SPAWN = { 0, 10 };
+    static const inline int SNAKE_DEFAULT_LENGTH = 6;
+
+    static const inline TilePos APPLE_DEFAULT_SPAWN = { GAME_GRID_ROWS_COUNT - 1, GAME_GRID_COLS_COUNT - 1 };
 
     // In the move dir vector, the first element shows what direction the button attempts to point us at
     // The second move dir tells us what is the opposite direction of that (i.e. we cannot do a 180 degree turn)

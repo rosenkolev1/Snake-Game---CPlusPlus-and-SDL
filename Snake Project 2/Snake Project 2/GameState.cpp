@@ -22,25 +22,40 @@ GameState::GameState()
     }
 
     this->collectedApples = 0;
-    //TODO: Remove
-    /*this->collectedApples = 899;*/
-
-    this->applePosition = TilePos(GC::APPLE_DEFAULT_SPAWN);
 
     //Set the tile flags for the snake and for the apple
+    this->applePosition = TilePos(GC::APPLE_DEFAULT_SPAWN);
     Tile& appleTile = this->grid[this->applePosition.row][this->applePosition.col];
-
-    Tile& snakeHeadTile = this->grid[this->snake.tiles[0].row][this->snake.tiles[0].col];
-    Tile& snakeBodyTile = this->grid[this->snake.tiles[1].row][this->snake.tiles[1].col];
-    Tile& snakeTailTile = this->grid[this->snake.tiles[2].row][this->snake.tiles[2].col];
-
     appleTile.isApple = true;
 
-    snakeHeadTile.isSnake = true;
+    for (int i = 0; i < snake.tiles.size() - 1; i++)
+    {
+        auto pos = snake.tiles[i];
+        Tile& tile = this->grid[pos.row][pos.col];
+        tile.isSnake = true;
+        
+        if (i == 0)
+        {
+            tile.snakeSprite = SnakeSprite::HEAD_RIGHT;
+        }
+        else if (i == GC::SNAKE_DEFAULT_LENGTH - 1)
+        {
+            tile.snakeSprite = SnakeSprite::TAIL_LEFT;
+        }
+        else tile.snakeSprite = SnakeSprite::BODY_HOR;
+    }
+
+    /*for (int col )*/
+
+    /*Tile& snakeHeadTile = this->grid[this->snake.tiles[0].row][this->snake.tiles[0].col];
+    Tile& snakeBodyTile = this->grid[this->snake.tiles[1].row][this->snake.tiles[1].col];
+    Tile& snakeTailTile = this->grid[this->snake.tiles[2].row][this->snake.tiles[2].col];*/
+
+    /*snakeHeadTile.isSnake = true;
     snakeBodyTile.isSnake = true;
     snakeTailTile.isSnake = true;
 
     snakeHeadTile.snakeSprite = SnakeSprite::HEAD_RIGHT;
     snakeBodyTile.snakeSprite = SnakeSprite::BODY_HOR;
-    snakeTailTile.snakeSprite = SnakeSprite::TAIL_LEFT;
+    snakeTailTile.snakeSprite = SnakeSprite::TAIL_LEFT;*/
 }

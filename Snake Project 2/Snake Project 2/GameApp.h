@@ -16,9 +16,13 @@ private:
 
 	long lastTickEnd;
 
+	bool autoPlay;
+	std::vector<TilePos> hamiltonianCycleEven;
+	int hamiltonianCounter = 0;
+
 public:
 
-	GameApp();
+	GameApp(bool autoPlay = false);
 
 	Tile& getTile(TilePos pos);
 
@@ -32,6 +36,7 @@ public:
 	bool moveSnake();
 	bool isOutOfBounds(TilePos pos);
 
+	std::vector<TilePos> getHamiltonianCycleForEvenRows();
 	void resetGameState();
 	void replaceRandomApple();
 	void decreaseTickSpeed();
