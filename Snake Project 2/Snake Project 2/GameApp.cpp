@@ -36,7 +36,7 @@ void GameApp::startGameLoop()
 
         this->state.processTick = currentTime - this->lastTickEnd >= this->state.tickSpeed;
 
-        if (this->state.processTick) 
+        if (this->state.processTick && !this->state.gameOver) 
         {
             SDL_Event keyboardEvent;
 
@@ -61,29 +61,21 @@ void GameApp::startGameLoop()
             this->state.snake.curDirection = snakeNewDir;
             
             this->moveSnake();
-
-            if (this->state.gameOver)
-            {
-                
-            }
         }
 
         gameUI->renderTick(this->state);
 
-        if (this->state.gameOver)
+        //Exit the game after 5 seconds of death screen
+        if (this->state.gameOver && currentTime - this->lastTickEnd > 5000)
         {
-            //TODO: Add functionality for restarting the game
-            SDL_Delay(5000);
             exit(0);
         }
 
-        if (this->state.processTick)
+        if (this->state.processTick && !this->state.gameOver)
         {
             this->state.processTick = false;
             this->lastTickEnd = SDL_GetTicks64();
         }
-
-        /*SDL_Delay(this->tickSpeed);*/
     }
 }
 

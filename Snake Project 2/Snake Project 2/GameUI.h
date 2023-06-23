@@ -56,6 +56,7 @@ private:
 
     std::unique_ptr<sdl2::texture_ptr_t> timeElapsedTxt = nullptr;
     std::unique_ptr<sdl2::texture_ptr_t> collectedApplesTxt = nullptr;
+    std::unique_ptr<sdl2::texture_ptr_t> gameOverTxt = nullptr;
 
     //Mapping the tiles of the tileset (the .png file) to their coordinates, so we can iterate through the coordinates and 
     //load all the textures one by one
@@ -88,14 +89,17 @@ private:
     bool loadEmptyTile();
     bool loadTileTexture(std::unique_ptr<sdl2::texture_ptr_t>& targetTexture, TilePos pos);
     bool loadTilesetTextures();
+
+    bool loadText(std::unique_ptr<sdl2::texture_ptr_t>& targetTexture, std::string text, TTF_Font* font);
     bool loadTimeElapsedTexture(long curTime);
     bool loadCollectedApplesTexture(long collectedApples);
+    bool loadGameOverTexture();
 
     void renderEmptyTileOnCurrentRenderer();
 
     void renderGridTile(const Tile& tile);
     void renderGrid(const std::vector<std::vector<Tile>>& grid);
-    void renderTextUI(int collectedApples);
+    void renderTextUI(const GameState& state);
 
 public:
     GameUI();

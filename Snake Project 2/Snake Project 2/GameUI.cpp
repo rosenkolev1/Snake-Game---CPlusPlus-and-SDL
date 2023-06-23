@@ -180,6 +180,27 @@ bool GameUI::setTextFont()
     return true;
 }
 
+bool GameUI::loadText(std::unique_ptr<sdl2::texture_ptr_t>& targetTexture, std::string text, TTF_Font* font)
+{
+    sdl2::surf_ptr_t textSurface = sdl2::createText(font,
+        text.c_str(), GC::TEXT_COLOR);
+
+    if (!textSurface.get())
+    {
+        return false;
+    }
+
+    targetTexture = std::make_unique<sdl2::texture_ptr_t>(
+        sdl2::createTextureFromSurface(this->sdlRenderer->get(), textSurface.get()));
+
+    if (!targetTexture->get())
+    {
+        return false;
+    }
+
+    return true;
+}
+
 bool GameUI::loadTimeElapsedTexture(long curTime)
 {
     long totalSeconds = curTime / 1000;
@@ -216,23 +237,15 @@ bool GameUI::loadTimeElapsedTexture(long curTime)
 
 bool GameUI::loadCollectedApplesTexture(long collectedApples)
 {
-    sdl2::surf_ptr_t textSurface = sdl2::createText(this->textFont->get(), 
-        (GC::COLLECTED_APPLES_TXT + std::to_string(collectedApples)).c_str(), GC::TEXT_COLOR);
+    return this->loadText(this->collectedApplesTxt, GC::COLLECTED_APPLES_TXT + std::to_string(collectedApples), 
+        this->textFont->get());
+}
 
-    if (!textSurface.get())
-    {
-        return false;
-    }
+bool GameUI::loadGameOverTexture()
+{
+    auto fontPtr = sdl2::createFont(GC::FONT_PATH, GC::GAME_OVER_FONT_SIZE);
 
-    this->collectedApplesTxt = std::make_unique<sdl2::texture_ptr_t>(
-        sdl2::createTextureFromSurface(this->sdlRenderer->get(), textSurface.get()));
-
-    if (!this->collectedApplesTxt->get())
-    {
-        return false;
-    }
-
-    return true;
+    return this->loadText(this->gameOverTxt, GC::GAME_OVER_TXT, fontPtr.get());
 }
 
 void GameUI::renderEmptyTileOnCurrentRenderer()
@@ -286,7 +299,7 @@ void GameUI::renderGrid(const std::vector<std::vector<Tile>>& grid)
     }
 }
 
-void GameUI::renderTextUI(int collectedApples)
+void GameUI::renderTextUI(const GameState& state)
 {
     //Load time elapsed texture
     if (!this->loadTimeElapsedTexture(SDL_GetTicks64()))
@@ -298,13 +311,25 @@ void GameUI::renderTextUI(int collectedApples)
     SDL_RenderCopy(this->sdlRenderer->get(), this->timeElapsedTxt->get(), NULL, &GC::TIME_ELAPSED_RECT);
 
     //Load apples collected
-    if (!this->loadCollectedApplesTexture(collectedApples))
+    if (!this->loadCollectedApplesTexture(state.collectedApples))
     {
         cerr << "Error loading the collected apples texture: " << SDL_GetError() << endl;
         return;
     }
 
     SDL_RenderCopy(this->sdlRenderer->get(), this->collectedApplesTxt->get(), NULL, &GC::COLLECTED_APPLES_RECT);
+
+    //Render game over text if game is over
+    if (state.gameOver)
+    {
+        if (!this->loadGameOverTexture())
+        {
+            cerr << "Error loading the game over texture: " << SDL_GetError() << endl;
+            return;
+        }
+
+        SDL_RenderCopy(this->sdlRenderer->get(), this->gameOverTxt->get(), NULL, &GC::GAME_OVER_RECT);
+    }
 }
 
 void GameUI::renderTick(const GameState& gameState)
@@ -315,7 +340,7 @@ void GameUI::renderTick(const GameState& gameState)
     this->renderGrid(gameState.grid);
 
     //Render the text UI
-    this->renderTextUI(gameState.collectedApples);
+    this->renderTextUI(gameState);
 
     SDL_RenderPresent(this->sdlRenderer->get());
 }

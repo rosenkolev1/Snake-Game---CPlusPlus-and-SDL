@@ -100,7 +100,9 @@ namespace sdl2
     // Create a surface for text
     inline surf_ptr_t createText(TTF_Font* font, const char* text, SDL_Color color)
     {
-        return createResource(TTF_RenderText_Solid, SDL_FreeSurface, font, text, color);
+        //(fontPtr.get(), GC::GAME_OVER_TXT.c_str(), GC::TEXT_COLOR, NULL)
+        return createResource(TTF_RenderUTF8_Blended_Wrapped, SDL_FreeSurface, font, text, color, NULL);
+        //return createResource(TTF_RenderText_Solid, SDL_FreeSurface, font, text, color);
     }
 
     // Create a texture from a renderer and a surface

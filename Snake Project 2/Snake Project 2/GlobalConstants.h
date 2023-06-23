@@ -17,6 +17,7 @@ public:
 
     static const inline char FONT_PATH[] = "./Fonts/OpenSans_VariableFont.ttf";
     static const inline int FONT_SIZE = 20;
+    static const inline int GAME_OVER_FONT_SIZE = 64;
     static const inline SDL_Color TEXT_COLOR = 
     { 
         .r = 255, 
@@ -25,8 +26,12 @@ public:
         .a = 100
     };
 
+    static const inline SDL_Keycode RESTART_KEY = SDLK_r;
+
     static const inline std::string TIME_ELAPSED_TXT = "Time Elapsed: ";
     static const inline std::string COLLECTED_APPLES_TXT = "Apples Collected: ";
+    static const inline std::string GAME_OVER_TXT = "           Game Over :(\nPress " + std::string(1, (char)RESTART_KEY)
+        + std::string(" to restart the game!!!");
 
     static const inline char GAME_TILESET_PATH[] = "./Images/snake_graphics_tileset.png";
 
@@ -88,6 +93,14 @@ public:
         .y = GAME_GRID_UPPER_BORDER - 100,
         .w = 200,
         .h = 50,
+    };
+
+    static const inline SDL_Rect GAME_OVER_RECT =
+    {
+        .x = (GAME_WINDOW_W - 600) / 2,
+        .y = (GAME_WINDOW_H - 200) / 2,
+        .w = 600,
+        .h = 200,
     };
 
     static const inline TilePos SNAKE_DEFAULT_SPAWN = { 0, 0 };
