@@ -330,8 +330,7 @@ void GameUI::renderTextUI(const GameState& state)
     if (state.gameOver)
     {
         //TODO: Optimise the loading of the game over and won texture to make them only load once upon the first death or win only
-
-        if (!this->loadGameOverTexture())
+        if (this->gameOverTxt == nullptr && !this->loadGameOverTexture())
         {
             cerr << "Error loading the game over texture: " << SDL_GetError() << endl;
             return;
@@ -341,7 +340,7 @@ void GameUI::renderTextUI(const GameState& state)
     }
     else if (state.gameWon)
     {
-        if (!this->loadGameWonTexture())
+        if (this->gameWonTxt == nullptr && !this->loadGameWonTexture())
         {
             cerr << "Error loading the game over texture: " << SDL_GetError() << endl;
             return;

@@ -134,7 +134,6 @@
     <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="GameUI.cpp" />
-    <ClCompile Include="GlobalConstants.cpp" />
     <ClCompile Include="ScreenPos.cpp" />
     <ClCompile Include="Snake Project 2.cpp" />
     <ClCompile Include="Snake.cpp" />

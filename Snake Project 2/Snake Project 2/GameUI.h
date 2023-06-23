@@ -56,6 +56,7 @@ private:
 
     std::unique_ptr<sdl2::texture_ptr_t> timeElapsedTxt = nullptr;
     std::unique_ptr<sdl2::texture_ptr_t> collectedApplesTxt = nullptr;
+
     std::unique_ptr<sdl2::texture_ptr_t> gameOverTxt = nullptr;
     std::unique_ptr<sdl2::texture_ptr_t> gameWonTxt = nullptr;
 
