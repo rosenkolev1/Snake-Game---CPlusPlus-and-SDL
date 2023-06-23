@@ -44,18 +44,4 @@ GameState::GameState()
         }
         else tile.snakeSprite = SnakeSprite::BODY_HOR;
     }
-
-    /*for (int col )*/
-
-    /*Tile& snakeHeadTile = this->grid[this->snake.tiles[0].row][this->snake.tiles[0].col];
-    Tile& snakeBodyTile = this->grid[this->snake.tiles[1].row][this->snake.tiles[1].col];
-    Tile& snakeTailTile = this->grid[this->snake.tiles[2].row][this->snake.tiles[2].col];*/
-
-    /*snakeHeadTile.isSnake = true;
-    snakeBodyTile.isSnake = true;
-    snakeTailTile.isSnake = true;
-
-    snakeHeadTile.snakeSprite = SnakeSprite::HEAD_RIGHT;
-    snakeBodyTile.snakeSprite = SnakeSprite::BODY_HOR;
-    snakeTailTile.snakeSprite = SnakeSprite::TAIL_LEFT;*/
 }

@@ -54,8 +54,8 @@ public:
 
     static const inline char GAME_WINDOW_TITLE[] = "Snake Game";
 
-    static const int GAME_GRID_ROWS_COUNT = 30;
-    static const int GAME_GRID_COLS_COUNT = 30;
+    static const int GAME_GRID_ROWS_COUNT = 8;
+    static const int GAME_GRID_COLS_COUNT = 8;
 
     //The GAME_WINDOW_X and GAME_WINDOW_Y are applied from both sides (left and right for X and up and down for Y)
     static const int GAME_WINDOW_X = 180;

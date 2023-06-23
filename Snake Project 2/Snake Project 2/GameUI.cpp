@@ -70,7 +70,7 @@ GameUI::GameUI()
         return;
     }
 
-    //Initialize the snake sprites mape here
+    //Initialize the snake sprites map here
     this->SNAKE_SPRITE_TO_TEXTURE_MAP =
     {
         { SnakeSprite::NONE, this->emptyTile.get()},

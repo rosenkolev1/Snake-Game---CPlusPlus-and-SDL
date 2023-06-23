@@ -22,7 +22,7 @@ GameApp::GameApp(bool autoPlay)
     this->hamiltonianCounter = 0;
     this->autoPlay = autoPlay;
 
-    if (autoPlay)
+    if (autoPlay && this->hamiltonianCycleEven.empty())
     {
         this->hamiltonianCycleEven = this->getHamiltonianCycleForEvenRows();
     }
@@ -131,6 +131,8 @@ void GameApp::resetGameState()
     this->replaceRandomApple();
 
     this->state.lastGameOverTime = SDL_GetTicks64();
+
+    this->hamiltonianCounter = 0;
 }
 
 std::vector<TilePos> GameApp::getHamiltonianCycleForEvenRows()
