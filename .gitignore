@@ -399,3 +399,7 @@ FodyWeavers.xsd
 
 *.zip
 
+#SDL libraries
+/Snake Project 2/SDL2-2.26.5
+/Snake Project 2/SDL2_ttf-2.20.2
+/Snake Project 2/SDL2_image-2.6.3 VC++

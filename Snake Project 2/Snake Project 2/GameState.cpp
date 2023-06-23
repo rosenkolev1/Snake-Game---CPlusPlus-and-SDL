@@ -1,21 +1,23 @@
 #include "GameState.h"
 
-GameState::GameState()
+GameState::GameState(const GlobalParams& globalParams)
+    :GP(globalParams),
+    snake(Snake(this->GP, this->GP.SNAKE_DEFAULT_SPAWN))
 {
     this->curTimeElapsed = 0;
     this->lastGameOverTime = 0;
     this->gameWon = false;
     this->gameOver = false;
     this->processTick = true;
-    this->snake = Snake(GC::SNAKE_DEFAULT_SPAWN);
-    this->tickSpeed = GC::DEFAULT_TICK_SPEED;
+    //this->snake = Snake(this->GP, this->GP.SNAKE_DEFAULT_SPAWN);
+    this->tickSpeed = this->GP.DEFAULT_TICK_SPEED;
 
     //Initialize the grid
-    for (int row = 0; row < GC::GAME_GRID_ROWS_COUNT; row++)
+    for (int row = 0; row < this->GP.GAME_GRID_ROWS_COUNT; row++)
     {
         this->grid.push_back(std::vector<Tile>());
 
-        for (int col = 0; col < GC::GAME_GRID_COLS_COUNT; col++)
+        for (int col = 0; col < this->GP.GAME_GRID_COLS_COUNT; col++)
         {
             this->grid[row].push_back(Tile(TilePos(row, col), false, false, SnakeSprite::NONE));
         }
@@ -24,7 +26,7 @@ GameState::GameState()
     this->collectedApples = 0;
 
     //Set the tile flags for the snake and for the apple
-    this->applePosition = TilePos(GC::APPLE_DEFAULT_SPAWN);
+    this->applePosition = TilePos(this->GP.APPLE_DEFAULT_SPAWN);
     Tile& appleTile = this->grid[this->applePosition.row][this->applePosition.col];
     appleTile.isApple = true;
 
@@ -38,7 +40,7 @@ GameState::GameState()
         {
             tile.snakeSprite = SnakeSprite::HEAD_RIGHT;
         }
-        else if (i == GC::SNAKE_DEFAULT_LENGTH - 1)
+        else if (i == this->GP.SNAKE_DEFAULT_LENGTH - 1)
         {
             tile.snakeSprite = SnakeSprite::TAIL_LEFT;
         }

@@ -1,7 +1,7 @@
 #pragma once
 #include "GameUI.h"
 #include "Tile.h"
-#include "GlobalConstants.h"
+#include "GlobalParams.h"
 #include "GameState.h"
 #include "MoveDir.h"
 #include <map>
@@ -14,17 +14,17 @@ private:
 
 	std::unique_ptr<GameUI> gameUI = nullptr;
 
+	GlobalParams GP;
 	GameState state;
 
 	long lastTickEnd;
 
-	bool autoPlay;
 	std::vector<TilePos> hamiltonianCycle;
 	int hamiltonianCounter = 0;
 
 public:
 
-	GameApp(bool autoPlay = false);
+	GameApp(const GlobalParams& globalParams);
 
 	Tile& getTile(TilePos pos);
 

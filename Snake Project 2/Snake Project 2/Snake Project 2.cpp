@@ -12,8 +12,11 @@
 //Initialize the window, the renderer and the game sprites
 int main(int argc, char* argv[])
 {
+    //Initialize the global parameters for the app
+    GlobalParams params = GlobalParams();
+
     //Initialize the app with the window and the UI textures
-    GameApp app = GameApp();
+    GameApp app = GameApp(params);
 
     //Start the main application/game loop
     app.startGameLoop();

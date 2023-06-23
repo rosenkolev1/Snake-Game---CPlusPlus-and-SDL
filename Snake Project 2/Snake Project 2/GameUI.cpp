@@ -1,8 +1,9 @@
 #include "GameUI.h"
-#include "GlobalConstants.h"
+#include "GlobalParams.h"
 #include <sstream>
 
-GameUI::GameUI() 
+GameUI::GameUI(const GlobalParams& globalParams)
+    :GP(globalParams)
 {
     this->sdlSystem = std::make_unique<sdl2::sdlsystem_ptr_t>(sdl2::createSdlSystem(SDL_INIT_EVERYTHING));
     if (!*this->sdlSystem) 
@@ -12,7 +13,8 @@ GameUI::GameUI()
     }
 
     this->sdlWindow = std::make_unique<sdl2::window_ptr_t>(sdl2::window_ptr_t(
-        sdl2::createWindow(GC::GAME_WINDOW_TITLE, GC::GAME_WINDOW_X, GC::GAME_WINDOW_Y, GC::GAME_WINDOW_W, GC::GAME_WINDOW_H,
+        sdl2::createWindow(this->GP.GAME_WINDOW_TITLE.c_str(), this->GP.GAME_WINDOW_X, 
+            this->GP.GAME_WINDOW_Y, this->GP.GAME_WINDOW_W, this->GP.GAME_WINDOW_H,
         SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE)));
 
     if (!*this->sdlWindow) 
@@ -29,7 +31,7 @@ GameUI::GameUI()
         return;
     }
 
-    this->sdlSurface = std::make_unique<sdl2::surf_ptr_t>(sdl2::surf_ptr_t(sdl2::createPng(GC::GAME_TILESET_PATH)));
+    this->sdlSurface = std::make_unique<sdl2::surf_ptr_t>(sdl2::surf_ptr_t(sdl2::createPng(this->GP.GAME_TILESET_PATH.c_str())));
     if (!*this->sdlSurface) 
     {
         cerr << "Error creating the game tileset surface: " << SDL_GetError() << endl;
@@ -96,7 +98,7 @@ GameUI::GameUI()
 bool GameUI::loadEmptyTile()
 {
     this->emptyTile = std::make_unique<sdl2::texture_ptr_t>(sdl2::createTexture(this->sdlRenderer->get(),
-        SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, GC::GAME_TILE_W, GC::GAME_TILE_H));
+        SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, this->GP.GAME_TILE_W, this->GP.GAME_TILE_H));
 
     // Set target render to the needed texture
     SDL_SetRenderTarget(this->sdlRenderer->get(), this->emptyTile->get());
@@ -104,8 +106,8 @@ bool GameUI::loadEmptyTile()
     SDL_Rect rect;
     rect.x = 0;
     rect.y = 0;
-    rect.w = GC::GAME_TILE_W;
-    rect.h = GC::GAME_TILE_H;
+    rect.w = this->GP.GAME_TILE_W;
+    rect.h = this->GP.GAME_TILE_H;
 
     this->renderEmptyTileOnCurrentRenderer();
 
@@ -120,7 +122,7 @@ bool GameUI::loadEmptyTile()
 bool GameUI::loadTileTexture(std::unique_ptr<sdl2::texture_ptr_t>& targetTexture, TilePos pos) 
 {
     targetTexture = std::make_unique<sdl2::texture_ptr_t>(sdl2::createTexture(this->sdlRenderer->get(),
-        SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, GC::GAME_TILE_W, GC::GAME_TILE_H));
+        SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, this->GP.GAME_TILE_W, this->GP.GAME_TILE_H));
 
     // Set target render to the needed texture
     SDL_SetRenderTarget(this->sdlRenderer->get(), targetTexture->get());
@@ -129,10 +131,10 @@ bool GameUI::loadTileTexture(std::unique_ptr<sdl2::texture_ptr_t>& targetTexture
     this->renderEmptyTileOnCurrentRenderer();
 
     SDL_Rect srcRect;
-    srcRect.x = pos.col * GC::GAME_TILESET_TILE_W;
-    srcRect.y = pos.row * GC::GAME_TILESET_TILE_H;
-    srcRect.w = GC::GAME_TILESET_TILE_W;
-    srcRect.h = GC::GAME_TILESET_TILE_H;
+    srcRect.x = pos.col * this->GP.GAME_TILESET_TILE_W;
+    srcRect.y = pos.row * this->GP.GAME_TILESET_TILE_H;
+    srcRect.w = this->GP.GAME_TILESET_TILE_W;
+    srcRect.h = this->GP.GAME_TILESET_TILE_H;
 
     //Draw on top of the current target texture, which should be an empty file
     SDL_RenderCopy(this->sdlRenderer->get(), this->sdlTexture->get(), &srcRect, NULL);
@@ -146,9 +148,9 @@ bool GameUI::loadTileTexture(std::unique_ptr<sdl2::texture_ptr_t>& targetTexture
 
 bool GameUI::loadTilesetTextures() 
 {
-    for (int row = 0; row < GC::GAME_TILESET_ROWS_COUNT; row++)
+    for (int row = 0; row < this->GP.GAME_TILESET_ROWS_COUNT; row++)
     {
-        for (int col = 0; col < GC::GAME_TILESET_COLUMNS_COUNT; col++)
+        for (int col = 0; col < this->GP.GAME_TILESET_COLUMNS_COUNT; col++)
         {
             TilePos curTilePos = TilePos(row, col);
             auto targetTextureIt = this->TILESET_TILE_TO_TEXTURE_MAP.find(curTilePos);
@@ -169,7 +171,7 @@ bool GameUI::loadTilesetTextures()
 
 bool GameUI::setTextFont()
 {
-    this->textFont = std::make_unique<sdl2::font_ptr_t>(sdl2::createFont(GC::FONT_PATH, GC::FONT_SIZE));
+    this->textFont = std::make_unique<sdl2::font_ptr_t>(sdl2::createFont(this->GP.FONT_PATH.c_str(), this->GP.FONT_SIZE));
 
     //Check for validity
     if (!textFont->get()) 
@@ -183,7 +185,7 @@ bool GameUI::setTextFont()
 bool GameUI::loadText(std::unique_ptr<sdl2::texture_ptr_t>& targetTexture, std::string text, TTF_Font* font)
 {
     sdl2::surf_ptr_t textSurface = sdl2::createText(font,
-        text.c_str(), GC::TEXT_COLOR);
+        text.c_str(), this->GP.TEXT_COLOR);
 
     if (!textSurface.get())
     {
@@ -217,7 +219,7 @@ bool GameUI::loadTimeElapsedTexture(long curTime)
 
     std::string timeStr = stringStream.str();
 
-    sdl2::surf_ptr_t textSurface = sdl2::createText(this->textFont->get(), (GC::TIME_ELAPSED_TXT + timeStr).c_str(), GC::TEXT_COLOR);
+    sdl2::surf_ptr_t textSurface = sdl2::createText(this->textFont->get(), (this->GP.TIME_ELAPSED_TXT + timeStr).c_str(), this->GP.TEXT_COLOR);
 
     if (!textSurface.get())
     {
@@ -237,32 +239,32 @@ bool GameUI::loadTimeElapsedTexture(long curTime)
 
 bool GameUI::loadCollectedApplesTexture(long collectedApples)
 {
-    return this->loadText(this->collectedApplesTxt, GC::COLLECTED_APPLES_TXT + std::to_string(collectedApples), 
+    return this->loadText(this->collectedApplesTxt, this->GP.COLLECTED_APPLES_TXT + std::to_string(collectedApples), 
         this->textFont->get());
 }
 
 bool GameUI::loadGameOverTexture()
 {
-    auto fontPtr = sdl2::createFont(GC::FONT_PATH, GC::GAME_OVER_FONT_SIZE);
+    auto fontPtr = sdl2::createFont(this->GP.FONT_PATH.c_str(), this->GP.GAME_OVER_FONT_SIZE);
 
-    return this->loadText(this->gameOverTxt, GC::GAME_OVER_TXT, fontPtr.get());
+    return this->loadText(this->gameOverTxt, this->GP.GAME_OVER_TXT, fontPtr.get());
 }
 
 bool GameUI::loadGameWonTexture()
 {
-    auto fontPtr = sdl2::createFont(GC::FONT_PATH, GC::GAME_WON_FONT_SIZE);
+    auto fontPtr = sdl2::createFont(this->GP.FONT_PATH.c_str(), this->GP.GAME_WON_FONT_SIZE);
 
-    return this->loadText(this->gameWonTxt, GC::GAME_WON_TXT, fontPtr.get());
+    return this->loadText(this->gameWonTxt, this->GP.GAME_WON_TXT, fontPtr.get());
 }
 
 void GameUI::renderEmptyTileOnCurrentRenderer()
 {
     //Add empty tile as background to the texture
     SDL_SetRenderDrawColor(this->sdlRenderer->get(),
-        GC::EMPTY_TILE_COLOR.r,
-        GC::EMPTY_TILE_COLOR.g,
-        GC::EMPTY_TILE_COLOR.b,
-        GC::EMPTY_TILE_COLOR.a);
+        this->GP.EMPTY_TILE_COLOR.r,
+        this->GP.EMPTY_TILE_COLOR.g,
+        this->GP.EMPTY_TILE_COLOR.b,
+        this->GP.EMPTY_TILE_COLOR.a);
     SDL_RenderFillRect(this->sdlRenderer->get(), NULL);
     SDL_SetRenderDrawColor(this->sdlRenderer->get(), 0, 0, 0, 100);
 }
@@ -274,8 +276,8 @@ void GameUI::renderGridTile(const Tile& tile)
     SDL_Rect dstRect;
     dstRect.x = screenPos.x;
     dstRect.y = screenPos.y;
-    dstRect.w = GC::GAME_TILE_W;
-    dstRect.h = GC::GAME_TILE_H;
+    dstRect.w = this->GP.GAME_TILE_W;
+    dstRect.h = this->GP.GAME_TILE_H;
 
     SDL_Texture* tileTexture = nullptr;
 
@@ -315,7 +317,7 @@ void GameUI::renderTextUI(const GameState& state)
         return;
     }
 
-    SDL_RenderCopy(this->sdlRenderer->get(), this->timeElapsedTxt->get(), NULL, &GC::TIME_ELAPSED_RECT);
+    SDL_RenderCopy(this->sdlRenderer->get(), this->timeElapsedTxt->get(), NULL, &this->GP.TIME_ELAPSED_RECT);
 
     //Load apples collected
     if (!this->loadCollectedApplesTexture(state.collectedApples))
@@ -324,19 +326,18 @@ void GameUI::renderTextUI(const GameState& state)
         return;
     }
 
-    SDL_RenderCopy(this->sdlRenderer->get(), this->collectedApplesTxt->get(), NULL, &GC::COLLECTED_APPLES_RECT);
+    SDL_RenderCopy(this->sdlRenderer->get(), this->collectedApplesTxt->get(), NULL, &this->GP.COLLECTED_APPLES_RECT);
 
     //Render game over text if game is over
     if (state.gameOver)
     {
-        //TODO: Optimise the loading of the game over and won texture to make them only load once upon the first death or win only
         if (this->gameOverTxt == nullptr && !this->loadGameOverTexture())
         {
             cerr << "Error loading the game over texture: " << SDL_GetError() << endl;
             return;
         }
 
-        SDL_RenderCopy(this->sdlRenderer->get(), this->gameOverTxt->get(), NULL, &GC::GAME_OVER_RECT);
+        SDL_RenderCopy(this->sdlRenderer->get(), this->gameOverTxt->get(), NULL, &this->GP.GAME_OVER_RECT);
     }
     else if (state.gameWon)
     {
@@ -346,7 +347,7 @@ void GameUI::renderTextUI(const GameState& state)
             return;
         }
 
-        SDL_RenderCopy(this->sdlRenderer->get(), this->gameWonTxt->get(), NULL, &GC::GAME_OVER_RECT);
+        SDL_RenderCopy(this->sdlRenderer->get(), this->gameWonTxt->get(), NULL, &this->GP.GAME_OVER_RECT);
     }
 }
 
@@ -370,5 +371,5 @@ bool GameUI::isValid()
 
 ScreenPos GameUI::getScreenPosForTile(const TilePos& pos)
 {
-    return ScreenPos(GC::GAME_GRID_LEFT_BORDER + GC::GAME_TILE_W * pos.col, GC::GAME_GRID_UPPER_BORDER + GC::GAME_TILE_H * pos.row);
+    return ScreenPos(this->GP.GAME_GRID_LEFT_BORDER + this->GP.GAME_TILE_W * pos.col, this->GP.GAME_GRID_UPPER_BORDER + this->GP.GAME_TILE_H * pos.row);
 }

@@ -2,11 +2,13 @@
 #include <vector>
 #include "Tile.h"
 #include "Snake.h"
-#include "GlobalConstants.h"
+#include "GlobalParams.h"
 
 class GameState
 {
 public:
+
+	GlobalParams GP;
 
 	std::vector<std::vector<Tile>> grid;
 
@@ -26,6 +28,6 @@ public:
 	long lastGameOverTime;
 	long curTimeElapsed;
 
-	GameState();
+	GameState(const GlobalParams& globalParams);
 };
 

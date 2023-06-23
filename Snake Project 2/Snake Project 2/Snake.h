@@ -2,13 +2,15 @@
 #include <vector>
 #include "TilePos.h"
 #include "Tile.h"
-#include "GlobalConstants.h"
+#include "GlobalParams.h"
 #include <map>
 #include "MoveDir.h"
 
 class Snake
 {
 public:
+	GlobalParams GP;
+
 	static const inline std::map<MoveDir, TilePos> MOVE_OFFSET_MAP =
 	{
 		{ MoveDir::UP, { -1, 0 } },
@@ -21,8 +23,8 @@ public:
 
 	std::vector<TilePos> tiles;
 
-	Snake(TilePos initialSpawnPos);
-	Snake();
+	Snake(const GlobalParams& globalParams, TilePos initialSpawnPos);
+	Snake(const GlobalParams& globalParams);
 
 	TilePos getHead();
 	TilePos getTail();

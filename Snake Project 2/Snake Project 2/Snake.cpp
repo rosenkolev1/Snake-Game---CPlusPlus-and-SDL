@@ -1,12 +1,13 @@
 #include "Snake.h"
 
-Snake::Snake(TilePos initialSpawnPos)
+Snake::Snake(const GlobalParams& globalParams, TilePos initialSpawnPos)
+	:GP(globalParams)
 {
 	this->tiles = std::vector<TilePos>();
 
-	for (int i = 0; i < GC::SNAKE_DEFAULT_LENGTH; i++)
+	for (int i = 0; i < this->GP.SNAKE_DEFAULT_LENGTH; i++)
 	{
-		this->tiles.push_back({ initialSpawnPos.row, initialSpawnPos.col + GC::SNAKE_DEFAULT_LENGTH - 1 - i });
+		this->tiles.push_back({ initialSpawnPos.row, initialSpawnPos.col + this->GP.SNAKE_DEFAULT_LENGTH - 1 - i });
 	}
 
 	this->tiles.push_back(this->tiles.back());
@@ -14,8 +15,8 @@ Snake::Snake(TilePos initialSpawnPos)
 	this->curDirection = MoveDir::RIGHT;
 }
 
-Snake::Snake()
-	:Snake(GC::SNAKE_DEFAULT_SPAWN)
+Snake::Snake(const GlobalParams& globalParams)
+	:Snake(globalParams, this->GP.SNAKE_DEFAULT_SPAWN)
 {
 }
 

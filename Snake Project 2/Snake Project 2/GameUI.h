@@ -12,6 +12,7 @@
 #include "Tile.h"
 #include "SDL_ttf.h"
 #include "GameState.h"
+#include "GlobalParams.h"
 
 using std::cerr;
 using std::endl;
@@ -20,6 +21,8 @@ class GameUI
 {
 
 private:
+
+    GlobalParams GP;
 
     bool validState = false;
 
@@ -105,7 +108,7 @@ private:
     void renderTextUI(const GameState& state);
 
 public:
-    GameUI();
+    GameUI(const GlobalParams& globalParams);
 
     void renderTick(const GameState& gameState);
     bool isValid();

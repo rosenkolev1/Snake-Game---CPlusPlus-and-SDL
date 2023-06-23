@@ -2,14 +2,16 @@
 #include <stack>
 #include <random>
 
-GameApp::GameApp(bool autoPlay)
+GameApp::GameApp(const GlobalParams& globalParams)
+    :GP(globalParams),
+    state(this->GP)
 {
     //Memory leak test
-    /*for (int i = 0; i < 100; i++) {
+    /*for (int i = 0; i < 1000; i++) {
         GameUI gameUI = GameUI();
     }*/
 
-    this->gameUI = std::make_unique<GameUI>(GameUI());
+    this->gameUI = std::make_unique<GameUI>(GameUI(this->GP));
 
     if (!gameUI->isValid())
     {
@@ -17,18 +19,19 @@ GameApp::GameApp(bool autoPlay)
         exit(2);
     }
 
+    //this->state = GameState(this->GP);
+
     this->resetGameState();
 
     this->hamiltonianCounter = 0;
-    this->autoPlay = autoPlay;
 
-    if (autoPlay && this->hamiltonianCycle.empty())
+    if (this->GP.AUTO_PLAY_ENABLED && this->hamiltonianCycle.empty())
     {
-        if (GC::GAME_GRID_ROWS_COUNT % 2 == 0)
+        if (this->GP.GAME_GRID_ROWS_COUNT % 2 == 0)
         {
             this->hamiltonianCycle = this->getHamiltonianCycleForEvenRows();
         }
-        else if (GC::GAME_GRID_ROWS_COUNT % 2 == 1 && GC::GAME_GRID_COLS_COUNT % 2 == 0)
+        else if (this->GP.GAME_GRID_ROWS_COUNT % 2 == 1 && this->GP.GAME_GRID_COLS_COUNT % 2 == 0)
         {
             this->hamiltonianCycle = this->getHamiltonianCycleForEvenCols();
         }
@@ -67,9 +70,9 @@ void GameApp::startGameLoop()
             {
                 if (keyboardEvent.type == SDL_KEYDOWN)
                 {
-                    auto keyIt = GC::KEY_TO_MOVE_MAP.find(keyboardEvent.key.keysym.sym); 
+                    auto keyIt = this->GP.KEY_TO_MOVE_MAP.find(keyboardEvent.key.keysym.sym); 
 
-                    if (keyIt != GC::KEY_TO_MOVE_MAP.end())
+                    if (keyIt != this->GP.KEY_TO_MOVE_MAP.end())
                     {
                         if (std::count(keyIt->second.begin(), keyIt->second.end(), this->state.snake.curDirection) == 0)
                         {
@@ -81,7 +84,7 @@ void GameApp::startGameLoop()
 
             this->state.snake.curDirection = snakeNewDir;
 
-            if (this->autoPlay)
+            if (this->GP.AUTO_PLAY_ENABLED)
             {
                 auto nextTile = this->hamiltonianCycle[this->hamiltonianCounter++];
                 this->hamiltonianCounter %= this->hamiltonianCycle.size();
@@ -96,7 +99,7 @@ void GameApp::startGameLoop()
 
             while (SDL_PollEvent(&keyboardEvent))
             {
-                if (keyboardEvent.type == SDL_KEYDOWN && keyboardEvent.key.keysym.sym == GC::RESTART_KEY)
+                if (keyboardEvent.type == SDL_KEYDOWN && keyboardEvent.key.keysym.sym == this->GP.RESTART_KEY)
                 {
                     this->resetGameState();
                 }
@@ -138,7 +141,7 @@ void GameApp::resetGameState()
 {
     this->lastTickEnd = 0;
 
-    this->state = GameState();
+    this->state = GameState(this->GP);
 
     //Spawn the apple randomly
     this->replaceRandomApple();
@@ -153,30 +156,24 @@ std::vector<TilePos> GameApp::getHamiltonianCycleForEvenCols()
     std::vector<TilePos> optimalMoves = std::vector<TilePos>();
 
     //First row except the first couple of tiles
-    for (int col = GC::SNAKE_DEFAULT_LENGTH; col < GC::GAME_GRID_COLS_COUNT; col++)
+    for (int col = this->GP.SNAKE_DEFAULT_LENGTH; col < this->GP.GAME_GRID_COLS_COUNT; col++)
     {
         optimalMoves.push_back({ 0, col });
     }
 
-    //Last col
-    /*for (int row = 1; row < GC::GAME_GRID_ROWS_COUNT; row++)
-    {
-        optimalMoves.push_back({ row, GC::GAME_GRID_COLS_COUNT - 1 });
-    }*/
-
     //Almost everything else
-    for (int col = GC::GAME_GRID_COLS_COUNT - 1; col >= 0; col--)
+    for (int col = this->GP.GAME_GRID_COLS_COUNT - 1; col >= 0; col--)
     {
         if (col % 2 == 0)
         {
-            for (int row = GC::GAME_GRID_ROWS_COUNT - 1; row >= 1; row--)
+            for (int row = this->GP.GAME_GRID_ROWS_COUNT - 1; row >= 1; row--)
             {
                 optimalMoves.push_back({ row, col });
             }
         }
         else
         {
-            for (int row = 1; row < GC::GAME_GRID_ROWS_COUNT; row++)
+            for (int row = 1; row < this->GP.GAME_GRID_ROWS_COUNT; row++)
             {
                 optimalMoves.push_back({ row, col });
             }
@@ -184,7 +181,7 @@ std::vector<TilePos> GameApp::getHamiltonianCycleForEvenCols()
     }
 
     //First couple of tiles on the first row
-    for (int col = 0; col < GC::SNAKE_DEFAULT_LENGTH; col++)
+    for (int col = 0; col < this->GP.SNAKE_DEFAULT_LENGTH; col++)
     {
         optimalMoves.push_back({ 0, col });
     }
@@ -197,30 +194,30 @@ std::vector<TilePos> GameApp::getHamiltonianCycleForEvenRows()
     std::vector<TilePos> optimalMoves = std::vector<TilePos>();
 
     //First row except the first couple of tiles
-    for (int col = GC::SNAKE_DEFAULT_LENGTH; col < GC::GAME_GRID_COLS_COUNT; col++)
+    for (int col = this->GP.SNAKE_DEFAULT_LENGTH; col < this->GP.GAME_GRID_COLS_COUNT; col++)
     {
         optimalMoves.push_back({ 0, col });
     }
 
     //Last col
-    for (int row = 1; row < GC::GAME_GRID_ROWS_COUNT; row++)
+    for (int row = 1; row < this->GP.GAME_GRID_ROWS_COUNT; row++)
     {
-        optimalMoves.push_back({ row, GC::GAME_GRID_COLS_COUNT - 1 });
+        optimalMoves.push_back({ row, this->GP.GAME_GRID_COLS_COUNT - 1 });
     }
 
     //Almost everything else
-    for (int row = GC::GAME_GRID_ROWS_COUNT - 1; row >= 1; row--)
+    for (int row = this->GP.GAME_GRID_ROWS_COUNT - 1; row >= 1; row--)
     {
         if (row % 2 == 0)
         {
-            for (int col = 0; col < GC::GAME_GRID_COLS_COUNT - 1; col++)
+            for (int col = 0; col < this->GP.GAME_GRID_COLS_COUNT - 1; col++)
             {
                 optimalMoves.push_back({ row, col });
             }
         }
         else
         {
-            for (int col = GC::GAME_GRID_COLS_COUNT - 2; col >= 0; col--)
+            for (int col = this->GP.GAME_GRID_COLS_COUNT - 2; col >= 0; col--)
             {
                 optimalMoves.push_back({ row, col });
             }
@@ -228,7 +225,7 @@ std::vector<TilePos> GameApp::getHamiltonianCycleForEvenRows()
     }
 
     //First couple tiles on the first row
-    for (int col = 0; col < GC::SNAKE_DEFAULT_LENGTH; col++)
+    for (int col = 0; col < this->GP.SNAKE_DEFAULT_LENGTH; col++)
     {
         optimalMoves.push_back({ 0, col });
     }
@@ -279,11 +276,11 @@ void GameApp::replaceRandomApple()
 
 void GameApp::decreaseTickSpeed()
 {
-    if (!this->autoPlay)
+    if (!this->GP.AUTO_PLAY_ENABLED)
     {
-        this->state.tickSpeed -= GC::TICK_SPEED_DECREASE;
+        this->state.tickSpeed -= this->GP.TICK_SPEED_DECREASE;
 
-        if (this->state.tickSpeed < GC::TICK_SPEED_CAP) this->state.tickSpeed = GC::TICK_SPEED_CAP;
+        if (this->state.tickSpeed < this->GP.TICK_SPEED_CAP) this->state.tickSpeed = this->GP.TICK_SPEED_CAP;
     }
 }
 
@@ -309,7 +306,7 @@ bool GameApp::moveSnake()
         this->state.collectedApples++;
 
         //In this case, the player has won the game and collected all apples
-        if (this->state.collectedApples + GC::SNAKE_DEFAULT_LENGTH == GC::GAME_GRID_ROWS_COUNT * GC::GAME_GRID_COLS_COUNT)
+        if (this->state.collectedApples + this->GP.SNAKE_DEFAULT_LENGTH == this->GP.GAME_GRID_ROWS_COUNT * this->GP.GAME_GRID_COLS_COUNT)
         {
             this->state.gameWon = true;
         }

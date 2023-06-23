@@ -104,7 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\Job coding things\Coherent Labs\SDL2-2.26.5\include;D:\Job coding things\Coherent Labs\SDL2_image-2.6.3 VC++\include;D:\Job coding things\Coherent Labs\SDL2_ttf-2.20.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\SDL2-2.26.5\include;..\SDL2_image-2.6.3 VC++\include;..\SDL2_ttf-2.20.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>Default</LanguageStandard_C>
     </ClCompile>
@@ -134,6 +134,7 @@
     <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="GameUI.cpp" />
+    <ClCompile Include="GlobalParams.cpp" />
     <ClCompile Include="ScreenPos.cpp" />
     <ClCompile Include="Snake Project 2.cpp" />
     <ClCompile Include="Snake.cpp" />
@@ -150,7 +151,7 @@
     <ClInclude Include="GameApp.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="GameUI.h" />
-    <ClInclude Include="GlobalConstants.h" />
+    <ClInclude Include="GlobalParams.h" />
     <ClInclude Include="MoveDir.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="ScreenPos.h" />

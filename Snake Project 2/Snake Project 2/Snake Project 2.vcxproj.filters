@@ -57,6 +57,9 @@
     <ClCompile Include="Snake.cpp">
       <Filter>Source Files\Common</Filter>
     </ClCompile>
+    <ClCompile Include="GlobalParams.cpp">
+      <Filter>Source Files\Common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="SDL2.lib" />
@@ -71,7 +74,7 @@
     <ClInclude Include="GameApp.h">
       <Filter>Header Files\App</Filter>
     </ClInclude>
-    <ClInclude Include="GlobalConstants.h">
+    <ClInclude Include="GlobalParams.h">
       <Filter>Header Files\Common</Filter>
     </ClInclude>
     <ClInclude Include="Snake.h">
