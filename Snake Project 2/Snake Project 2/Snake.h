@@ -4,14 +4,7 @@
 #include "Tile.h"
 #include "GlobalConstants.h"
 #include <map>
-
-enum MoveDir
-{
-	Up = 0,
-	Right = 1,
-	Down = 2,
-	Left = 3
-};
+#include "MoveDir.h"
 
 class Snake
 {

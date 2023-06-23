@@ -153,6 +153,7 @@
     <ClInclude Include="GameState.h" />
     <ClInclude Include="GameUI.h" />
     <ClInclude Include="GlobalConstants.h" />
+    <ClInclude Include="MoveDir.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="ScreenPos.h" />
     <ClInclude Include="sdl2.h" />

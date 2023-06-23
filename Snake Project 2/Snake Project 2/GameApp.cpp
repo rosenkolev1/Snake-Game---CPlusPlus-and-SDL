@@ -16,6 +16,9 @@ GameApp::GameApp()
         exit(2);
     }
 
+    //Setup the Sdl event handling
+
+
     this->lastTickEnd = 0;
 
     this->state = GameState();
@@ -28,7 +31,7 @@ Tile& GameApp::getTile(TilePos pos)
 
 void GameApp::startGameLoop()
 {
-    int debugAlternateCounter = 1;
+    //int debugAlternateCounter = 1;
 
     while (true)
     {
@@ -36,14 +39,35 @@ void GameApp::startGameLoop()
 
         this->state.processTick = currentTime - this->lastTickEnd >= this->state.tickSpeed;
 
-        if (this->state.processTick) {
+        if (this->state.processTick) 
+        {
+            SDL_Event keyboardEvent;
+
+            MoveDir snakeNewDir = this->state.snake.curDirection;
+
             //TODO: Move snake based on keys pressed by the user
-             
+            while (SDL_PollEvent(&keyboardEvent))
+            {
+                if (keyboardEvent.type == SDL_KEYDOWN)
+                {
+                    auto keyIt = GC::KEY_TO_MOVE_MAP.find(keyboardEvent.key.keysym.sym); 
+
+                    if (keyIt != GC::KEY_TO_MOVE_MAP.end())
+                    {
+                        if (std::count(keyIt->second.begin(), keyIt->second.end(), this->state.snake.curDirection) == 0)
+                        {
+                            snakeNewDir = keyIt->second[0];
+                        }
+                    }                    
+                }
+            }
+
+            this->state.snake.curDirection = snakeNewDir;
             
             //this->state.snake.curDirection = (MoveDir)debugAlternateCounter;
             this->moveSnake(MoveDir::Left);
-            debugAlternateCounter += 1;
-            debugAlternateCounter %= 4;
+            /*debugAlternateCounter += 1;
+            debugAlternateCounter %= 4;*/
 
             if (this->state.gameOver)
             {
@@ -113,7 +137,7 @@ bool GameApp::moveSnake(MoveDir oldDirection)
         snake.tiles.push_back(snake.tiles.back());
     }
 
-    //Check if the snake hits itself
+    //Check if the snake hits itself.
     if (std::count(snake.tiles.begin(), snake.tiles.end() - 1, newHeadPos) > 0)
     {
         if (!(snake.tiles.back() == newHeadPos && devouredApple))

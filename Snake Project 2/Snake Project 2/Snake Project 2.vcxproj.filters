@@ -104,6 +104,9 @@
     <ClInclude Include="SnakeSprite.h">
       <Filter>Header Files\Common</Filter>
     </ClInclude>
+    <ClInclude Include="MoveDir.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Snake Project 2.rc">

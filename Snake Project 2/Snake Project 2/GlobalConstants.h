@@ -3,6 +3,9 @@
 #include "SDL.h"
 #include "TilePos.h"
 #include <string>
+#include "MoveDir.h"
+#include <map>
+#include <vector>
 
 class GlobalConstants
 {
@@ -88,6 +91,20 @@ public:
     static const inline TilePos SNAKE_DEFAULT_SPAWN = { 0, 0 };
     //static const inline TilePos APPLE_DEFAULT_SPAWN = { GAME_GRID_ROWS_COUNT - 1, GAME_GRID_COLS_COUNT - 1 };
     static const inline TilePos APPLE_DEFAULT_SPAWN = { 0, 10 };
+
+    // In the move dir vector, the first element shows what direction the button attempts to point us at
+    // The second move dir tells us what is the opposite direction of that (i.e. we cannot do a 180 degree turn)
+    static const inline std::map<SDL_Keycode, std::vector<MoveDir>> KEY_TO_MOVE_MAP =
+    {
+        { SDLK_a, { MoveDir::Left, MoveDir::Right } },
+        { SDLK_LEFT, { MoveDir::Left, MoveDir::Right } },
+        { SDLK_d, { MoveDir::Right, MoveDir::Left } },
+        { SDLK_RIGHT, { MoveDir::Right, MoveDir::Left } },
+        { SDLK_w, { MoveDir::Up, MoveDir::Down } },
+        { SDLK_UP, { MoveDir::Up, MoveDir::Down } },
+        { SDLK_s, { MoveDir::Down, MoveDir::Up } },
+        { SDLK_DOWN, {  MoveDir::Down, MoveDir::Up } },
+    };
 };
 
 using GC = GlobalConstants;

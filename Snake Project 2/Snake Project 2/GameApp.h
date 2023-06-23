@@ -3,6 +3,8 @@
 #include "Tile.h"
 #include "GlobalConstants.h"
 #include "GameState.h"
+#include "MoveDir.h"
+#include <map>
 
 class GameApp
 {
