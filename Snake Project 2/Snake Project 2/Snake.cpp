@@ -18,3 +18,13 @@ Snake::Snake()
 	:Snake(GC::SNAKE_DEFAULT_SPAWN)
 {
 }
+
+TilePos Snake::getHead()
+{
+	return this->tiles.front();
+}
+
+TilePos Snake::getTail()
+{
+	return this->tiles[this->tiles.size() - 2];
+}

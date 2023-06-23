@@ -11,7 +11,7 @@ class GlobalConstants
 {
 public:
 
-    static const int DEFAULT_TICK_SPEED = 1000;
+    static const int DEFAULT_TICK_SPEED = 200;
 
     static const inline char FONT_PATH[] = "./Fonts/OpenSans_VariableFont.ttf";
     static const inline int FONT_SIZE = 20;

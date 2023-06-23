@@ -1,5 +1,6 @@
 #include "GameApp.h"
 #include <stack>
+#include <random>
 
 GameApp::GameApp()
 {
@@ -31,7 +32,8 @@ Tile& GameApp::getTile(TilePos pos)
 
 void GameApp::startGameLoop()
 {
-    //int debugAlternateCounter = 1;
+    //Spawn the apple randomly
+    this->replaceRandomApple();
 
     while (true)
     {
@@ -64,10 +66,7 @@ void GameApp::startGameLoop()
 
             this->state.snake.curDirection = snakeNewDir;
             
-            //this->state.snake.curDirection = (MoveDir)debugAlternateCounter;
             this->moveSnake(MoveDir::Left);
-            /*debugAlternateCounter += 1;
-            debugAlternateCounter %= 4;*/
 
             if (this->state.gameOver)
             {
@@ -94,11 +93,58 @@ bool GameApp::isOutOfBounds(TilePos pos)
            pos.col < 0 || pos.col >= this->state.grid[0].size();
 }
 
-bool GameApp::moveSnake(MoveDir oldDirection)
+void GameApp::replaceRandomApple()
 {
-    TilePos originalTailPos = this->state.snake.tiles[this->state.snake.tiles.size() - 2];
+    this->getTile(this->state.applePosition).isApple = false;
 
     Snake& snake = this->state.snake;
+    std::vector<TilePos> possibleTiles = std::vector<TilePos>();
+
+    TilePos inFrontOfHead = snake.getHead() + Snake::MOVE_OFFSET_MAP.at(snake.curDirection);
+
+    for (int row = 0; row < this->state.grid.size(); row++)
+    {
+        for (int col = 0; col < this->state.grid[0].size(); col++)
+        {
+            TilePos cur = { row, col };
+
+            if (std::count(snake.tiles.begin(), snake.tiles.end() - 1, cur) == 0 &&
+                inFrontOfHead != cur)
+            {
+                possibleTiles.push_back(cur);
+            }
+        }
+    }
+
+    //In this case, the snake takes up all but one of the tiles, that being the tile right in front of its head,
+    //So the player is about to beat the game and the last apple has to spawn in front of the head
+    if (possibleTiles.size() == 0)
+    {
+        this->state.applePosition = inFrontOfHead;
+        return;
+    }
+
+    std::random_device rd; // obtain a random number from hardware
+    std::mt19937 gen(rd()); // seed the generator
+    std::uniform_int_distribution<> distr(0, possibleTiles.size() - 1); // define the range
+
+    int randomIndex = distr(gen);
+
+    this->state.applePosition = possibleTiles[randomIndex];
+    this->getTile(this->state.applePosition).isApple = true;
+}
+
+int globalDebugShit = 0;
+
+bool GameApp::moveSnake(MoveDir oldDirection)
+{
+    Snake& snake = this->state.snake;
+    
+    //TODO: REMOVE
+    if (snake.curDirection == MoveDir::Right && globalDebugShit == 1)
+    {
+        int debug = 10;
+    }
 
     TilePos newHeadPos = snake.tiles.front() + Snake::MOVE_OFFSET_MAP.at(snake.curDirection);
 
@@ -109,29 +155,21 @@ bool GameApp::moveSnake(MoveDir oldDirection)
         return false;
     }
 
-    Tile& snakeHead = this->getTile(newHeadPos);
+    Tile& newSnakeHead = this->getTile(newHeadPos);
 
     bool devouredApple = newHeadPos == this->state.applePosition;
 
-    snakeHead.isSnake = true;
-    snakeHead.isApple = false;
-
     if (devouredApple)
     {
-        this->state.collectedApples += 1;
+        this->state.collectedApples++;
+
+        //Spawn a new apple at random position
+        this->replaceRandomApple();
 
         auto& newTail = this->getTile(snake.tiles.back());
-        auto& oldTail = this->getTile(originalTailPos);
+        auto& oldTail = this->getTile(snake.getTail());
 
         newTail.isSnake = true;
-
-        newTail.snakeSprite = this->getTile(originalTailPos).snakeSprite;
-
-        //Change old tail sprite
-        MoveDir toDir = this->determineDirection(oldTail.tilePos, newTail.tilePos);
-        MoveDir fromDir = this->determineDirection(snake.tiles[snake.tiles.size() - 3], oldTail.tilePos);
-
-        oldTail.snakeSprite = this->getSnakeSprite(fromDir, toDir);
 
         //Add a new 'invisible training tile'
         snake.tiles.push_back(snake.tiles.back());
@@ -140,61 +178,58 @@ bool GameApp::moveSnake(MoveDir oldDirection)
     //Check if the snake hits itself.
     if (std::count(snake.tiles.begin(), snake.tiles.end() - 1, newHeadPos) > 0)
     {
-        if (!(snake.tiles.back() == newHeadPos && devouredApple))
+        if (!(snake.tiles.back() == newHeadPos && devouredApple) &&
+            !(snake.getTail() == newHeadPos && !devouredApple))
         {
             this->state.gameOver = true;
             return false;
         }
     }
 
-    SnakeSprite prevSprite = SnakeSprite::NONE;
+    this->getTile(snake.getTail()).isSnake = false;
+    
+    newSnakeHead.isSnake = true;
+    newSnakeHead.isApple = false;
 
-    //Change all the positions and sprites from the tail to the head
+    //Change all the tile positions from the tail to the head
     for (int i = snake.tiles.size() - 1; i >= 1; i--)
     {
-        SnakeSprite tileCurSprite = prevSprite;
-
-        auto tilePosNext = snake.tiles[i - 1];
-        auto& tileNext = this->getTile(snake.tiles[i - 1]);
-
         snake.tiles[i] = snake.tiles[i - 1];
-        prevSprite = tileNext.snakeSprite;
-        tileNext.snakeSprite = tileCurSprite;
     }
 
     //Set proper head pos
     snake.tiles[0] = newHeadPos;
 
     //Determine head sprite
-    snakeHead.snakeSprite = (SnakeSprite)(snake.curDirection + 1);
+    newSnakeHead.snakeSprite = this->getSnakeHeadSprite(snake.curDirection);
 
-    //Get neck tile
-    TilePos neckPos = snake.tiles[1];
+    MoveDir toDir = snake.curDirection;
 
-    //Get tile after neck
-    TilePos afterNeckPos = snake.tiles[2];
-
-    MoveDir neckIncomingDir = this->determineDirection(afterNeckPos, neckPos);
-
-    //Determine neck sprite
-    this->getTile(neckPos).snakeSprite = this->getSnakeSprite(neckIncomingDir, snake.curDirection);
-
-    //Determine tail sprite
-    MoveDir tailToDir = this->determineDirection(snake.tiles[snake.tiles.size() - 2], snake.tiles[snake.tiles.size() - 3]);
-
-    //If the current tail is not also the head
-    if (newHeadPos != snake.tiles[snake.tiles.size() - 2])
+    //Determine all the other sprites
+    for (int i = 1; i < snake.tiles.size() - 2; i++)
     {
-        this->getTile(snake.tiles[snake.tiles.size() - 2]).snakeSprite = this->getSnakeTailSprite(tailToDir);
+        MoveDir fromDir = this->determineDirection(snake.tiles[i + 1], snake.tiles[i]);
+        auto newSnakeSprite = this->getSnakeSprite(fromDir, toDir);
+        this->getTile(snake.tiles[i]).snakeSprite = newSnakeSprite;
+
+        toDir = fromDir;
     }
 
-    //If an apple was not eaten and the previous tail is not a head now, then clear the previous tail
-    /*if (!devouredApple && originalTailPos != newHeadPos)
+    //Determine tail sprite
+    if (newHeadPos != snake.getTail())
     {
-        Tile& previousTail = this->getTile(originalTailPos);
-        previousTail.isSnake = false;
-        previousTail.snakeSprite = SnakeSprite::NONE;
-    }*/
+        this->getTile(snake.getTail()).snakeSprite = this->getSnakeTailSprite(toDir);
+    }
+    else 
+    {
+        this->getTile(snake.getTail()).snakeSprite = this->getSnakeTailSprite(toDir);
+    }
+
+    //TODO:REMOVE
+    if (devouredApple)
+    {
+        globalDebugShit++;
+    }
 
     return true;
 }
@@ -205,6 +240,11 @@ MoveDir GameApp::determineDirection(TilePos from, TilePos to)
     else if (to.col > from.col) return MoveDir::Right;
     else if (to.row < from.row) return MoveDir::Up;
     else return MoveDir::Down;
+}
+
+SnakeSprite GameApp::getSnakeHeadSprite(MoveDir to)
+{
+    return (SnakeSprite)(to + 1);
 }
 
 SnakeSprite GameApp::getSnakeTailSprite(MoveDir to)

@@ -22,7 +22,9 @@ public:
 	std::vector<TilePos> tiles;
 
 	Snake(TilePos initialSpawnPos);
-
 	Snake();
+
+	TilePos getHead();
+	TilePos getTail();
 };
 

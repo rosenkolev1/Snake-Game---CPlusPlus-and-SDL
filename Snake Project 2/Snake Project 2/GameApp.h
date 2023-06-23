@@ -25,11 +25,14 @@ public:
 	void startGameLoop();
 
 	MoveDir determineDirection(TilePos from, TilePos to);
+	SnakeSprite getSnakeHeadSprite(MoveDir to);
 	SnakeSprite getSnakeTailSprite(MoveDir to);
 	SnakeSprite getSnakeSprite(MoveDir from, MoveDir to);
 
 	//TODO: remove old dir
 	bool moveSnake(MoveDir oldDirection);
 	bool isOutOfBounds(TilePos pos);
+
+	void replaceRandomApple();
 };
 
