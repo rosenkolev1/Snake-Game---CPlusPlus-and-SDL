@@ -67,3 +67,4 @@ GlobalParams getTestGlobalParams()
 
 	return params;
 }
+

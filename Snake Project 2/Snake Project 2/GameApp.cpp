@@ -115,7 +115,7 @@ void GameApp::startGameLoop()
         this->state.curTimeElapsed = !(state.gameOver || state.gameWon) 
             ? SDL_GetTicks64() - state.lastGameOverTime : state.lastGameOverTime;
 
-        gameUI->renderTick(this->state);
+        this->gameUI->renderTick(this->state);
 
         //Exit the game after 5 seconds of death screen
         if ((this->state.gameOver || this->state.gameWon) && currentTime - this->lastTickEnd > 5000)

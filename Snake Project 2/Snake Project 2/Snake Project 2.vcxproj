@@ -136,6 +136,7 @@
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="GameUI.cpp" />
     <ClCompile Include="GlobalParams.cpp" />
+    <ClCompile Include="IGameUI.cpp" />
     <ClCompile Include="Rect.cpp" />
     <ClCompile Include="ScreenPos.cpp" />
     <ClCompile Include="Snake Project 2.cpp" />
@@ -160,6 +161,7 @@
     <ClInclude Include="GameState.h" />
     <ClInclude Include="GameUI.h" />
     <ClInclude Include="GlobalParams.h" />
+    <ClInclude Include="IGameUI.h" />
     <ClInclude Include="MoveDir.h" />
     <ClInclude Include="Rect.h" />
     <ClInclude Include="resource.h" />

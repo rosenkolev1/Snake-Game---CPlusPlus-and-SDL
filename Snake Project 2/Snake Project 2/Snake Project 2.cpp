@@ -55,7 +55,7 @@ int main(int argc, char* argv[])
     int testsReturn = startUnitTests(argc, argv);
 
     // your program - if the testing framework is integrated in your production code
-    //startMainApp();
+    startMainApp();
 
     return testsReturn;
 }

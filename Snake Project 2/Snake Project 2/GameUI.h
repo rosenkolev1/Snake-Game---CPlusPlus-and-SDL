@@ -13,18 +13,17 @@
 #include "SDL_ttf.h"
 #include "GameState.h"
 #include "GlobalParams.h"
+#include "IGameUI.h"
 
 using std::cerr;
 using std::endl;
 
-class GameUI
+class GameUI : public IGameUI
 {
 
 private:
 
     GlobalParams GP;
-
-    bool validState = false;
 
     std::unique_ptr<sdl2::sdlsystem_ptr_t> sdlSystem = nullptr;
     std::unique_ptr<sdl2::window_ptr_t> sdlWindow = nullptr;
@@ -110,8 +109,8 @@ private:
 public:
     GameUI(const GlobalParams& globalParams);
 
-    void renderTick(const GameState& gameState);
-    bool isValid();
+    void renderTick(const GameState& gameState) override;
+    //bool isValid();
     ScreenPos getScreenPosForTile(const TilePos& pos);
 };
 

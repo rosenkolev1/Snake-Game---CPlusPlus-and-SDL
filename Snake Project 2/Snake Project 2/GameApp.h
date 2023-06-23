@@ -12,7 +12,7 @@ class GameApp
 
 private:
 
-	std::unique_ptr<GameUI> gameUI = nullptr;
+	std::unique_ptr<IGameUI> gameUI = nullptr;
 
 	GlobalParams GP;
 	GameState state;
