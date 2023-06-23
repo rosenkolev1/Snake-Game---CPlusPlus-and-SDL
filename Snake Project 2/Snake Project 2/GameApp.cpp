@@ -27,11 +27,10 @@ Tile& GameApp::getTile(TilePos pos)
 
 void GameApp::startGameLoop()
 {
-    //Spawn the apple randomly
-    this->replaceRandomApple();
-
     while (true)
     {
+        bool previouslyGameOver = this->state.gameOver;
+
         long currentTime = SDL_GetTicks64();
 
         this->state.processTick = currentTime - this->lastTickEnd >= this->state.tickSpeed;
@@ -62,6 +61,23 @@ void GameApp::startGameLoop()
             
             this->moveSnake();
         }
+        else if (this->state.gameOver)
+        {
+            SDL_Event keyboardEvent;
+
+            while (SDL_PollEvent(&keyboardEvent))
+            {
+                if (keyboardEvent.type == SDL_KEYDOWN && keyboardEvent.key.keysym.sym == GC::RESTART_KEY)
+                {
+                    this->resetGameState();
+                }
+            }
+        }
+
+        if (!previouslyGameOver && this->state.gameOver)
+        {
+            this->state.lastGameOverTime = SDL_GetTicks64() - this->state.lastGameOverTime;
+        }
 
         gameUI->renderTick(this->state);
 
@@ -90,6 +106,11 @@ void GameApp::resetGameState()
     this->lastTickEnd = 0;
 
     this->state = GameState();
+
+    //Spawn the apple randomly
+    this->replaceRandomApple();
+
+    this->state.lastGameOverTime = SDL_GetTicks64();
 }
 
 void GameApp::replaceRandomApple()

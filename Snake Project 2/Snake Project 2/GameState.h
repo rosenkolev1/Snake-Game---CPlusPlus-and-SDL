@@ -22,6 +22,8 @@ public:
 
 	bool gameOver;
 
+	long lastGameOverTime;
+
 	GameState();
 };
 

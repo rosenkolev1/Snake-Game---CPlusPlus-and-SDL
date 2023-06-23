@@ -302,7 +302,7 @@ void GameUI::renderGrid(const std::vector<std::vector<Tile>>& grid)
 void GameUI::renderTextUI(const GameState& state)
 {
     //Load time elapsed texture
-    if (!this->loadTimeElapsedTexture(SDL_GetTicks64()))
+    if (!this->loadTimeElapsedTexture(!state.gameOver ? SDL_GetTicks64() - state.lastGameOverTime : state.lastGameOverTime))
     {
         cerr << "Error loading the time elapsed texture: " << SDL_GetError() << endl;
         return;

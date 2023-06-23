@@ -81,7 +81,7 @@ public:
 
     static const inline SDL_Rect TIME_ELAPSED_RECT = 
     {
-        .x = GAME_GRID_LEFT_BORDER - 200,
+        .x = GAME_GRID_LEFT_BORDER - 100,
         .y = GAME_GRID_UPPER_BORDER - 100,
         .w = 200,
         .h = 50,
@@ -89,7 +89,7 @@ public:
 
     static const inline SDL_Rect COLLECTED_APPLES_RECT =
     {
-        .x = GAME_GRID_RIGHT_BORDER,
+        .x = GAME_GRID_RIGHT_BORDER - 100,
         .y = GAME_GRID_UPPER_BORDER - 100,
         .w = 200,
         .h = 50,

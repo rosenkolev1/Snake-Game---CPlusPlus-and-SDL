@@ -2,6 +2,7 @@
 
 GameState::GameState()
 {
+    this->lastGameOverTime = 0;
     this->gameOver = false;
     this->processTick = true;
     this->snake = Snake(GC::SNAKE_DEFAULT_SPAWN);
