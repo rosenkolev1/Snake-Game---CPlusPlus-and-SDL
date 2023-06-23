@@ -20,6 +20,8 @@ public:
 
 	Snake snake;
 
+	bool gameOver;
+
 	GameState();
 };
 

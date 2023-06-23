@@ -44,6 +44,12 @@ void GameApp::startGameLoop()
             this->moveSnake(MoveDir::Left);
             debugAlternateCounter += 1;
             debugAlternateCounter %= 4;
+
+            if (this->state.gameOver)
+            {
+                //TODO: Add game over screen or winning screen if the player has collected all apples
+                exit(0);
+            }
         }
 
         gameUI->renderTick(this->state);
@@ -58,6 +64,12 @@ void GameApp::startGameLoop()
     }
 }
 
+bool GameApp::isOutOfBounds(TilePos pos)
+{
+    return pos.row < 0 || pos.row >= this->state.grid.size() || 
+           pos.col < 0 || pos.col >= this->state.grid[0].size();
+}
+
 bool GameApp::moveSnake(MoveDir oldDirection)
 {
     TilePos originalTailPos = this->state.snake.tiles[this->state.snake.tiles.size() - 2];
@@ -65,6 +77,14 @@ bool GameApp::moveSnake(MoveDir oldDirection)
     Snake& snake = this->state.snake;
 
     TilePos newHeadPos = snake.tiles.front() + Snake::MOVE_OFFSET_MAP.at(snake.curDirection);
+
+    //If the snake tries to go out of bound, kill it
+    if (this->isOutOfBounds(newHeadPos))
+    {
+        this->state.gameOver = true;
+        return false;
+    }
+
     Tile& snakeHead = this->getTile(newHeadPos);
 
     bool devouredApple = newHeadPos == this->state.applePosition;
@@ -91,6 +111,16 @@ bool GameApp::moveSnake(MoveDir oldDirection)
 
         //Add a new 'invisible training tile'
         snake.tiles.push_back(snake.tiles.back());
+    }
+
+    //Check if the snake hits itself
+    if (std::count(snake.tiles.begin(), snake.tiles.end() - 1, newHeadPos) > 0)
+    {
+        if (!(snake.tiles.back() == newHeadPos && devouredApple))
+        {
+            this->state.gameOver = true;
+            return false;
+        }
     }
 
     SnakeSprite prevSprite = SnakeSprite::NONE;

@@ -2,6 +2,7 @@
 
 GameState::GameState()
 {
+    this->gameOver = false;
     this->processTick = true;
     this->snake = Snake(GC::SNAKE_DEFAULT_SPAWN);
     this->tickSpeed = GC::DEFAULT_TICK_SPEED;

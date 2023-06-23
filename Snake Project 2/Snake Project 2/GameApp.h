@@ -25,6 +25,9 @@ public:
 	MoveDir determineDirection(TilePos from, TilePos to);
 	SnakeSprite getSnakeTailSprite(MoveDir to);
 	SnakeSprite getSnakeSprite(MoveDir from, MoveDir to);
+
+	//TODO: remove old dir
 	bool moveSnake(MoveDir oldDirection);
+	bool isOutOfBounds(TilePos pos);
 };
 
