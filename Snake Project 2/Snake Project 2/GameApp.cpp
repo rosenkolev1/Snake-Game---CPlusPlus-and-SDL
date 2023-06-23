@@ -17,12 +17,7 @@ GameApp::GameApp()
         exit(2);
     }
 
-    //Setup the Sdl event handling
-
-
-    this->lastTickEnd = 0;
-
-    this->state = GameState();
+    this->resetGameState();
 }
 
 Tile& GameApp::getTile(TilePos pos)
@@ -69,12 +64,18 @@ void GameApp::startGameLoop()
 
             if (this->state.gameOver)
             {
-                //TODO: Add game over screen or winning screen if the player has collected all apples
-                exit(0);
+                
             }
         }
 
         gameUI->renderTick(this->state);
+
+        if (this->state.gameOver)
+        {
+            //TODO: Add functionality for restarting the game
+            SDL_Delay(5000);
+            exit(0);
+        }
 
         if (this->state.processTick)
         {
@@ -90,6 +91,13 @@ bool GameApp::isOutOfBounds(TilePos pos)
 {
     return pos.row < 0 || pos.row >= this->state.grid.size() || 
            pos.col < 0 || pos.col >= this->state.grid[0].size();
+}
+
+void GameApp::resetGameState()
+{
+    this->lastTickEnd = 0;
+
+    this->state = GameState();
 }
 
 void GameApp::replaceRandomApple()
@@ -133,6 +141,13 @@ void GameApp::replaceRandomApple()
     this->getTile(this->state.applePosition).isApple = true;
 }
 
+void GameApp::decreaseTickSpeed()
+{
+    this->state.tickSpeed -= GC::TICK_SPEED_DECREASE;
+
+    if (this->state.tickSpeed < GC::TICK_SPEED_CAP) this->state.tickSpeed = GC::TICK_SPEED_CAP;
+}
+
 bool GameApp::moveSnake()
 {
     Snake& snake = this->state.snake;
@@ -156,6 +171,9 @@ bool GameApp::moveSnake()
 
         //Spawn a new apple at random position
         this->replaceRandomApple();
+
+        //Change the tick speed
+        this->decreaseTickSpeed();
 
         auto& newTail = this->getTile(snake.tiles.back());
         auto& oldTail = this->getTile(snake.getTail());
@@ -268,8 +286,7 @@ SnakeSprite GameApp::getSnakeSprite(MoveDir from, MoveDir to)
     {
         return SnakeSprite::BODY_HOR;
     }
-    else if (to == MoveDir::Down && from == MoveDir::Down ||
-        to == MoveDir::Up && from == MoveDir::Up)
+    else
     {
         return SnakeSprite::BODY_VER;
     }

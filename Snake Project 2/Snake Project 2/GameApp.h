@@ -32,6 +32,8 @@ public:
 	bool moveSnake();
 	bool isOutOfBounds(TilePos pos);
 
+	void resetGameState();
 	void replaceRandomApple();
+	void decreaseTickSpeed();
 };
 
