@@ -2,7 +2,7 @@
 #include <iostream>
 #include <vector>
 #include "Snake.h"
-#include "Test_StubUtil.h"
+#include "Test_Util.h"
 
 TEST_CASE("Test Snake constructor with all parameters")
 {

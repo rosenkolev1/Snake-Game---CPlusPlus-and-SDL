@@ -31,10 +31,10 @@
     <Filter Include="Header Files\App">
       <UniqueIdentifier>{d2482df8-0c44-41bb-aa7d-2aff018993d8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\test">
+    <Filter Include="Source Files\Test">
       <UniqueIdentifier>{535bd4cf-03da-4fd2-b986-e21e124eec2b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\test">
+    <Filter Include="Header Files\Test">
       <UniqueIdentifier>{a42b9578-8311-412f-a64d-7f868e44cf0e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -60,20 +60,17 @@
     <ClCompile Include="ScreenPos.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
-    <ClCompile Include="Snake.cpp">
-      <Filter>Source Files\Common</Filter>
-    </ClCompile>
     <ClCompile Include="GlobalParams.cpp">
       <Filter>Source Files\Common</Filter>
     </ClCompile>
     <ClCompile Include="Tests_TilePos.cpp">
-      <Filter>Source Files\test</Filter>
+      <Filter>Source Files\Test</Filter>
     </ClCompile>
     <ClCompile Include="Tests_Snake.cpp">
-      <Filter>Source Files\test</Filter>
+      <Filter>Source Files\Test</Filter>
     </ClCompile>
-    <ClCompile Include="Tests_StubUtil.cpp">
-      <Filter>Source Files\test</Filter>
+    <ClCompile Include="Tests_Util.cpp">
+      <Filter>Source Files\Test</Filter>
     </ClCompile>
     <ClCompile Include="Color.cpp">
       <Filter>Source Files\Common</Filter>
@@ -82,16 +79,19 @@
       <Filter>Source Files\Common</Filter>
     </ClCompile>
     <ClCompile Include="Test_GameState.cpp">
-      <Filter>Source Files\test</Filter>
+      <Filter>Source Files\Test</Filter>
     </ClCompile>
     <ClCompile Include="IGameUI.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
     <ClCompile Include="Test_GameUI_Stub.cpp">
-      <Filter>Source Files\test</Filter>
+      <Filter>Source Files\Test</Filter>
     </ClCompile>
     <ClCompile Include="Test_GameApp.cpp">
-      <Filter>Source Files\test</Filter>
+      <Filter>Source Files\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Snake.cpp">
+      <Filter>Source Files\App</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -109,9 +109,6 @@
     </ClInclude>
     <ClInclude Include="GlobalParams.h">
       <Filter>Header Files\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="Snake.h">
-      <Filter>Header Files\App</Filter>
     </ClInclude>
     <ClInclude Include="GameState.h">
       <Filter>Header Files\Common</Filter>
@@ -138,10 +135,10 @@
       <Filter>Header Files\UI</Filter>
     </ClInclude>
     <ClInclude Include="doctest.h">
-      <Filter>Header Files\test</Filter>
+      <Filter>Header Files\Test</Filter>
     </ClInclude>
-    <ClInclude Include="Test_StubUtil.h">
-      <Filter>Header Files\test</Filter>
+    <ClInclude Include="Test_Util.h">
+      <Filter>Header Files\Test</Filter>
     </ClInclude>
     <ClInclude Include="Color.h">
       <Filter>Header Files\Common</Filter>
@@ -153,7 +150,10 @@
       <Filter>Header Files\UI</Filter>
     </ClInclude>
     <ClInclude Include="Test_GameUI_Stub.h">
-      <Filter>Header Files\test</Filter>
+      <Filter>Header Files\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="Snake.h">
+      <Filter>Header Files\App</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

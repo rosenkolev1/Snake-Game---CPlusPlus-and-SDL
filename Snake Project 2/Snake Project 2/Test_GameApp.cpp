@@ -1,6 +1,6 @@
 #include "doctest.h"
 #include "GlobalParams.h"
-#include "Test_StubUtil.h"
+#include "Test_Util.h"
 #include "GameApp.h"
 #include "Test_GameUI_Stub.h"
 #include "TilePos.h"

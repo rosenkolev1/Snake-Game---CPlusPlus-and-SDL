@@ -142,7 +142,7 @@
     <ClCompile Include="Snake Project 2.cpp" />
     <ClCompile Include="Snake.cpp" />
     <ClCompile Include="Tests_Snake.cpp" />
-    <ClCompile Include="Tests_StubUtil.cpp" />
+    <ClCompile Include="Tests_Util.cpp" />
     <ClCompile Include="Tests_TilePos.cpp" />
     <ClCompile Include="Test_GameApp.cpp" />
     <ClCompile Include="Test_GameState.cpp" />
@@ -172,7 +172,7 @@
     <ClInclude Include="Snake.h" />
     <ClInclude Include="SnakeSprite.h" />
     <ClInclude Include="Test_GameUI_Stub.h" />
-    <ClInclude Include="Test_StubUtil.h" />
+    <ClInclude Include="Test_Util.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="TilePos.h" />
   </ItemGroup>

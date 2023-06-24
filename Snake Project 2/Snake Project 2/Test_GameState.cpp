@@ -1,5 +1,5 @@
 #include "doctest.h"
-#include "Test_StubUtil.h"
+#include "Test_Util.h"
 #include "GameState.h"
 #include "SnakeSprite.h"
 
