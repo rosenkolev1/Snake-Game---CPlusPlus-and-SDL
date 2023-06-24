@@ -364,11 +364,6 @@ void GameUI::renderTick(const GameState& gameState)
     SDL_RenderPresent(this->sdlRenderer->get());
 }
 
-//bool GameUI::isValid()
-//{
-//    return this->validState;
-//}
-
 ScreenPos GameUI::getScreenPosForTile(const TilePos& pos)
 {
     return ScreenPos(this->GP.GAME_GRID_LEFT_BORDER + this->GP.GAME_TILE_W * pos.col, this->GP.GAME_GRID_UPPER_BORDER + this->GP.GAME_TILE_H * pos.row);

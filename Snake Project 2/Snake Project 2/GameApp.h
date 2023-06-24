@@ -9,7 +9,6 @@
 
 class GameApp
 {
-	//TODO: Maybe implement a builder pattern way of constructing game app with variable GlobalConstants parameters
 
 private:
 

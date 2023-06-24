@@ -153,5 +153,3 @@ public:
     GlobalParams& enableAutoPlay();
     GlobalParams& disableAutoPlay();
 };
-
-//using GP = GlobalParams;

@@ -110,7 +110,6 @@ public:
     GameUI(const GlobalParams& globalParams);
 
     void renderTick(const GameState& gameState) override;
-    //bool isValid();
     ScreenPos getScreenPosForTile(const TilePos& pos);
 };
 
