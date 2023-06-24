@@ -87,6 +87,12 @@
     <ClCompile Include="IGameUI.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
+    <ClCompile Include="Test_GameUI_Stub.cpp">
+      <Filter>Source Files\test</Filter>
+    </ClCompile>
+    <ClCompile Include="Test_GameApp.cpp">
+      <Filter>Source Files\test</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="SDL2.lib" />
@@ -145,6 +151,9 @@
     </ClInclude>
     <ClInclude Include="IGameUI.h">
       <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Test_GameUI_Stub.h">
+      <Filter>Header Files\test</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

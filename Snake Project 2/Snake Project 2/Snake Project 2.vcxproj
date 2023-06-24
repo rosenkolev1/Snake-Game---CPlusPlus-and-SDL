@@ -144,7 +144,9 @@
     <ClCompile Include="Tests_Snake.cpp" />
     <ClCompile Include="Tests_StubUtil.cpp" />
     <ClCompile Include="Tests_TilePos.cpp" />
+    <ClCompile Include="Test_GameApp.cpp" />
     <ClCompile Include="Test_GameState.cpp" />
+    <ClCompile Include="Test_GameUI_Stub.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="TilePos.cpp" />
   </ItemGroup>
@@ -169,6 +171,7 @@
     <ClInclude Include="sdl2.h" />
     <ClInclude Include="Snake.h" />
     <ClInclude Include="SnakeSprite.h" />
+    <ClInclude Include="Test_GameUI_Stub.h" />
     <ClInclude Include="Test_StubUtil.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="TilePos.h" />

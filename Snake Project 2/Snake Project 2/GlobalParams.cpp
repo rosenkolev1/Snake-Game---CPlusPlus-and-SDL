@@ -4,7 +4,7 @@
 
 GlobalParams::GlobalParams()
 {
-    this->DEFAULT_TICK_SPEED = 0;
+    this->DEFAULT_TICK_SPEED = 200;
     this->TICK_SPEED_DECREASE = 15;
     this->TICK_SPEED_CAP = 50;
 
@@ -47,8 +47,8 @@ GlobalParams::GlobalParams()
 
     this->GAME_WINDOW_TITLE = "Snake Game";
 
-    this->GAME_GRID_ROWS_COUNT = 8;
-    this->GAME_GRID_COLS_COUNT = 8;
+    this->GAME_GRID_ROWS_COUNT = 20;
+    this->GAME_GRID_COLS_COUNT = 20;
 
     //The GAME_WINDOW_X and GAME_WINDOW_Y are applied from both sides (left and right for X and up and down for Y)
     this->GAME_WINDOW_X = 180;

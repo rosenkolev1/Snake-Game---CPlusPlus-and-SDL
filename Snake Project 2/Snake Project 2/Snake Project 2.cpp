@@ -17,8 +17,8 @@ void startMainApp()
     //Initialize the global parameters for the app
     GlobalParams params = GlobalParams();
 
-    //params.disableAutoPlay();
-    params.enableAutoPlay();
+    params.disableAutoPlay();
+    //params.enableAutoPlay();
 
     //Initialize the app with the window and the UI textures
     GameApp app = GameApp(params);
@@ -55,7 +55,7 @@ int main(int argc, char* argv[])
     int testsReturn = startUnitTests(argc, argv);
 
     // your program - if the testing framework is integrated in your production code
-    startMainApp();
+    //startMainApp();
 
     return testsReturn;
 }

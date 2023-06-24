@@ -2,6 +2,15 @@
 #include <stack>
 #include <random>
 
+GameApp::GameApp(const GlobalParams& globalParams, IGameUI* gameUI)
+    :GP(globalParams),
+    state(this->GP)
+{
+    this->gameUI = std::unique_ptr<IGameUI>(gameUI);
+
+    finishConstructor();
+}
+
 GameApp::GameApp(const GlobalParams& globalParams)
     :GP(globalParams),
     state(this->GP)
@@ -13,13 +22,16 @@ GameApp::GameApp(const GlobalParams& globalParams)
 
     this->gameUI = std::make_unique<GameUI>(GameUI(this->GP));
 
+    finishConstructor();
+}
+
+void GameApp::finishConstructor()
+{
     if (!gameUI->isValid())
     {
         cerr << "Error initialising the game UI: " << SDL_GetError() << endl;
         exit(2);
     }
-
-    //this->state = GameState(this->GP);
 
     this->resetGameState();
 
@@ -37,7 +49,7 @@ GameApp::GameApp(const GlobalParams& globalParams)
         }
         else
         {
-            cerr << "Error! The graphs rows and columns are both uneven, there is no Hamilton Cycle!\n" << 
+            cerr << "Error! The graphs rows and columns are both uneven, there is no Hamilton Cycle!\n" <<
                 "Disable autoplay or change grid dimensions!: " << endl;
             exit(2);
         }
@@ -82,16 +94,17 @@ void GameApp::startGameLoop()
                 }
             }
 
-            this->state.snake.curDirection = snakeNewDir;
+            //this->state.snake.curDirection = snakeNewDir;
 
             if (this->GP.AUTO_PLAY_ENABLED)
             {
                 auto nextTile = this->hamiltonianCycle[this->hamiltonianCounter++];
                 this->hamiltonianCounter %= this->hamiltonianCycle.size();
-                this->state.snake.curDirection = this->determineDirection(this->state.snake.getHead(), nextTile);
+                //this->state.snake.curDirection = this->determineDirection(this->state.snake.getHead(), nextTile);
+                snakeNewDir = this->determineDirection(this->state.snake.getHead(), nextTile);
             }
 
-            this->moveSnake();
+            this->moveSnake(snakeNewDir);
         }
         else if (this->state.gameOver || this->state.gameWon)
         {
@@ -258,7 +271,7 @@ void GameApp::replaceRandomApple()
 
     //In this case, the snake takes up all but one of the tiles, that being the tile right in front of its head,
     //So the player is about to beat the game and the last apple has to spawn in front of the head
-    if (possibleTiles.size() == 0)
+    if (possibleTiles.empty())
     {
         this->state.applePosition = inFrontOfHead;
         return;
@@ -284,9 +297,10 @@ void GameApp::decreaseTickSpeed()
     }
 }
 
-bool GameApp::moveSnake()
+bool GameApp::moveSnake(MoveDir direction)
 {
     Snake& snake = this->state.snake;
+    snake.curDirection = direction;
 
     TilePos newHeadPos = snake.tiles.front() + Snake::MOVE_OFFSET_MAP.at(snake.curDirection);
 
@@ -339,7 +353,18 @@ bool GameApp::moveSnake()
         }
     }
 
-    this->getTile(snake.getTail()).isSnake = false;
+    
+    if (newSnakeHead.tilePos != snake.getTail())
+    {
+        this->getTile(snake.getTail()).isSnake = false;
+        this->getTile(snake.getTail()).snakeSprite = SnakeSprite::NONE;
+
+        //Very special edge case for when the position before the tail and the tail were the same before moving
+        if (devouredApple && snake.tiles.back() == snake.getTail())
+        {
+            this->getTile(snake.getTail()).isSnake = true;
+        }
+    }
     
     newSnakeHead.isSnake = true;
     newSnakeHead.isApple = false;
@@ -362,7 +387,7 @@ bool GameApp::moveSnake()
     for (int i = 1; i < snake.tiles.size() - 2; i++)
     {
         MoveDir fromDir = this->determineDirection(snake.tiles[i + 1], snake.tiles[i]);
-        auto newSnakeSprite = this->getSnakeSprite(fromDir, toDir);
+        auto newSnakeSprite = this->getSnakeBodySprite(fromDir, toDir);
         this->getTile(snake.tiles[i]).snakeSprite = newSnakeSprite;
 
         toDir = fromDir;
@@ -402,7 +427,7 @@ SnakeSprite GameApp::getSnakeTailSprite(MoveDir to)
     else return SnakeSprite::TAIL_RIGHT;
 }
 
-SnakeSprite GameApp::getSnakeSprite(MoveDir from, MoveDir to)
+SnakeSprite GameApp::getSnakeBodySprite(MoveDir from, MoveDir to)
 {
     //Determine neck sprite
     if (to == MoveDir::RIGHT && from == MoveDir::UP ||
@@ -435,4 +460,19 @@ SnakeSprite GameApp::getSnakeSprite(MoveDir from, MoveDir to)
         return SnakeSprite::BODY_VER;
     }
 }
-    
+
+
+const GameState& GameApp::getState() const
+{
+    return this->state;
+}
+
+long GameApp::getLastTickEnd() const
+{
+    return this->lastTickEnd;
+}
+
+int GameApp::getHamiltonianCounter() const
+{
+    return this->hamiltonianCounter;
+}

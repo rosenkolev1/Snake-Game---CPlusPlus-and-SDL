@@ -5,6 +5,7 @@
 #include "GameState.h"
 #include "MoveDir.h"
 #include <map>
+#include "IGameUI.h"
 
 class GameApp
 {
@@ -24,7 +25,12 @@ private:
 
 public:
 
+	//Used for unit tests only
+	GameApp(const GlobalParams& globalParams, IGameUI* gameUI);
+
 	GameApp(const GlobalParams& globalParams);
+
+	void finishConstructor();
 
 	Tile& getTile(TilePos pos);
 
@@ -33,9 +39,9 @@ public:
 	MoveDir determineDirection(TilePos from, TilePos to);
 	SnakeSprite getSnakeHeadSprite(MoveDir to);
 	SnakeSprite getSnakeTailSprite(MoveDir to);
-	SnakeSprite getSnakeSprite(MoveDir from, MoveDir to);
+	SnakeSprite getSnakeBodySprite(MoveDir from, MoveDir to);
 
-	bool moveSnake();
+	bool moveSnake(MoveDir direction);
 	bool isOutOfBounds(TilePos pos);
 
 	std::vector<TilePos> getHamiltonianCycleForEvenRows();
@@ -43,5 +49,9 @@ public:
 	void resetGameState();
 	void replaceRandomApple();
 	void decreaseTickSpeed();
+
+	const GameState& getState() const;
+	long getLastTickEnd() const;
+	int getHamiltonianCounter() const;
 };
 
