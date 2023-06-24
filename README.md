@@ -47,11 +47,11 @@ The release should be compilable and runnable right out of the box from within V
 
 # Functionality - Outside-Game
 
-1) The GlobalParams class controls many important game parameters. You can change these parameters by changing the default constructor or modifying the GlobalParams class after it has been created with the many setter functions. It uses the option/builder pattern, i.e. all the setter return the object itself, so they can be chained. The GlobalParams object is passed to the GameApp object, which controls/starts the whole game. Changing the GlobalParams object inside the ```Snake Project 2.cpp``` file inside the ```startMainApp()``` function will change the game.
+1) The ```GlobalParams``` class controls many important game parameters. You can change these parameters by changing the default constructor or modifying the ```GlobalParams``` class after it has been created with the many setter functions. It uses the option/builder pattern, i.e. all the setter return the object itself, so they can be chained. The ```GlobalParams``` object is passed to the ```GameApp``` object, which controls/starts the whole game. Changing the ```GlobalParams``` object inside the ```Snake Project 2.cpp``` file inside the ```startMainApp()``` function will change the game.
 
-2) For example, there are 2 lines ```params.disableAutoPlay()``` and ````params.enableAutoPlay()``. They control a flag inside GlobalParams called ```autoPlay```. If ```autoPlay``` is true, then the game plays itself until it is beaten.
+2) For example, there are 2 lines ```params.disableAutoPlay()``` and ```params.enableAutoPlay()```. They control a flag inside ```GlobalParams``` called ```autoPlay```. If ```autoPlay``` is true, then the game plays itself until it is beaten.
 
-3) The way the game auto plays itself depends on the dimensions of the grid. If the grid contains an even number of rows, then it uses a predetermined Hamilton Cycle to play through the game without dying and get all apples. If the grid contains an odd number of rows, but an even number of cols, it uses a different predetermined Hamilton Cycle. If neither the rows nor the cols are even, then the game prints an error on the console and exits.
+3) The way the game auto plays itself depends on the dimensions of the grid. If the grid contains an even number of rows, then it uses a predetermined Hamiltonian Cycle to play through the game without dying and get all apples. If the grid contains an odd number of rows, but an even number of cols, it uses a different predetermined Hamiltonian Cycle. If neither the rows nor the cols are even, then the game prints an error on the console and exits.
 
 4) If the game is auto playing, then there is no increase in speed of the sanke upon devouring an apple. The speed of the snake is constant throughout and it can be set from ```GlobalParams```.
 
