@@ -20,8 +20,8 @@ The release should be compilable and runnable right out of the box from within V
 # Libraries Used
 
 1) SDL 2.0
-2) SDL Image 2.0 - extension library for SDL 2.0, allows easier work with opening images. Used only once inside the whole project, but nevertheless, it was worth it.
-3) SDL TTF 2.0 - extension library for SDL 2.0, gives you rick options for rendering text on the screen.
+2) SDL Image 2.0 - extension library for SDL 2.0, allows easier work with images of various formats and types. Used only once inside the whole project, but nevertheless, it was worth it.
+3) SDL TTF 2.0 - extension library for SDL 2.0, gives you rich options for rendering text on the screen.
 4) Doctest - Unit Tests
 
 # Project Structure
