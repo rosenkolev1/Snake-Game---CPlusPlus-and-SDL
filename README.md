@@ -7,11 +7,15 @@ You can find the latest release [here](https://github.com/rosenkolev1/Snake-Game
 
 The release should be compilable and runnable right out of the box from within Visual Studio. You can open the Visual Studio project and run the app from there.  
 
-# Some quick notes
+# Some Notes
 
 1) Microsoft Visual Studio doesn't easily give you the option to create a new folder in your c++ project. Instead, they use [filters](https://learn.microsoft.com/en-us/cpp/build/reference/vcxproj-filters-files?view=msvc-170). So I decided to use filters as well, hence all of the non-external library files are technically inside a single folder.
 
 2) Visual Studio c++ is also really annoying when it comes to separating the source code into different projects inside the same solution. It requires you to constantly configure the project settings to tell the compiler where to search for compiled obj files and for which obj files to search. It is annoying and not worth the effort, so I just used VS filters instead.
+
+3) The repo does not contain the SDL libraries' include headers that are used and needed for the linker during compilation. It does contain the ```doctest.h``` header for the Doctest library, however, and also .lib and .dll files for the SDL libraries.
+
+4) The full release contains the whole Visual Studio project and the SDL libraries in full, with their include headers.
 
 # Libraries Used
 
