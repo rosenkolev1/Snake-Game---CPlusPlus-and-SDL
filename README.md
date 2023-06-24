@@ -32,7 +32,7 @@ The release should be compilable and runnable right out of the box from within V
 
 3) UI 'folder' - Contains only these files which manage what is rendered on the screen. They do not affect the game state directly.
 
-4) Test 'folder' - Contains the unit testing files. Only the game logic is tested, the UI is not (because it would be very cumbersome and next-to-impossible to unit test the UI functions).
+4) Test 'folder' - Contains the unit testing files. Only the game logic is tested, the UI is not (because testing the UI function would make these tests UI tests instead of unit tests, and also testing the UI would be very cumbersome).
 
 # Functionality - In-Game
 
@@ -65,13 +65,13 @@ The release should be compilable and runnable right out of the box from within V
   
 7) More info in the ```GlobalParams``` header file for what the different parameters do.
 
-# More detailed look at the classes
+# More detailed look at the classes/files
 
 1) Snake Project 2.cpp - Contains 3 functions. One is the main function. Another function starts the unit tests (the unit tests finish before the game actually starts, their result is printed to the console). The last function start the actual game. In this function, we can choose to enable or disable the autoplay feature via ```params.disableAutoPlay()``` and ```params.enableAutoPlay()```. The ```GlobalParam``` object, which gives us many important game parameters, is created there and passed to the ```GameApp``` object.
 
-2) GameApp object - Contains many functions for manipulating the game state. It can move the snake, determining if it is game over or game won, retrieve tiles based on tile coordinates, create hamiltonian cycles, reset the game state, parse user input... It also calls the ```GameUI::renderTick(GameState state)``` function, which tells the renderer to render the game based on its current state.
+2) GameApp - Contains many functions for manipulating the game state. It can move the snake, determining if it is game over or game won, retrieve tiles based on tile coordinates, create hamiltonian cycles, reset the game state, parse user input... It also calls the ```GameUI::renderTick(GameState state)``` function, which tells the renderer to render the game based on its current state.
 
-3) GameState object - A model object which contains the current game state. It does not contain the ```GlobalParams``` directly, but has access to them. The ```GlobalParams``` are meant to not be changed once set (but ```GlobalParams``` member of ```GameState``` cannot be const because that causes big problem with trying to copy the model state and also other things...). The game state however, can be changed all we want. Of course, it is the ```GameApp``` that changes the game state as necessary. The game state is passed to the ```GameUI``` via the ```GameUI::renderTick(GameState state)``` function, where the renderer renders things on the screen based on what is inside the game state (and also based on the ```GlobalParams```, of course).
+3) GameState - A model object which contains the current game state. It does not contain the ```GlobalParams``` directly, but has access to them. The ```GlobalParams``` are meant to not be changed once set (but ```GlobalParams``` member of ```GameState``` cannot be const because that causes big problem with trying to copy the model state and also other things...). The game state however, can be changed all we want. Of course, it is the ```GameApp``` that changes the game state as necessary. The game state is passed to the ```GameUI``` via the ```GameUI::renderTick(GameState state)``` function, where the renderer renders things on the screen based on what is inside the game state (and also based on the ```GlobalParams```, of course).
 
 4) GameUI - It is responsible for loading all the needed textures and rendering them on the screen, using the ```GameState``` object and ```GlobalParams```.
 
@@ -98,6 +98,8 @@ The release should be compilable and runnable right out of the box from within V
 15) Tests_{name of class here} - contains test cases for the different classes
 
 16) MoveDir - enum, contains the direction in which the snake moves.
+
+17) sdlh2.h - Originally taken from [here](https://github.com/xyproto/sdl2-examples/blob/main/include/sdl2.h). Contains various function which return unique pointers to SLD objects which are created with the appropriate SDL creating functions and parameters and destroyed with the appropriate SDL destroying function. Saves us the trouble of having to manually delete the SDL resources when the go out of scope. Of course, I refactor the file slightly and then also extended its functionality by adding support for other types like fonts etc...
    
 # Some pictures
 ![Photo 1](https://github.com/rosenkolev1/Snake-Game---CPlusPlus-and-SDL/assets/50500415/a5bfc39c-d3e6-4bc1-af37-ca2c58086339)
