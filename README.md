@@ -57,7 +57,7 @@ The release should be compilable and runnable right out of the box from within V
 
 3) The way the game auto plays itself depends on the dimensions of the grid. If the grid contains an even number of rows, then it uses a predetermined Hamiltonian Cycle to play through the game without dying and get all apples. If the grid contains an odd number of rows, but an even number of cols, it uses a different predetermined Hamiltonian Cycle. If neither the rows, nor the cols are even, then the game prints an error on the console and exits.
 
-4) If the game is auto playing, then there is no increase in the speed of the snake upon devouring an apple. The speed of the snake is constant throughout and it can be set from ```GlobalParams```.
+4) If the game is auto playing, then there is no increase in the speed of the snake upon devouring an apple. The speed of the snake is constant throughout and it can be set from ```GlobalParams``` before starting the game.
 
 5) If the auto play wins the game, then you can restart the game with the ```r``` button. This will cause auto play to start again. If you want to disable auto play, then you have to quit the game entirely and disable auto play before starting again.  
 
@@ -71,21 +71,21 @@ The release should be compilable and runnable right out of the box from within V
 
 2) GameApp - Contains many functions for manipulating the game state. It can move the snake, determining if it is game over or game won, retrieve tiles based on tile coordinates, create hamiltonian cycles, reset the game state, parse user input... It also calls the ```GameUI::renderTick(GameState state)``` function, which tells the renderer to render the game based on its current state.
 
-3) GameState - A model object which contains the current game state. It does not contain the ```GlobalParams``` directly, but has access to them. The ```GlobalParams``` are meant to not be changed once set (but ```GlobalParams``` member of ```GameState``` cannot be const because that causes big problem with trying to copy the model state and also other things...). The game state however, can be changed all we want. Of course, it is the ```GameApp``` that changes the game state as necessary. The game state is passed to the ```GameUI``` via the ```GameUI::renderTick(GameState state)``` function, where the renderer renders things on the screen based on what is inside the game state (and also based on the ```GlobalParams```, of course).
+3) GameState - A model object which contains the current game state. It does not contain the ```GlobalParams``` directly, but has access to them. The ```GlobalParams``` are meant to not be changed once set (but ```GlobalParams``` member of ```GameState``` cannot be const for complicated reasons...). The game state however, can be changed all we want. Of course, it is the ```GameApp``` that changes the game state as necessary. The game state is passed to the ```GameUI``` via the ```GameUI::renderTick(GameState state)``` function, where the renderer renders things on the screen based on what is inside the game state (and also based on the ```GlobalParams```, of course).
 
 4) GameUI - It is responsible for loading all the needed textures and rendering them on the screen, using the ```GameState``` object and ```GlobalParams```.
 
 5) Snake - A rather simple object. Contains its current moving direction and a list of the positions of all of its tiles. The first tile pos in the list is the head. The second-to-last tile pos is the tail. The last tile pos is an invisible tile that follows the tail of the snake and becomes visible when the snake devours an apple, at which point a new invisible tile pos is added at the end of the list. The invisible tile is used to determine where the new snake tile should spawn once it eats an apple. At the very beginning of the game, the invisible tile pos and the tail pos are initialized as the same. There is a special check for when that happens inside ```GameApp```, as well as special edge case check for when the snake devours an apple immediately(on its first move) right after the game has started, which determines what happens with the invisible tile and the tail.
 
-6) Tile - object representing a tile on the grid. Each tile stores a lot of information about itself: ```isApple```, ```ìsSnake``` determine if the tile contains an apple or a snake bodypart, ```tilePos``` is the position of the tile within the grid, ```snakeSprite``` is the current snake bodypart sprite that should be rendered on top of the tile. If the tile's ```isSnake``` is false, then the bodypart is not rendered, regardless of its value. However, I've made it so that the ```isSnake``` and the ```snakeSprite``` values never differ (that is, if the ```snakeSprite``` is None, then ```isSnake``` is False and vice-versa).
+6) Tile - object representing a tile on the grid. Each tile stores a lot of information about itself: ```isApple```, ```ìsSnake``` determine if the tile contains an apple or a snake bodypart, ```tilePos``` is the position of the tile within the grid, ```snakeSprite``` is the current snake bodypart sprite that should be rendered on top of the tile. If the tile's ```isSnake``` is false, then the bodypart is not rendered, regardless of the value of ```snakeSprite```. However, I've made it so that the ```isSnake``` and the ```snakeSprite``` values never differ (that is, if ```snakeSprite``` is None, then ```isSnake``` is False and vice-versa).
 
 7) SnakeSprite - enum representing the bodypart of the snake that should be rendered. The ```GameUI``` contains a ```SNAKE_SPRITE_TO_TEXTURE_MAP``` map, where each ```SnakeSprite``` value corresponds to a given snake sprite. The snake sprites are taken from the tileset png image in the Images folder.
 
-8) TilePos - contains the position of a tile in grid coordinates where a single unit is the width of the grid in pixels
+8) TilePos - contains the position of a tile in grid coordinates. For example, (0, 0) are the coordinates of the top-left tile of of the grid.
 
 9) ScreenPos - contains the position of a pixel on the screen. The difference between ```TilePos``` and ```ScreenPos``` is mostly semantic.
 
-10) Rect - contains the coordinates of the top-left corner of a tile in pixels and the width and height of the tile in pixels. Also contains some extra casting conversions to ```SDL_Rect*```, as well as a ```shared_ptr to SDL_Rect*```. The reasons for these is way too complicated to explain in text. It' also 5:13 in the morning and I am tired :). In essence, this class acts as a wrapper for ```SDL_Rect``` that can also be compared (has ```operator==``` defined).
+10) Rect - contains the coordinates of the top-left corner of a tile in pixels and the width and height of the tile in pixels. Also contains some extra casting conversions to ```SDL_Rect*```, as well as a ```shared_ptr to SDL_Rect*```. The reasons for these is complicated to explain in text. In essence, this class acts as a wrapper for ```SDL_Rect``` that can also be compared (has ```operator==``` defined).
 
 11) Color - contains color values in rgba. Same thing as ```Rect``` in the sense that it is a comparable wrapper for ```SDL_Color```.
 
@@ -93,13 +93,13 @@ The release should be compilable and runnable right out of the box from within V
 
 13) Tests_GameUI_Stub - a stub of ```GameUI``` for testing purposes so we can initialize ```GameApp``` without creating an actual screen or loading the library. Does nothing. Its entire purpose is to be fed to ```GameApp```.
 
-14) Tests_Util - contains a function which creates a ```GlobalParam``` for use in tests.
+14) Tests_Util - contains a function which creates a ```GlobalParams``` object for use in tests.
 
-15) Tests_{name of class here} - contains test cases for the different classes
+15) Tests_{name of class here} - contains test cases for the different classes.
 
 16) MoveDir - enum, contains the direction in which the snake moves.
 
-17) sdlh2.h - Originally taken from [here](https://github.com/xyproto/sdl2-examples/blob/main/include/sdl2.h). Contains various function which return unique pointers to SLD objects which are created with the appropriate SDL creating functions and parameters and destroyed with the appropriate SDL destroying function. Saves us the trouble of having to manually delete the SDL resources when the go out of scope. Of course, I refactor the file slightly and then also extended its functionality by adding support for other types like fonts etc...
+17) sdlh2.h - originally taken from [here](https://github.com/xyproto/sdl2-examples/blob/main/include/sdl2.h). Contains various function which return unique pointers to SLD objects which are created with the appropriate SDL creating functions and parameters and destroyed with the appropriate SDL destroying function. Saves us the trouble of having to manually delete the SDL resources when they go out of scope. Of course, I have refactored the file and also extended its functionality by adding support for other types like fonts etc...
    
 # Some pictures
 ![Photo 1](https://github.com/rosenkolev1/Snake-Game---CPlusPlus-and-SDL/assets/50500415/a5bfc39c-d3e6-4bc1-af37-ca2c58086339)
