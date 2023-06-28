@@ -3,9 +3,19 @@
 
 # Snake Game - Release
 
-You can find the latest release [here](https://github.com/rosenkolev1/Snake-Game---CPlusPlus-and-SDL/releases).
+You can find the latest releases [here](https://github.com/rosenkolev1/Snake-Game---CPlusPlus-and-SDL/releases).
 
 The release should be compilable and runnable right out of the box from within Visual Studio. You can open the Visual Studio project and run the app from there.  
+
+If it complains about being unable to find the header files to the SDL library, then do the following:
+
+1) Open the Project Properties
+
+2) Change the Additional Include Diretories to contain the SDL include folders, which contain the header files for the SDL libraries.
+
+![image](https://github.com/rosenkolev1/Snake-Game---CPlusPlus-and-SDL/assets/50500415/c244104c-a97e-40f0-b584-1c3eff94732e)
+
+I tried setting them up by default to be relative paths, so they would work on any PC, but it does not work for whatever reason.
 
 # Some Notes
 
