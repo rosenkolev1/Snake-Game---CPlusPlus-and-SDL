@@ -95,21 +95,23 @@ I tried setting them up by default to be relative paths, so they would work on a
 
 9) ScreenPos - contains the position of a pixel on the screen. The difference between ```TilePos``` and ```ScreenPos``` is mostly semantic.
 
-10) Rect - contains the coordinates of the top-left corner of a tile in pixels and the width and height of the tile in pixels. Also contains some extra casting conversions to ```SDL_Rect*```, as well as a ```shared_ptr to SDL_Rect*```. The reasons for these is complicated to explain in text. In essence, this class acts as a wrapper for ```SDL_Rect``` that can also be compared (has ```operator==``` defined).
+10) SdlWrapper - an abstract template class which holds common functionality for the SDL wrapper classes. The SDL wrapper classes wrap simple SDL objects and add operators and useful functions to them. 
 
-11) Color - contains color values in rgba. Same thing as ```Rect``` in the sense that it is a comparable wrapper for ```SDL_Color```.
+11) Rect - contains the coordinates of the top-left corner of a tile in pixels and the width and height of the tile in pixels. Also contains some extra casting conversions to ```SDL_Rect*```, as well as a ```shared_ptr to SDL_Rect*```. In essence, this class acts as a wrapper for ```SDL_Rect``` that can also be compared (has ```operator==``` defined). Inherits from ```SdlWrapper<SDL_Rect>```.
 
-12) IGameUI - an interface for ```GameUI```. It is needed because I had to create a stub of ```GameUI``` in my unit tests and feed it to ```GameApp``` so I could test ```GameApp``` properly. Also, dependency injection principle is cool.
+12) Color - contains color values in rgba. Same thing as ```Rect``` in the sense that it is a comparable wrapper for ```SDL_Color```. Inherits from ```SdlWrapper<SDL_Color>```.
 
-13) Tests_GameUI_Stub - a stub of ```GameUI``` for testing purposes so we can initialize ```GameApp``` without creating an actual screen or loading the library. Does nothing. Its entire purpose is to be fed to ```GameApp```.
+13) IGameUI - an interface for ```GameUI```. It is needed because I had to create a stub of ```GameUI``` in my unit tests and feed it to ```GameApp``` so I could test ```GameApp``` properly. Also, dependency injection principle is cool.
 
-14) Tests_Util - contains a function which creates a ```GlobalParams``` object for use in tests.
+14) Tests_GameUI_Stub - a stub of ```GameUI``` for testing purposes so we can initialize ```GameApp``` without creating an actual screen or loading the library. Does nothing. Its entire purpose is to be fed to ```GameApp```.
 
-15) Tests_{name of class here} - contains test cases for the different classes.
+15) Tests_Util - contains a function which creates a ```GlobalParams``` object for use in tests.
 
-16) MoveDir - enum, contains the direction in which the snake moves.
+16) Tests_{name of class here} - contains test cases for the different classes.
 
-17) sdlh2.h - originally taken from [here](https://github.com/xyproto/sdl2-examples/blob/main/include/sdl2.h). Contains various function which return unique pointers to SLD objects which are created with the appropriate SDL creating functions and parameters and destroyed with the appropriate SDL destroying function. Saves us the trouble of having to manually delete the SDL resources when they go out of scope. Of course, I have refactored the file and also extended its functionality by adding support for other types like fonts etc...
+17) MoveDir - enum, contains the direction in which the snake moves.
+
+18) sdlh2.h - originally taken from [here](https://github.com/xyproto/sdl2-examples/blob/main/include/sdl2.h). Contains various function which return unique pointers to SLD objects which are created with the appropriate SDL creating functions and parameters and destroyed with the appropriate SDL destroying function. Saves us the trouble of having to manually delete the SDL resources when they go out of scope. Of course, I have refactored the file and also extended its functionality by adding support for other types like fonts etc...
    
 # Some pictures
 ![Photo 1](https://github.com/rosenkolev1/Snake-Game---CPlusPlus-and-SDL/assets/50500415/a5bfc39c-d3e6-4bc1-af37-ca2c58086339)
