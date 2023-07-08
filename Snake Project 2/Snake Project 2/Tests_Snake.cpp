@@ -41,6 +41,6 @@ TEST_CASE("Test Snake get tail and get head functions")
 	GlobalParams globalTestParams = getTestGlobalParams();
 	Snake snake = Snake(globalTestParams, { 3, 1 });
 
-	CHECK_EQ(snake.getTail(), TilePos { 3, 1 });
+	CHECK_EQ(snake.getTail(), TilePos{ 3, 1 });
 	CHECK_EQ(snake.getHead(), TilePos{ 3, 3 });
 }

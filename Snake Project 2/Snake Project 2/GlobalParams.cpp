@@ -19,12 +19,12 @@ GlobalParams::GlobalParams()
 
     //Default color for all text in the game
     this->TEXT_COLOR = Color
-    {
+    ({
         .r = 255,
         .g = 255,
         .b = 255,
         .a = 100
-    };
+    });
 
     //What key is used to restart the game
     this->RESTART_KEY = SDLK_r;
@@ -101,49 +101,49 @@ GlobalParams::GlobalParams()
     this->GAME_TILE_H = GAME_GRID_H / GAME_GRID_ROWS_COUNT;
 
     //The color of an empty tile
-    this->EMPTY_TILE_COLOR =
-    {
+    this->EMPTY_TILE_COLOR = Color
+    ({
         .r = 81,
         .g = 53,
         .b = 97,
         .a = 100
-    };
+    });
 
     //The text box of the Time Elapsed UI text
-    this->TIME_ELAPSED_RECT =
-    {
+    this->TIME_ELAPSED_RECT = Rect
+    ({
         .x = GAME_GRID_LEFT_BORDER - 100,
         .y = GAME_GRID_UPPER_BORDER - 100,
         .w = 200,
         .h = 50,
-    };
+    });
 
     //The text box of the Collected Apples UI text
-    this->COLLECTED_APPLES_RECT =
-    {
+    this->COLLECTED_APPLES_RECT = Rect 
+    ({
         .x = GAME_GRID_RIGHT_BORDER - 100,
         .y = GAME_GRID_UPPER_BORDER - 100,
         .w = 200,
         .h = 50,
-    };
+    });
 
     //The text box of the Game Over text
-    this->GAME_OVER_RECT =
-    {
+    this->GAME_OVER_RECT = Rect
+    ({
         .x = (GAME_WINDOW_W - 600) / 2,
         .y = (GAME_WINDOW_H - 200) / 2,
         .w = 600,
         .h = 200,
-    };
+    });
 
     //The text box of the Game Won text
-    this->GAME_WON_RECT =
-    {
+    this->GAME_WON_RECT = Rect
+    ({
         .x = (GAME_WINDOW_W - 600) / 2,
         .y = (GAME_WINDOW_H - 200) / 2,
         .w = 600,
         .h = 200,
-    };
+    });
 
     //Default spawn coordinates of the snake
     //DEFAULT SPAWN is measured from the tail and the default direction for the snake is facing towards the right

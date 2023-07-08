@@ -103,11 +103,11 @@ bool GameUI::loadEmptyTile()
     // Set target render to the needed texture
     SDL_SetRenderTarget(this->sdlRenderer->get(), this->emptyTile->get());
 
-    SDL_Rect rect;
+    /*SDL_Rect rect;
     rect.x = 0;
     rect.y = 0;
     rect.w = this->GP.GAME_TILE_W;
-    rect.h = this->GP.GAME_TILE_H;
+    rect.h = this->GP.GAME_TILE_H;*/
 
     this->renderEmptyTileOnCurrentRenderer();
 

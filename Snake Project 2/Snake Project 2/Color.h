@@ -1,26 +1,27 @@
 #pragma once
 #include "SDL.h"
 #include <memory>
+#include <stack>
 
 struct Color
 {
+private:
+    std::stack<std::shared_ptr<SDL_Color>> sdlColors;
+
+    bool sdlEquals(const SDL_Color& other) const;
+
+public:
+
     Uint8 r;
     Uint8 g;
     Uint8 b;
     Uint8 a;
 
-    std::shared_ptr<SDL_Color> sdlColor = std::make_shared<SDL_Color>(SDL_Color
-        {
-            .r = r,
-            .g = g,
-            .b = b,
-            .a = a
-        });
-
-public:
+    Color() = default;
+    Color(const SDL_Color& color);
 
     bool operator==(const Color& other) const;
     operator SDL_Color() const;
-    operator SDL_Color* () const;
+    operator SDL_Color*();
 };
 

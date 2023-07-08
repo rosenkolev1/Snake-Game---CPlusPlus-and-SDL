@@ -18,6 +18,7 @@ void startMainApp()
     GlobalParams params = GlobalParams();
 
     params.disableAutoPlay();
+    //params.setDefaultTickSpeed(1);
     //params.enableAutoPlay();
 
     //Initialize the app with the window and the UI textures
