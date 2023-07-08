@@ -35,13 +35,6 @@ bool SdlWrapper<T>::sdlEquals(const T& other) const
 template <typename T>
 SdlWrapper<T>::operator T* ()
 {
-    if (!this->sdlObjects.empty())
-    {
-        auto& mostRecent = this->sdlObjects.top();
-
-        if (this->sdlEquals(*mostRecent)) return mostRecent.get();
-    }
-
     auto newSdlObject = (T)*this;
 
     auto newSdlObjectPtr = std::make_shared<T>(newSdlObject);
