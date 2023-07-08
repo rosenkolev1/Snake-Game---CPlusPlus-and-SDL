@@ -1,21 +1,21 @@
 #include "Color.h"
 
+bool Color::sdlEquals(const SDL_Color& first, const SDL_Color& second) const
+{
+    return first.r == second.r && first.g == second.g && first.b == second.b && first.a == second.a;
+}
+
+Color::Color()
+    :Color(SDL_Color {.r = 0, .g = 0, .b = 0, .a = 0})
+{
+}
+
 Color::Color(const SDL_Color& color)
 {
     this->r = color.r;
     this->g = color.g;
     this->b = color.b;
     this->a = color.a;
-}
-
-bool Color::operator==(const Color& other) const
-{
-    return this->r == other.r && this->g == other.g && this->b == other.b && this->a == other.a;
-}
-
-bool Color::sdlEquals(const SDL_Color& other) const
-{
-    return this->r == other.r && this->g == other.g && this->b == other.b && this->a == other.a;
 }
 
 Color::operator SDL_Color() const
@@ -27,26 +27,4 @@ Color::operator SDL_Color() const
         .b = b,
         .a = a
     };
-}
-
-Color::operator SDL_Color* ()
-{
-    if (!this->sdlColors.empty())
-    {
-        auto& mostRecent = this->sdlColors.top();
-
-        if (this->sdlEquals(*mostRecent)) return mostRecent.get();
-    }
-
-    auto newColor = std::make_shared<SDL_Color>(SDL_Color
-        {
-            .r = r,
-            .g = g,
-            .b = b,
-            .a = a
-        });
-
-    this->sdlColors.push(newColor);
-
-    return newColor.get();
 }

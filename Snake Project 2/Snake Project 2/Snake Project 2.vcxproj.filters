@@ -93,6 +93,9 @@
     <ClCompile Include="Snake.cpp">
       <Filter>Source Files\App</Filter>
     </ClCompile>
+    <ClCompile Include="SdlWrapper.cpp">
+      <Filter>Source Files\Common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="SDL2.lib" />
@@ -154,6 +157,9 @@
     </ClInclude>
     <ClInclude Include="Snake.h">
       <Filter>Header Files\App</Filter>
+    </ClInclude>
+    <ClInclude Include="SdlWrapper.h">
+      <Filter>Header Files\Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

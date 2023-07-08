@@ -3,27 +3,22 @@
 #include <memory>
 #include <SDL_rect.h>
 #include <stack>
+#include "SdlWrapper.h"
 
-struct Rect
+struct Rect : public SdlWrapper<SDL_Rect>
 {
-private:
+protected:
 
-    std::stack<std::shared_ptr<SDL_Rect>> sdlRectangles;
-
-    bool sdlEquals(const SDL_Rect& other) const;
+    bool sdlEquals(const SDL_Rect& first, const SDL_Rect& second) const override;
 
 public:
 
     int x, y;
     int w, h;
 
-public:
-
-    Rect() = default;
+    Rect();
     Rect(const SDL_Rect& rect);
 
-    bool operator==(const Rect& other) const;
-    operator SDL_Rect() const;
-    operator SDL_Rect*();
+    operator SDL_Rect() const override;
 };
 
