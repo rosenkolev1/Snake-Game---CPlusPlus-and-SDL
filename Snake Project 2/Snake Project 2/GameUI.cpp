@@ -311,7 +311,7 @@ void GameUI::renderTextUI(const GameState& state)
         return;
     }
 
-    SDL_RenderCopy(this->sdlRenderer->get(), this->timeElapsedTxt->get(), NULL, this->GP.TIME_ELAPSED_RECT);
+    SDL_RenderCopy(this->sdlRenderer->get(), this->timeElapsedTxt->get(), NULL, this->GP.TIME_ELAPSED_RECT.sdl().get());
 
     //Load apples collected
     if (!this->loadCollectedApplesTexture(state.collectedApples))
@@ -320,7 +320,7 @@ void GameUI::renderTextUI(const GameState& state)
         return;
     }
 
-    SDL_RenderCopy(this->sdlRenderer->get(), this->collectedApplesTxt->get(), NULL, this->GP.COLLECTED_APPLES_RECT);
+    SDL_RenderCopy(this->sdlRenderer->get(), this->collectedApplesTxt->get(), NULL, this->GP.COLLECTED_APPLES_RECT.sdl().get());
 
     //Render game over text if game is over
     if (state.gameOver)
@@ -331,7 +331,7 @@ void GameUI::renderTextUI(const GameState& state)
             return;
         }
 
-        SDL_RenderCopy(this->sdlRenderer->get(), this->gameOverTxt->get(), NULL, this->GP.GAME_OVER_RECT);
+        SDL_RenderCopy(this->sdlRenderer->get(), this->gameOverTxt->get(), NULL, this->GP.GAME_OVER_RECT.sdl().get());
     }
     else if (state.gameWon)
     {
@@ -341,7 +341,7 @@ void GameUI::renderTextUI(const GameState& state)
             return;
         }
 
-        SDL_RenderCopy(this->sdlRenderer->get(), this->gameWonTxt->get(), NULL, this->GP.GAME_OVER_RECT);
+        SDL_RenderCopy(this->sdlRenderer->get(), this->gameWonTxt->get(), NULL, this->GP.GAME_OVER_RECT.sdl().get());
     }
 }
 

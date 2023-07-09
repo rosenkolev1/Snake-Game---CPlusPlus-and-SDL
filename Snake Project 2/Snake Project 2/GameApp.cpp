@@ -94,13 +94,10 @@ void GameApp::startGameLoop()
                 }
             }
 
-            //this->state.snake.curDirection = snakeNewDir;
-
             if (this->GP.AUTO_PLAY_ENABLED)
             {
                 auto nextTile = this->hamiltonianCycle[this->hamiltonianCounter++];
                 this->hamiltonianCounter %= this->hamiltonianCycle.size();
-                //this->state.snake.curDirection = this->determineDirection(this->state.snake.getHead(), nextTile);
                 snakeNewDir = this->determineDirection(this->state.snake.getHead(), nextTile);
             }
 
